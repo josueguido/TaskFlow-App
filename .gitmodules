@@ -1,6 +1,0 @@
-[submodule "backend"]
-	path = backend
-	url = https://github.com/josueguido/TaskFlow-Backend.git
-[submodule "frontend"]
-	path = frontend
-	url = https://github.com/josueguido/TaskFlow-Frontend.git
