@@ -50,7 +50,7 @@ export const TenantProvider: React.FC<TenantProviderProps> = ({ children }) => {
     }
   };
 
-  const switchTenant = async (tenantId: number) => {
+  const switchTenant = async () => {
     if (!token) return;
     
     setIsLoading(true);

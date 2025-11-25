@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useNavigate } from "react-router-dom";
-import { Mail, User, Lock, Building2, Eye, EyeOff } from "lucide-react";
+import { Mail, User, Lock, Eye, EyeOff } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { businessAuthService } from "@/services/authService";
 import { useState } from "react";
