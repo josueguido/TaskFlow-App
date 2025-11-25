@@ -13,8 +13,8 @@
       "@/types/*": ["types/*"]
     },
     "target": "ES2022",
-    "module": "ESNext",
-    "moduleResolution": "node",
+    "module": "ES2022",
+    "moduleResolution": "bundler",
     "lib": ["ES2022"],
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
@@ -27,6 +27,7 @@
     "declaration": true,
     "sourceMap": true,
     "typeRoots": ["./types", "./node_modules/@types"],
+    "noEmitOnError": true
   },
   "ts-node": {
     "esm": true,

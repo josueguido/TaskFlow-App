@@ -7,13 +7,13 @@ const router = Router();
 
 router.get(
   '/:taskId/history',
-  validateRequest(taskIdSchema, 'params'),
+  validateRequest(taskIdSchema),
   taskHistoryController.getTaskHistory
 );
 
 router.post(
   '/history',
-  validateRequest(createTaskHistorySchema, 'body'),
+  validateRequest(createTaskHistorySchema),
   taskHistoryController.createTaskHistory
 );
 
