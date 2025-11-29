@@ -54,37 +54,37 @@ export interface CombinedReport {
 
 // Overview - Resumen general
 export const getOverviewReport = async (): Promise<OverviewReport> => {
-  const response = await axios.get("/api/reports/overview");
+  const response = await axios.get("/reports/overview");
   return response.data.data || response.data;
 };
 
 // Projects - Progreso por proyecto
 export const getProjectsReport = async (): Promise<ProjectReport[]> => {
-  const response = await axios.get("/api/reports/projects");
+  const response = await axios.get("/reports/projects");
   return response.data.data || [];
 };
 
 // Activity - Últimos cambios
 export const getActivityReport = async (): Promise<ActivityLog[]> => {
-  const response = await axios.get("/api/reports/activity");
+  const response = await axios.get("/reports/activity");
   return response.data.data || [];
 };
 
 // Users - Carga de trabajo por usuario
 export const getUsersReport = async (): Promise<UserWorkload[]> => {
-  const response = await axios.get("/api/reports/users");
+  const response = await axios.get("/reports/users");
   return response.data.data || [];
 };
 
 // Statuses - Distribución por estado
 export const getStatusesReport = async (): Promise<StatusDistribution[]> => {
-  const response = await axios.get("/api/reports/statuses");
+  const response = await axios.get("/reports/statuses");
   return response.data.data || [];
 };
 
 // Combined - Todo junto
 export const getCombinedReport = async (): Promise<CombinedReport> => {
-  const response = await axios.get("/api/reports/combined");
+  const response = await axios.get("/reports/combined");
   const data = response.data.data || response.data;
   
   // Convertir strings a números

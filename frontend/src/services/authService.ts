@@ -31,12 +31,11 @@ abstract class BaseApiService {
   }
 }
 
-
 export class BusinessAuthService extends BaseApiService {
 
   async signupBusiness(data: BusinessSignupRequest): Promise<ApiResponse<BusinessSignupResponse>> {
     return this.handleApiCall(async () => {
-      return await axios.post('/api/auth/signup-business', {
+      return await axios.post('/auth/signup-business', {
         name: data.name,
         admin_name: data.admin_name,
         admin_email: data.admin_email,
@@ -50,7 +49,7 @@ export class UserAuthService extends BaseApiService {
 
   async login(credentials: LoginRequest): Promise<ApiResponse<LoginResponse>> {
     return this.handleApiCall(async () => {
-      return await axios.post('/api/auth/login', {
+      return await axios.post('/auth/login', {
         email: credentials.email,
         password: credentials.password
       });
@@ -59,7 +58,7 @@ export class UserAuthService extends BaseApiService {
 
   async signupUser(data: UserSignupRequest): Promise<ApiResponse<UserSignupResponse>> {
     return this.handleApiCall(async () => {
-      return await axios.post('/api/auth/signup-user', {
+      return await axios.post('/auth/signup-user', {
         invite_token: data.invite_token,
         name: data.name,
         password: data.password
@@ -70,7 +69,7 @@ export class UserAuthService extends BaseApiService {
 
   async refreshToken(refreshToken: string): Promise<ApiResponse<RefreshTokenResponse>> {
     return this.handleApiCall(async () => {
-      return await axios.post('/api/auth/refresh', {
+      return await axios.post('/auth/refresh', {
         refreshToken: refreshToken
       });
     });
@@ -80,7 +79,7 @@ export class UserAuthService extends BaseApiService {
 export class UserManagementService extends BaseApiService {
   async inviteUser(data: UserInviteRequest): Promise<ApiResponse<UserInviteResponse>> {
     return this.handleApiCall(async () => {
-      return await axios.post('/api/users/invite', {
+      return await axios.post('/users/invite', {
         email: data.email,
         role_id: data.role_id || 2 
       });

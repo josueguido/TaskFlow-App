@@ -36,7 +36,7 @@ export interface UpdateProjectUserRoleRequest {
 export const getProjectUsers = async (projectId: number): Promise<ProjectUser[]> => {
   try {
     const response = await axios.get<ApiResponse<ProjectUser[]>>(
-      `/api/projects/${projectId}/users`
+      `/projects/${projectId}/users`
     );
     return response.data.data || [];
   } catch (error: any) {
@@ -71,7 +71,7 @@ export const addUserToProject = async (
     };
 
     const response = await axios.post<ApiResponse<ProjectUser>>(
-      `/api/projects/${projectId}/users`,
+      `/projects/${projectId}/users`,
       payload
     );
 
@@ -106,7 +106,7 @@ export const removeUserFromProject = async (
       throw new Error("Project ID and User ID are required");
     }
 
-    await axios.delete(`/api/projects/${projectId}/users/${userId}`);
+    await axios.delete(`/projects/${projectId}/users/${userId}`);
   } catch (error: any) {
     console.error("Error removing user from project:", error);
     throw {
@@ -141,7 +141,7 @@ export const updateProjectUserRole = async (
     };
 
     const response = await axios.put<ApiResponse<ProjectUser>>(
-      `/api/projects/${projectId}/users/${userId}`,
+      `/projects/${projectId}/users/${userId}`,
       payload
     );
 
@@ -174,7 +174,7 @@ export const getMyProjectRole = async (projectId: number): Promise<UserRole> => 
     }
 
     const response = await axios.get<ApiResponse<UserRole>>(
-      `/api/projects/${projectId}/users/me/role`
+      `/projects/${projectId}/users/me/role`
     );
 
     if (!response.data.data) {

@@ -37,7 +37,7 @@ export interface UpdateUserRoleRequest {
  */
 export const getBusinessUsers = async (): Promise<BusinessUser[]> => {
   try {
-    const response = await axios.get<ApiResponse<BusinessUser[]>>("/api/users");
+    const response = await axios.get<ApiResponse<BusinessUser[]>>("/users");
     return response.data.data || [];
   } catch (error: any) {
     console.error("Error fetching business users:", error);
@@ -75,7 +75,7 @@ export const inviteUser = async (
     };
 
     const response = await axios.post<ApiResponse<InviteResponse>>(
-      "/api/users/invite",
+      "/users/invite",
       payload
     );
 
@@ -103,7 +103,7 @@ export const removeBusinessUser = async (userId: number | string): Promise<void>
       throw new Error("User ID is required");
     }
 
-    await axios.delete(`/api/users/${userId}`);
+    await axios.delete(`/users/${userId}`);
   } catch (error: any) {
     console.error("Error removing user:", error);
     throw {

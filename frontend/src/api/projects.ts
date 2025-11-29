@@ -28,7 +28,7 @@ export interface ProjectStats {
 
 export const getAllProjects = async (): Promise<Project[]> => {
   try {
-    const response = await axios.get<ApiResponse<Project[]>>("/api/projects");
+    const response = await axios.get<ApiResponse<Project[]>>("/projects");
     return response.data.data || [];
   } catch (error: any) {
     console.error("Error fetching projects:", error);
@@ -42,7 +42,7 @@ export const getAllProjects = async (): Promise<Project[]> => {
 export const getProjectById = async (projectId: string): Promise<Project> => {
   try {
     const response = await axios.get<ApiResponse<Project>>(
-      `/api/projects/${projectId}`
+      `/projects/${projectId}`
     );
     if (!response.data.data) {
       throw new Error("Project not found");
@@ -81,7 +81,7 @@ export const createProject = async (data: CreateProjectDTO): Promise<Project> =>
     }
     
     const response = await axios.post<ApiResponse<Project>>(
-      "/api/projects",
+      "/projects",
       payload
     );
     
@@ -118,7 +118,7 @@ export const updateProject = async (
     }
 
     const response = await axios.put<ApiResponse<Project>>(
-      `/api/projects/${projectId}`,
+      `/projects/${projectId}`,
       data
     );
     if (!response.data.data) {
@@ -136,7 +136,7 @@ export const updateProject = async (
 
 export const deleteProject = async (projectId: string): Promise<void> => {
   try {
-    await axios.delete(`/api/projects/${projectId}`);
+    await axios.delete(`/projects/${projectId}`);
   } catch (error: any) {
     console.error("Error deleting project:", error);
     throw {
@@ -149,7 +149,7 @@ export const deleteProject = async (projectId: string): Promise<void> => {
 export const getProjectsByBusiness = async (businessId: string): Promise<Project[]> => {
   try {
     const response = await axios.get<ApiResponse<Project[]>>(
-      `/api/projects/business/${businessId}`
+      `/projects/business/${businessId}`
     );
     return response.data.data || [];
   } catch (error: any) {
@@ -164,7 +164,7 @@ export const getProjectsByBusiness = async (businessId: string): Promise<Project
 export const getProjectStats = async (businessId: string): Promise<ProjectStats> => {
   try {
     const response = await axios.get<ApiResponse<ProjectStats>>(
-      `/api/projects/business/${businessId}/stats`
+      `/projects/business/${businessId}/stats`
     );
     if (!response.data.data) {
       throw new Error("Failed to fetch project stats");

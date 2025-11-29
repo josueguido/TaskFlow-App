@@ -1,23 +1,19 @@
-FROM node:24-alpine3.21 AS deps
-WORKDIR /app
-COPY package.json package-lock.json ./
-RUN npm install
-
 FROM node:24-alpine3.21 AS builder
 WORKDIR /app
-COPY . .
+COPY package.json package-lock.json ./
+RUN npm ci
+COPY tsconfig.json ./
+COPY src ./src
+COPY config ./config
 RUN npm run build
 
 FROM node:24-alpine3.21 AS runner
 WORKDIR /app
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/package.json ./package.json
-COPY --from=builder /app/package-lock.json ./package-lock.json
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/tsconfig.json ./tsconfig.json
-
-ENV NODE_OPTIONS="--experimental-specifier-resolution=node --require tsconfig-paths/register"
 ENV NODE_ENV=production
+COPY package.json ./
+RUN npm ci --only=production
+COPY --from=builder /app/dist ./dist
+COPY config ./config
 
 EXPOSE 3000
 

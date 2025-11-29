@@ -1,8 +1,32 @@
 import axios from "axios";
 import { useAuth } from "../store/auth";
 
+// Determinar la URL base del API dinámicamente
+const getApiUrl = () => {
+  // Si existe variable de entorno, usarla y agregar /api si no lo tiene
+  if (import.meta.env.VITE_API_URL) {
+    const baseUrl = import.meta.env.VITE_API_URL;
+    const fullUrl = baseUrl.endsWith('/api') ? baseUrl : `${baseUrl}/api`;
+    console.log('[AXIOS] Usando VITE_API_URL:', fullUrl);
+    return fullUrl;
+  }
+  
+  // Fallback: construir URL basada en el navegador
+  const protocol = window.location.protocol;
+  const hostname = window.location.hostname;
+  const apiUrl = `${protocol}//${hostname}:3000/api`;
+  
+  console.log('[AXIOS] Construyendo URL dinámicamente:', {
+    protocol,
+    hostname,
+    apiUrl
+  });
+  
+  return apiUrl;
+};
+
 const api = axios.create({
- baseURL: import.meta.env.VITE_API_URL,
+  baseURL: getApiUrl(),
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
@@ -35,20 +59,46 @@ api.interceptors.request.use((config) => {
     config.headers['X-Business-Id'] = currentBusinessId.toString();
   }
   
-  // if (config.url?.includes('/assign') || config.url?.includes('/status')) {
-  //   console.log('[AXIOS] Request:', {
-  //     url: config.url,
-  //     method: config.method,
-  //     data: config.datan
-  //   });
-  // }
+  // Log completo de todas las peticiones
+  console.log('[AXIOS REQUEST]', {
+    url: `${config.baseURL || ''}${config.url || ''}`,
+    method: config.method?.toUpperCase(),
+    timestamp: new Date().toISOString(),
+    data: config.data || null,
+    headers: {
+      'content-type': config.headers['Content-Type'],
+      'authorization': config.headers.Authorization ? '***Bearer***' : 'no-auth',
+      'x-business-id': config.headers['X-Business-Id'] || 'none'
+    }
+  });
   
   return config;
 });
 
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    // Log de respuestas exitosas
+    console.log('[AXIOS RESPONSE]', {
+      url: `${response.config.baseURL || ''}${response.config.url || ''}`,
+      method: response.config.method?.toUpperCase(),
+      status: response.status,
+      statusText: response.statusText,
+      timestamp: new Date().toISOString()
+    });
+    return response;
+  },
   async (error) => {
+    // Log de errores
+    console.error('[AXIOS ERROR]', {
+      url: `${error.config?.baseURL || ''}${error.config?.url || ''}`,
+      method: error.config?.method?.toUpperCase(),
+      status: error.response?.status,
+      statusText: error.response?.statusText,
+      message: error.message,
+      code: error.code,
+      timestamp: new Date().toISOString()
+    });
+    
     const originalRequest = error.config;
 
     if (
