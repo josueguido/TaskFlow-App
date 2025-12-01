@@ -23,15 +23,15 @@ export const UsersWorkload: React.FC<UsersWorkloadProps> = ({ users, loading }) 
   if (users.length === 0) {
     return (
       <div className="bg-white rounded-lg shadow p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Carga de Trabajo</h3>
-        <p className="text-center text-gray-500 py-8">No hay usuarios con tareas asignadas</p>
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">Workload</h3>
+        <p className="text-center text-gray-500 py-8">No users with assigned tasks</p>
       </div>
     );
   }
 
   return (
     <div className="bg-white rounded-lg shadow p-6">
-      <h3 className="text-lg font-semibold text-gray-900 mb-4">Carga de Trabajo por Usuario</h3>
+      <h3 className="text-lg font-semibold text-gray-900 mb-4">Workload by User</h3>
       <div className="space-y-4">
         {users.map((user) => {
           const totalAssigned = Number(user.total_assigned);

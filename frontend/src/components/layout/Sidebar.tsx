@@ -27,13 +27,13 @@ export const Sidebar: React.FC<SidebarProps> = ({ onProjectSelect, onManageColum
 		switch (name) {
 			case "Dashboard":
 				return path === "/app";
-			case "Proyectos":
+			case "Projects":
 				return path === "/app" || path.includes("/app/projects");
-			case "Equipo":
+			case "Team":
 				return path === "/app/team";
-			case "Calendario":
+			case "Calendar":
 				return path === "/app/calendar";
-			case "Reportes":
+			case "Reports":
 				return path === "/app/reports";
 			case "Gestionar Columnas":
 				// Este es un modal, no una ruta
@@ -93,7 +93,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ onProjectSelect, onManageColum
 			onClick: () => navigate("/app"),
 		},
 		{
-			name: "Proyectos",
+			name: "Projects",
 			icon: (
 				<svg
 					className="w-5 h-5"
@@ -112,7 +112,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ onProjectSelect, onManageColum
 			onClick: () => navigate("/app"),
 		},
 		{
-			name: "Equipo",
+			name: "Team",
 			icon: (
 				<svg
 					className="w-5 h-5"
@@ -131,7 +131,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ onProjectSelect, onManageColum
 			onClick: () => navigate("/app/team"),
 		},
 		{
-			name: "Calendario",
+			name: "Calendar",
 			icon: (
 				<svg
 					className="w-5 h-5"
@@ -150,7 +150,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ onProjectSelect, onManageColum
 			onClick: () => navigate("/app/calendar"),
 		},
 		{
-			name: "Reportes",
+			name: "Reports",
 			icon: (
 				<svg
 					className="w-5 h-5"
@@ -219,7 +219,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ onProjectSelect, onManageColum
 						className="w-full flex items-center justify-between px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900 rounded-lg transition-colors"
 					>
 						<span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-							PROYECTOS
+							PROJECTS
 						</span>
 						<svg
 							className={`w-4 h-4 text-gray-400 transform transition-transform ${
@@ -257,7 +257,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ onProjectSelect, onManageColum
 										d="M12 6v6m0 0v6m0-6h6m-6 0H6"
 									/>
 								</svg>
-								<span>Nuevo proyecto</span>
+								<span>New project</span>
 							</button>
 
 							{projects.map((project) => (
@@ -307,7 +307,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ onProjectSelect, onManageColum
 							d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
 						/>
 					</svg>
-					Configuración
+					Settings
 				</button>
 			</div>
 		</div>

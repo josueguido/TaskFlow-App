@@ -23,8 +23,8 @@ export const ProjectsChart: React.FC<ProjectsChartProps> = ({ projects, loading 
   if (projects.length === 0) {
     return (
       <div className="bg-white rounded-lg shadow p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Progreso por Proyecto</h3>
-        <p className="text-center text-gray-500 py-8">No hay proyectos disponibles</p>
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">Progress by Project</h3>
+        <p className="text-center text-gray-500 py-8">No projects available</p>
       </div>
     );
   }
@@ -55,7 +55,7 @@ export const ProjectsChart: React.FC<ProjectsChartProps> = ({ projects, loading 
                 ></div>
               </div>
               <p className="text-xs text-gray-500 mt-1">
-                {project.completed_tasks} / {project.total_tasks} tareas completadas
+                {project.completed_tasks} / {project.total_tasks} tasks completed
               </p>
             </div>
           );

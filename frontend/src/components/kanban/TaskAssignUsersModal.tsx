@@ -45,7 +45,7 @@ export const TaskAssignUsersModal: React.FC<TaskAssignUsersModalProps> = ({
         setAssignedUsers((prev) => [...prev, userId]);
       }
     } catch (err: any) {
-      setError(err.message || "Error al actualizar la asignación");
+      setError(err.message || "Error updating assignment");
       console.error("Error toggling user assignment:", err);
     } finally {
       setLoading(false);
@@ -63,7 +63,7 @@ export const TaskAssignUsersModal: React.FC<TaskAssignUsersModalProps> = ({
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
           <div>
             <h2 className="text-lg font-semibold text-gray-900">
-              Asignar Usuarios
+              Assign Users
             </h2>
             <p className="text-sm text-gray-600 mt-1">{task.title}</p>
           </div>

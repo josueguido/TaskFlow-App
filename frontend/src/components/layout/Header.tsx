@@ -48,7 +48,7 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
           <input
             type="text"
-            placeholder="Buscar tareas, proyectos..."
+            placeholder="Search tasks, projects..."
             className="block w-64 pl-10 pr-3 py-2 border border-gray-200 rounded-lg bg-gray-50 text-sm placeholder-gray-500 focus:outline-none focus:bg-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
           />
         </div>

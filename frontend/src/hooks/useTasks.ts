@@ -20,7 +20,7 @@ export const useTasks = (projectId?: number) => {
       
       setTasks(filtered);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error al cargar tareas');
+      setError(err instanceof Error ? err.message : 'Error loading tasks');
       setTasks([]);
     } finally {
       setLoading(false);
@@ -57,7 +57,7 @@ export const useTask = (taskId: number) => {
       const fetchedTask = await tasksApi.getTaskById(taskId);
       setTask(fetchedTask);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error al cargar tarea');
+      setError(err instanceof Error ? err.message : 'Error loading task');
       setTask(null);
     } finally {
       setLoading(false);
@@ -91,7 +91,7 @@ export const useTaskMutations = () => {
       const newTask = await tasksApi.createTask(taskData);
       return newTask;
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error al crear tarea');
+      setError(err instanceof Error ? err.message : 'Error creating task');
       return null;
     } finally {
       setLoading(false);
@@ -105,7 +105,7 @@ export const useTaskMutations = () => {
       const updatedTask = await tasksApi.updateTask(taskId, updates);
       return updatedTask;
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error al actualizar tarea');
+      setError(err instanceof Error ? err.message : 'Error updating task');
       return null;
     } finally {
       setLoading(false);
@@ -119,7 +119,7 @@ export const useTaskMutations = () => {
       await tasksApi.deleteTask(taskId);
       return true;
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error al eliminar tarea');
+      setError(err instanceof Error ? err.message : 'Error deleting task');
       return false;
     } finally {
       setLoading(false);
@@ -147,7 +147,7 @@ export const useTaskMutations = () => {
       await tasksApi.assignUserToTask(taskId, userId);
       return true;
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error al asignar usuario');
+      setError(err instanceof Error ? err.message : 'Error assigning user');
       return false;
     } finally {
       setLoading(false);
@@ -161,7 +161,7 @@ export const useTaskMutations = () => {
       await tasksApi.unassignUserFromTask(taskId, userId);
       return true;
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error al desasignar usuario');
+      setError(err instanceof Error ? err.message : 'Error unassigning user');
       return false;
     } finally {
       setLoading(false);

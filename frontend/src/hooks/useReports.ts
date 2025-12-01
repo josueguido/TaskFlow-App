@@ -51,7 +51,7 @@ export const useReports = () => {
       setState((prev) => ({
         ...prev,
         loading: false,
-        error: err.message || 'Error al cargar reportes',
+        error: err.message || 'Error loading reports',
       }));
     }
   }, []);
@@ -61,7 +61,6 @@ export const useReports = () => {
       const data = await getOverviewReport();
       setState((prev) => ({ ...prev, overview: data }));
     } catch (err) {
-      console.error('Error fetching overview:', err);
     }
   }, []);
 
@@ -70,7 +69,6 @@ export const useReports = () => {
       const data = await getProjectsReport();
       setState((prev) => ({ ...prev, projects: data }));
     } catch (err) {
-      console.error('Error fetching projects:', err);
     }
   }, []);
 
@@ -79,7 +77,6 @@ export const useReports = () => {
       const data = await getActivityReport();
       setState((prev) => ({ ...prev, activity: data }));
     } catch (err) {
-      console.error('Error fetching activity:', err);
     }
   }, []);
 
@@ -88,7 +85,6 @@ export const useReports = () => {
       const data = await getUsersReport();
       setState((prev) => ({ ...prev, users: data }));
     } catch (err) {
-      console.error('Error fetching users:', err);
     }
   }, []);
 
@@ -97,7 +93,6 @@ export const useReports = () => {
       const data = await getStatusesReport();
       setState((prev) => ({ ...prev, statuses: data }));
     } catch (err) {
-      console.error('Error fetching statuses:', err);
     }
   }, []);
 

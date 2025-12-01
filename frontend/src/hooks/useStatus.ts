@@ -14,7 +14,7 @@ export const useStatuses = () => {
       const statusList = await statusApi.getAllStatuses();
       setStatuses(statusList);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error al cargar estados');
+      setError(err instanceof Error ? err.message : 'Error loading status');
       setStatuses([]);
     } finally {
       setLoading(false);
@@ -51,7 +51,7 @@ export const useStatus = (statusId: string) => {
       const fetchedStatus = await statusApi.getStatusById(statusId);
       setStatus(fetchedStatus);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error al cargar estado');
+      setError(err instanceof Error ? err.message : 'Error loading status');
       setStatus(null);
     } finally {
       setLoading(false);

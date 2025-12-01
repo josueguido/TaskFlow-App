@@ -54,7 +54,7 @@ export const ManageColumnsModal: React.FC<ManageColumnsModalProps> = ({
 
   const handleAddColumn = async () => {
     if (!newColumnName.trim()) {
-      setLocalError("El nombre de la columna es requerido");
+      setLocalError("Column name is required");
       return;
     }
 
@@ -77,7 +77,7 @@ export const ManageColumnsModal: React.FC<ManageColumnsModalProps> = ({
       setNewColumnColor("blue");
       await refetch();
     } catch (err: any) {
-      setLocalError(err.message || "Error al crear la columna");
+      setLocalError(err.message || "Error creating column");
       console.error("Error adding column:", err);
     } finally {
       setIsSaving(false);
@@ -93,7 +93,7 @@ export const ManageColumnsModal: React.FC<ManageColumnsModalProps> = ({
 
   const handleSaveEdit = async () => {
     if (!editingName.trim()) {
-      setLocalError("El nombre no puede estar vacío");
+      setLocalError("Name cannot be empty");
       return;
     }
 
@@ -120,7 +120,7 @@ export const ManageColumnsModal: React.FC<ManageColumnsModalProps> = ({
       setEditingColor("");
       await refetch();
     } catch (err: any) {
-      setLocalError(err.message || "Error al actualizar la columna");
+      setLocalError(err.message || "Error updating column");
       console.error("Error saving edit:", err);
     } finally {
       setIsSaving(false);
@@ -135,7 +135,7 @@ export const ManageColumnsModal: React.FC<ManageColumnsModalProps> = ({
       await deleteStatus(id.toString());
       await refetch();
     } catch (err: any) {
-      setLocalError(err.message || "Error al eliminar la columna");
+      setLocalError(err.message || "Error deleting column");
       console.error("Error deleting column:", err);
       setIsSaving(false);
     }
@@ -205,7 +205,7 @@ export const ManageColumnsModal: React.FC<ManageColumnsModalProps> = ({
                         handleAddColumn();
                       }
                     }}
-                    placeholder="Nombre"
+                    placeholder="Name"
                     disabled={isSaving}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
@@ -310,7 +310,7 @@ export const ManageColumnsModal: React.FC<ManageColumnsModalProps> = ({
                             onClick={handleSaveEdit}
                             disabled={isSaving}
                             className="p-1.5 text-gray-400 hover:text-green-600 hover:bg-green-50 rounded transition-colors"
-                            title="Guardar"
+                            title="Save"
                           >
                             <svg
                               className="w-4 h-4"
@@ -331,7 +331,7 @@ export const ManageColumnsModal: React.FC<ManageColumnsModalProps> = ({
                             onClick={() => handleStartEdit(column)}
                             disabled={isSaving}
                             className="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors"
-                            title="Editar"
+                            title="Edit"
                           >
                             <svg
                               className="w-4 h-4"
@@ -353,7 +353,7 @@ export const ManageColumnsModal: React.FC<ManageColumnsModalProps> = ({
                           onClick={() => handleDeleteColumn(column.id)}
                           disabled={isSaving || columns.length <= 1}
                           className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors disabled:opacity-30"
-                          title="Eliminar"
+                          title="Delete"
                         >
                           <svg
                             className="w-4 h-4"

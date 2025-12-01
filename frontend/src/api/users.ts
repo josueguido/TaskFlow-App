@@ -16,26 +16,26 @@ export interface UpdateUserData {
 }
 
 export const getAllUsers = async (): Promise<User[]> => {
-    const response = await axios.get("/api/users");
+    const response = await axios.get("/users");
     return response.data.data || response.data;
 };
 
 export const getUserById = async (id: string): Promise<User> => {
-    const response = await axios.get(`/api/users/${id}`);
+    const response = await axios.get(`/users/${id}`);
     return response.data;
 };
 
 export const createUser = async (data: CreateUserData): Promise<User> => {
-    const response = await axios.post("/api/users", data);
+    const response = await axios.post("/users", data);
     return response.data;
 };
 
 export const updateUser = async (id: string, data: UpdateUserData): Promise<User> => {
-    const response = await axios.put(`/api/users/${id}`, data);
+    const response = await axios.put(`/users/${id}`, data);
     return response.data;
 };
 
 export const deleteUser = async (id: string): Promise<void> => {
-    const response = await axios.delete(`/api/users/${id}`);
+    const response = await axios.delete(`/users/${id}`);
     return response.data;
 };

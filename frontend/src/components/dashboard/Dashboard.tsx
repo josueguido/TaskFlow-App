@@ -18,13 +18,13 @@ export const Dashboard: React.FC = () => {
     return (
       <div className="flex items-center justify-center h-96">
         <div className="text-center">
-          <p className="text-red-600 mb-2">Error al cargar el dashboard</p>
+          <p className="text-red-600 mb-2">Error loading dashboard</p>
           <p className="text-gray-500 text-sm">{error}</p>
           <button
             onClick={() => fetchCombinedReport()}
             className="mt-3 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
           >
-            Reintentar
+            Retry
           </button>
         </div>
       </div>
@@ -36,7 +36,7 @@ export const Dashboard: React.FC = () => {
       <div className="px-6 py-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-          <p className="text-gray-600 mt-1">Resumen general de tu negocio</p>
+          <p className="text-gray-600 mt-1">General summary of your business</p>
         </div>
 
         {/* Overview Cards */}
