@@ -25,8 +25,6 @@ export const businessSignup = async (req: Request, res: Response, next: NextFunc
 
 export const register = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    // DEPRECATED: This endpoint is kept for backwards compatibility
-    // Redirect users to /api/auth/signup-business instead
     throw new BadRequestError(
       "POST /register is deprecated. Use /api/auth/signup-business instead"
     );
@@ -58,10 +56,6 @@ export const refreshToken = async (req: Request, res: Response, next: NextFuncti
   try {
     const { refreshToken } = req.body;
 
-    console.log('[REFRESH] Request received');
-    console.log('[REFRESH] Body:', req.body);
-    console.log('[REFRESH] Token provided:', !!refreshToken);
-
     if (!refreshToken) {
       throw new BadRequestError("Refresh token is required");
     }
@@ -73,7 +67,6 @@ export const refreshToken = async (req: Request, res: Response, next: NextFuncti
       data,
     });
   } catch (err) {
-    console.error('[REFRESH] Controller error:', err);
     next(err);
   }
 };

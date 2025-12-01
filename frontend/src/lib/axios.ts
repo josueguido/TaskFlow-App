@@ -1,8 +1,21 @@
 import axios from "axios";
 import { useAuth } from "../store/auth";
 
+const getApiUrl = () => {
+  if (import.meta.env.VITE_API_URL) {
+    const baseUrl = import.meta.env.VITE_API_URL;
+    const fullUrl = baseUrl.endsWith('/api') ? baseUrl : `${baseUrl}/api`;
+    return fullUrl;
+  }
+
+  const protocol = window.location.protocol;
+  const hostname = window.location.hostname;
+  const apiUrl = `${protocol}//${hostname}:3000/api`;
+  return apiUrl;
+};
+
 const api = axios.create({
- baseURL: import.meta.env.VITE_API_URL,
+  baseURL: getApiUrl(),
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
@@ -25,35 +38,32 @@ const processQueue = (error: any, token: string | null = null) => {
 
 api.interceptors.request.use((config) => {
   const { token, businessId } = useAuth.getState();
-  
+
   if (token && !config.url?.includes('/auth/refresh')) {
     config.headers.Authorization = `Bearer ${token}`;
   }
-  
+
   const currentBusinessId = businessId();
   if (currentBusinessId && !config.url?.includes('/auth/refresh')) {
     config.headers['X-Business-Id'] = currentBusinessId.toString();
   }
-  
-  // if (config.url?.includes('/assign') || config.url?.includes('/status')) {
-  //   console.log('[AXIOS] Request:', {
-  //     url: config.url,
-  //     method: config.method,
-  //     data: config.datan
-  //   });
-  // }
-  
+
   return config;
 });
 
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    return response;
+  },
   async (error) => {
     const originalRequest = error.config;
 
+    const isAuthRoute = originalRequest.url?.includes('/auth/');
+
     if (
       (error.response?.status === 401 || error.response?.status === 403) &&
-      !originalRequest._retry
+      !originalRequest._retry &&
+      !isAuthRoute
     ) {
       const { refreshToken } = useAuth.getState();
 
@@ -78,7 +88,7 @@ api.interceptors.response.use(
       isRefreshing = true;
       originalRequest._retry = true;
       try {
-        const res = await api.post("/api/auth/refresh", {
+        const res = await api.post("/auth/refresh", {
           refreshToken: refreshToken,
         });
 
@@ -97,7 +107,7 @@ api.interceptors.response.use(
         originalRequest.headers.Authorization = `Bearer ${newToken}`;
         return api(originalRequest);
       } catch (err: any) {
-        console.error('[REFRESH] Error:', err?.response?.data || err?.message);
+
         processQueue(err, null);
         useAuth.getState().clearAuth();
         window.location.href = "/login";

@@ -75,18 +75,18 @@ export const CalendarComponent: React.FC<CalendarComponentProps> = ({ projectId 
           views={['month', 'week', 'day', 'agenda']}
           defaultView="month"
           messages={{
-            today: 'Hoy',
-            previous: 'Anterior',
-            next: 'Siguiente',
-            month: 'Mes',
-            week: 'Semana',
-            day: 'Día',
+            today: 'Today',
+            previous: 'Previous',
+            next: 'Next',
+            month: 'Month',
+            week: 'Week',
+            day: 'Day',
             agenda: 'Agenda',
-            date: 'Fecha',
-            time: 'Hora',
-            event: 'Evento',
-            noEventsInRange: 'No hay eventos en este rango',
-            showMore: (total: number) => `+${total} eventos`,
+            date: 'Date',
+            time: 'Time',
+            event: 'Event',
+            noEventsInRange: 'No events in this range',
+            showMore: (total: number) => `+${total} events`,
           }}
           eventPropGetter={() => ({
             className: 'rbc-event-custom',
@@ -135,7 +135,7 @@ export const CalendarComponent: React.FC<CalendarComponentProps> = ({ projectId 
             {/* Project */}
             <div>
               <p className="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-1">
-                Proyecto
+                Project
               </p>
               <p className="text-sm text-gray-900 truncate">{selectedEvent.project_name}</p>
             </div>
@@ -143,7 +143,7 @@ export const CalendarComponent: React.FC<CalendarComponentProps> = ({ projectId 
             {/* Status */}
             <div>
               <p className="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-1">
-                Estado
+                Status
               </p>
               <div className="inline-block px-3 py-1 bg-blue-100 text-blue-800 text-xs sm:text-sm rounded-full">
                 {selectedEvent.status_name}
@@ -153,7 +153,7 @@ export const CalendarComponent: React.FC<CalendarComponentProps> = ({ projectId 
             {/* Due Date */}
             <div>
               <p className="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-1">
-                Fecha de vencimiento
+                Due Date
               </p>
               <p className="text-sm text-gray-900">
                 {new Date(selectedEvent.due_date).toLocaleDateString('es-ES', {
@@ -168,7 +168,7 @@ export const CalendarComponent: React.FC<CalendarComponentProps> = ({ projectId 
             {selectedEvent.description && (
               <div>
                 <p className="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-1">
-                  Descripción
+                  Description
                 </p>
                 <p className="text-sm text-gray-700 line-clamp-3">{selectedEvent.description}</p>
               </div>
@@ -177,7 +177,7 @@ export const CalendarComponent: React.FC<CalendarComponentProps> = ({ projectId 
             {/* Assigned Users */}
             <div>
               <p className="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2">
-                Asignado a ({selectedEvent.assigned_users.length})
+                Assigned to ({selectedEvent.assigned_users.length})
               </p>
               <div className="flex flex-wrap gap-2">
                 {selectedEvent.assigned_users.map((user, index) => (

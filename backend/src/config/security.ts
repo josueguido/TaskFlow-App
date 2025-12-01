@@ -1,5 +1,6 @@
 import { config } from 'dotenv';
 import { Algorithm, SignOptions } from 'jsonwebtoken';
+import { CorsOptions } from 'cors';
 config();
 
 const JWT_SECRET = process.env.JWT_SECRET
@@ -41,7 +42,23 @@ export const securityConfig = {
   },
 
   cors: {
-    origin: process.env.CORS_ORIGIN?.split(',') || ['http://localhost:5173', 'http://localhost:3000'],
+    origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
+      const allowedOrigins = process.env.CORS_ORIGIN?.split(',').map(url => url.trim()) || [
+        'http://localhost:3001',
+        'http://localhost:5173',
+        'http://localhost:3000',
+        'http://127.0.0.1:3001',
+        'http://127.0.0.1:5173',
+        'http://127.0.0.1:3000'
+      ];
+
+      // Permitir sin origin (requests desde archivos, misma origen, etc)
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
     credentials: true,
     optionsSuccessStatus: 200,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
@@ -54,7 +71,7 @@ export const securityConfig = {
       'Cache-Control',
       'x-business-id'
     ]
-  },
+  } as CorsOptions,
 
   bcrypt: {
     saltRounds: parseInt(process.env.BCRYPT_SALT_ROUNDS || '12'),
@@ -155,8 +172,10 @@ const validateConfig = () => {
     console.warn('Se recomienda usar al menos 12 salt rounds para bcrypt');
   }
 
+  // CORS origin validation
+  const corsOrigin = process.env.CORS_ORIGIN?.split(',').map(url => url.trim()) || [];
   if (process.env.NODE_ENV === 'production' &&
-      securityConfig.cors.origin.includes('http://localhost:3000')) {
+      (corsOrigin.includes('http://localhost:3000') || corsOrigin.length === 0)) {
     console.warn('CORS incluye localhost en producción');
   }
 };

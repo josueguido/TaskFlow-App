@@ -3,10 +3,10 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/store/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Mail } from "lucide-react";
+import { Mail, AlertCircle } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { userAuthService } from "@/services/authService";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 
 const schema = z.object({
     email: z
@@ -49,7 +49,7 @@ export default function SignIn() {
     if (!rehydrated)
         return <div className="text-white">Loading session...</div>;
 
-    const onSubmit = async (data: LoginForm) => {
+    const onSubmit = useCallback(async (data: LoginForm) => {
         try {
             setLoading(true);
             setError(null);
@@ -59,7 +59,13 @@ export default function SignIn() {
                 password: data.password
             });
 
-            if (response.data) {
+            if (response?.success === false) {
+                const errorMessage = response.message || 'Error signing in';
+                setError(errorMessage);
+                return;
+            }
+
+            if (response?.data) {
                 const { user, token, refreshToken } = response.data;
                 
                 const business = {
@@ -70,15 +76,15 @@ export default function SignIn() {
                 setAuth(token, refreshToken, user, business);
                 navigate("/app");
             } else {
-                setError('Error en el login');
+                setError('Error signing in. Please try again');
             }
         } catch (err: any) {
-            console.error("Error logging in:", err);
-            setError(err.message || 'Error al iniciar sesión');
+            const errorMessage = err?.message || 'Invalid email or password';
+            setError(errorMessage);
         } finally {
             setLoading(false);
         }
-    };
+    }, [setAuth, navigate]);
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-50 px-4">
@@ -92,10 +98,10 @@ export default function SignIn() {
                     </div>
                 </div>
                 <h2 className="text-center text-xl font-semibold text-gray-900">
-                    Inicia sesión en TaskFlow
+                    Sign in to TaskFlow
                 </h2>
                 <p className="text-center text-sm text-gray-500 mb-6">
-                    ¡Bienvenido de vuelta! Inicia sesión para continuar
+                    Welcome back! Sign in to continue
                 </p>
 
                 {successMessage && (
@@ -105,8 +111,12 @@ export default function SignIn() {
                 )}
 
                 {error && (
-                    <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
-                        <p className="text-red-600 text-sm">{error}</p>
+                    <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg flex gap-3 items-start">
+                        <AlertCircle className="text-red-600 flex-shrink-0 mt-0.5" size={18} />
+                        <div className="flex-1">
+                            <p className="text-red-700 text-sm font-medium">Error signing in</p>
+                            <p className="text-red-600 text-sm mt-1">{error}</p>
+                        </div>
                     </div>
                 )}
 
@@ -133,7 +143,7 @@ export default function SignIn() {
                                 {...register("email")}
                                 id="email"
                                 type="email"
-                                placeholder="tu@ejemplo.com"
+                                placeholder="your@example.com"
                                 className={`w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800 ${
                                     errors.email
                                         ? "border-red-500"
@@ -153,7 +163,7 @@ export default function SignIn() {
                             htmlFor="password"
                             className="block text-sm font-medium text-gray-700 mb-1"
                         >
-                            Contraseña
+                            Password
                         </label>
                         <input
                             {...register("password")}
@@ -176,27 +186,30 @@ export default function SignIn() {
                     <button
                         type="submit"
                         disabled={loading}
-                        className="w-full bg-gray-800 hover:bg-black text-white font-semibold py-2 rounded-md transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                        className="w-full bg-gray-800 hover:bg-black text-white font-semibold py-2 rounded-md transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 min-h-[44px]"
                     >
                         {loading ? (
                             <>
-                                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                                Iniciando sesión...
+                                <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
+                                <span>Signing in...</span>
                             </>
                         ) : (
-                            'Continuar ▸'
+                            <>
+                                <span>Continue</span>
+                                <span>▸</span>
+                            </>
                         )}
                     </button>
                 </form>
 
                 <div className="mt-6 text-center space-y-3">
                     <p className="text-sm text-gray-600">
-                        ¿No tienes una cuenta?{" "}
+                        Don't have an account?{" "}
                         <button
                             onClick={() => navigate('/signup')}
                             className="text-blue-600 hover:text-blue-700 font-medium"
                         >
-                            Registrarse
+                            Sign up
                         </button>
                     </p>
                     
@@ -205,17 +218,17 @@ export default function SignIn() {
                             <div className="w-full border-t border-gray-300" />
                         </div>
                         <div className="relative flex justify-center text-sm">
-                            <span className="px-2 bg-white text-gray-500">o</span>
+                            <span className="px-2 bg-white text-gray-500">or</span>
                         </div>
                     </div>
                     
                     <p className="text-sm text-gray-600">
-                        ¿Quieres crear un negocio?{" "}
+                        Want to create a business?{" "}
                         <button
                             onClick={() => navigate('/business-signup')}
                             className="text-green-600 hover:text-green-700 font-medium"
                         >
-                            Registrar empresa
+                            Register company
                         </button>
                     </p>
                 </div>

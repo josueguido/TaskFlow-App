@@ -5,15 +5,19 @@ export const taskParamsSchema = z.object({
 });
 
 export const createTaskSchema = z.object({
-  title: z.string().min(1),
-  description: z.string().optional(),
-  status_id: z.string().min(1),
+  body: z.object({
+    title: z.string().min(1, "Title is required"),
+    description: z.string().optional(),
+    status_id: z.string().min(1, "Status is required"),
+  })
 });
 
 export const updateTaskSchema = z.object({
-  title: z.string().min(1).optional(),
-  description: z.string().optional(),
-  status_id: z.string().min(1).optional(),
+  body: z.object({
+    title: z.string().min(1).optional(),
+    description: z.string().optional(),
+    status_id: z.string().min(1).optional(),
+  })
 });
 
 export const changeStatusSchema = z.object({

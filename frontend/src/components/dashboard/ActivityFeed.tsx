@@ -23,8 +23,8 @@ export const ActivityFeed: React.FC<ActivityFeedProps> = ({ activity, loading })
   if (activity.length === 0) {
     return (
       <div className="bg-white rounded-lg shadow p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Actividad Reciente</h3>
-        <p className="text-center text-gray-500 py-8">No hay actividad reciente</p>
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">Recent Activity</h3>
+        <p className="text-center text-gray-500 py-8">No recent activity</p>
       </div>
     );
   }

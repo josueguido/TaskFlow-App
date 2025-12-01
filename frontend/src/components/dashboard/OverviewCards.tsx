@@ -27,7 +27,7 @@ export const OverviewCards: React.FC<OverviewCardsProps> = ({ overview, loading 
 
   const cards = [
     {
-      title: 'Tareas Completadas',
+      title: 'Completed Tasks',
       value: overview.completed_tasks,
       total: overview.total_tasks,
       icon: '✅',
@@ -35,7 +35,7 @@ export const OverviewCards: React.FC<OverviewCardsProps> = ({ overview, loading 
       textColor: 'text-green-600',
     },
     {
-      title: 'Tareas Pendientes',
+      title: 'Pending Tasks',
       value: overview.pending_tasks,
       total: overview.total_tasks,
       icon: '📅',
@@ -51,9 +51,9 @@ export const OverviewCards: React.FC<OverviewCardsProps> = ({ overview, loading 
       textColor: 'text-blue-600',
     },
     {
-      title: 'Total de Tareas',
+      title: 'Total Tasks',
       value: overview.total_tasks,
-      total: 'tareas',
+      total: 'tasks',
       icon: '🎯',
       bgColor: 'bg-purple-50',
       textColor: 'text-purple-600',

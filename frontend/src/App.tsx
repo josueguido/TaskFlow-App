@@ -13,11 +13,13 @@ import { CreateProjectPage } from "./components/projects/CreateProjectPage";
 import { ProjectUsers } from "./components/projects/ProjectUsers";
 import { TeamManagement } from "./components/team/TeamManagement";
 import { ProtectedRoute } from "./components/auth/ProtectedRoute";
+import { useAuth } from "./store/auth";
 
 function App() {
 	const kanbanBoardRef = useRef<KanbanBoardRef>(null);
 	const [isManageColumnsOpen, setIsManageColumnsOpen] = useState(false);
 	const [selectedProjectId, setSelectedProjectId] = useState<number | null>(null);
+	const isAuthenticated = useAuth((state) => state.isAuthenticated());
 
 	const handleManageColumns = () => {
 		setIsManageColumnsOpen(true);
@@ -37,10 +39,13 @@ function App() {
 
 	return (
 		<>
-			<ManageColumnsModal 
-				isOpen={isManageColumnsOpen}
-				onClose={handleManageColumnsClose}
-			/>
+			{/* Solo renderizar ManageColumnsModal si está autenticado */}
+			{isAuthenticated && (
+				<ManageColumnsModal 
+					isOpen={isManageColumnsOpen}
+					onClose={handleManageColumnsClose}
+				/>
+			)}
 			<Routes>
 			<Route path="/" element={<Navigate to="/login" replace />} />
 			<Route path="/login" element={<SignIn />} />

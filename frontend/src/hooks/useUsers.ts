@@ -15,7 +15,7 @@ export const useUsers = () => {
       const usersList = await usersApi.getAllUsers();
       setUsers(usersList);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error al cargar usuarios');
+      setError(err instanceof Error ? err.message : 'Error loading users');
       setUsers([]);
     } finally {
       setLoading(false);
@@ -53,7 +53,7 @@ export const useUser = (userId: string) => {
       const foundUser = await usersApi.getUserById(userId);
       setUser(foundUser);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error al cargar usuario');
+      setError(err instanceof Error ? err.message : 'Error loading user');
       setUser(null);
     } finally {
       setLoading(false);

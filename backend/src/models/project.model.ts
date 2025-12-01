@@ -73,7 +73,7 @@ export const createProject = async (projectData: { business_id: string, name: st
     `;
 
     const result = await client.query(query, [
-      projectData.business_id,
+      parseInt(projectData.business_id, 10),
       projectData.name,
       projectData.description || null
     ]);

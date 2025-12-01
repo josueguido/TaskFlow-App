@@ -2,10 +2,10 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useNavigate } from "react-router-dom";
-import { Mail, User, Lock, Eye, EyeOff } from "lucide-react";
+import { Mail, User, Lock, Eye, EyeOff, AlertCircle } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { businessAuthService } from "@/services/authService";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 
 const schema = z.object({
     name: z.string().min(3, "Name must be at least 3 characters long"),
@@ -40,7 +40,7 @@ export default function SignUp() {
         formState: { errors },
     } = useForm<SignUpForm>({ resolver: zodResolver(schema), mode: "onBlur" });
 
-    const onSubmit = async (data: SignUpForm) => {
+    const onSubmit = useCallback(async (data: SignUpForm) => {
         try {
             setLoading(true);
             setError(null);
@@ -52,7 +52,7 @@ export default function SignUp() {
                 password: data.password,
             });
 
-            if (response.data) {
+            if (response?.data) {
                 navigate("/login", {
                     state: {
                         message: "Business created successfully! Please sign in.",
@@ -60,15 +60,15 @@ export default function SignUp() {
                     },
                 });
             } else {
-                setError("Error creating business");
+                setError("Error creating business. Please try again");
             }
         } catch (err: any) {
-            console.error("Error creating business:", err);
-            setError(err.message || "An error occurred while creating your business");
+            const errorMessage = err?.message || 'Error creating business. Please try again';
+            setError(errorMessage);
         } finally {
             setLoading(false);
         }
-    };
+    }, [navigate]);
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-50 px-4">
@@ -89,8 +89,12 @@ export default function SignUp() {
                 </p>
 
                 {error && (
-                    <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
-                        <p className="text-red-600 text-sm">{error}</p>
+                    <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg flex gap-3 items-start">
+                        <AlertCircle className="text-red-600 flex-shrink-0 mt-0.5" size={18} />
+                        <div className="flex-1">
+                            <p className="text-red-700 text-sm font-medium">Error creating business</p>
+                            <p className="text-red-600 text-sm mt-1">{error}</p>
+                        </div>
                     </div>
                 )}
 
