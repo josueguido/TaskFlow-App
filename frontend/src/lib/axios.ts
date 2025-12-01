@@ -1,27 +1,16 @@
 import axios from "axios";
 import { useAuth } from "../store/auth";
 
-// Determinar la URL base del API dinámicamente
 const getApiUrl = () => {
-  // Si existe variable de entorno, usarla y agregar /api si no lo tiene
   if (import.meta.env.VITE_API_URL) {
     const baseUrl = import.meta.env.VITE_API_URL;
     const fullUrl = baseUrl.endsWith('/api') ? baseUrl : `${baseUrl}/api`;
-    console.log('[AXIOS] Usando VITE_API_URL:', fullUrl);
     return fullUrl;
   }
-  
-  // Fallback: construir URL basada en el navegador
+
   const protocol = window.location.protocol;
   const hostname = window.location.hostname;
   const apiUrl = `${protocol}//${hostname}:3000/api`;
-  
-  console.log('[AXIOS] Construyendo URL dinámicamente:', {
-    protocol,
-    hostname,
-    apiUrl
-  });
-  
   return apiUrl;
 };
 
@@ -49,61 +38,32 @@ const processQueue = (error: any, token: string | null = null) => {
 
 api.interceptors.request.use((config) => {
   const { token, businessId } = useAuth.getState();
-  
+
   if (token && !config.url?.includes('/auth/refresh')) {
     config.headers.Authorization = `Bearer ${token}`;
   }
-  
+
   const currentBusinessId = businessId();
   if (currentBusinessId && !config.url?.includes('/auth/refresh')) {
     config.headers['X-Business-Id'] = currentBusinessId.toString();
   }
-  
-  // Log completo de todas las peticiones
-  console.log('[AXIOS REQUEST]', {
-    url: `${config.baseURL || ''}${config.url || ''}`,
-    method: config.method?.toUpperCase(),
-    timestamp: new Date().toISOString(),
-    data: config.data || null,
-    headers: {
-      'content-type': config.headers['Content-Type'],
-      'authorization': config.headers.Authorization ? '***Bearer***' : 'no-auth',
-      'x-business-id': config.headers['X-Business-Id'] || 'none'
-    }
-  });
-  
+
   return config;
 });
 
 api.interceptors.response.use(
   (response) => {
-    // Log de respuestas exitosas
-    console.log('[AXIOS RESPONSE]', {
-      url: `${response.config.baseURL || ''}${response.config.url || ''}`,
-      method: response.config.method?.toUpperCase(),
-      status: response.status,
-      statusText: response.statusText,
-      timestamp: new Date().toISOString()
-    });
     return response;
   },
   async (error) => {
-    // Log de errores
-    console.error('[AXIOS ERROR]', {
-      url: `${error.config?.baseURL || ''}${error.config?.url || ''}`,
-      method: error.config?.method?.toUpperCase(),
-      status: error.response?.status,
-      statusText: error.response?.statusText,
-      message: error.message,
-      code: error.code,
-      timestamp: new Date().toISOString()
-    });
-    
     const originalRequest = error.config;
+
+    const isAuthRoute = originalRequest.url?.includes('/auth/');
 
     if (
       (error.response?.status === 401 || error.response?.status === 403) &&
-      !originalRequest._retry
+      !originalRequest._retry &&
+      !isAuthRoute
     ) {
       const { refreshToken } = useAuth.getState();
 
@@ -128,7 +88,7 @@ api.interceptors.response.use(
       isRefreshing = true;
       originalRequest._retry = true;
       try {
-        const res = await api.post("/api/auth/refresh", {
+        const res = await api.post("/auth/refresh", {
           refreshToken: refreshToken,
         });
 
@@ -147,7 +107,7 @@ api.interceptors.response.use(
         originalRequest.headers.Authorization = `Bearer ${newToken}`;
         return api(originalRequest);
       } catch (err: any) {
-        console.error('[REFRESH] Error:', err?.response?.data || err?.message);
+
         processQueue(err, null);
         useAuth.getState().clearAuth();
         window.location.href = "/login";

@@ -1,0 +1,482 @@
+# TaskFlow App
+
+![Node.js](https://img.shields.io/badge/node-%3E%3D20.0.0-green)
+![React](https://img.shields.io/badge/react-%3E%3D19.0.0-blue?logo=react)
+![TypeScript](https://img.shields.io/badge/typescript-%3E%3D5.0.0-blue?logo=typescript)
+![PostgreSQL](https://img.shields.io/badge/postgresql-%3E%3D12-blue?logo=postgresql)
+![Docker](https://img.shields.io/badge/docker-ready-2496ED?logo=docker)
+![License](https://img.shields.io/badge/license-ISC-brightgreen)
+
+A comprehensive full-stack project and task management system built with modern web technologies. TaskFlow provides an intuitive interface for managing projects, tasks, team members, and business workflows.
+
+## 📋 Table of Contents
+
+- [Overview](#overview)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Prerequisites](#prerequisites)
+- [Quick Start](#quick-start)
+- [Project Structure](#project-structure)
+- [Environment Configuration](#environment-configuration)
+- [Development](#development)
+- [Docker Deployment](#docker-deployment)
+- [Database](#database)
+- [API Documentation](#api-documentation)
+- [Contributing](#contributing)
+- [License](#license)
+
+## 🎯 Overview
+
+TaskFlow is a full-stack application designed to streamline project and task management. It consists of:
+
+- **Frontend**: A modern React application with TypeScript and Vite for fast development
+- **Backend**: A robust Node.js API with Express.js and PostgreSQL
+- **Database**: PostgreSQL for reliable data persistence
+- **Infrastructure**: Docker Compose for easy deployment and development
+
+## 🚀 Features
+
+### Core Functionality
+- **Project Management**: Create, organize, and manage multiple projects
+- **Task Management**: Full CRUD operations for tasks with detailed tracking
+- **User Assignment**: Assign team members to tasks with role-based permissions
+- **Task History**: Track changes and history of tasks over time
+- **Business Management**: Organize tasks within business units
+- **Reports**: Generate reports on task progress and team performance
+- **Calendar View**: Visualize tasks and deadlines in a calendar interface
+- **Kanban Board**: Drag-and-drop interface for task management
+
+### Technical Features
+- **Type Safety**: Full TypeScript implementation across frontend and backend
+- **Authentication**: JWT-based authentication with secure password hashing
+- **Security**: Helmet, CORS, rate limiting, SQL injection prevention
+- **Validation**: Zod schema validation and express-validator
+- **API Documentation**: Swagger/OpenAPI documentation
+- **Logging**: Structured logging with Winston
+- **Testing**: Jest testing framework
+- **Code Quality**: ESLint and Prettier integration
+- **Hot Reload**: Development server with instant refresh
+- **Responsive Design**: Mobile-friendly UI with Tailwind CSS
+
+## 🛠️ Tech Stack
+
+### Frontend
+- **React 19** - UI library
+- **TypeScript** - Type-safe development
+- **Vite** - Next generation build tool
+- **Tailwind CSS** - Utility-first CSS framework
+- **Zustand** - State management
+- **React Router** - Client-side routing
+- **React Hook Form** - Form management
+- **Axios** - HTTP client
+- **Lucide React** - Icon library
+- **Zod** - Schema validation
+- **DnD Kit** - Drag and drop functionality
+- **React Big Calendar** - Calendar component
+
+### Backend
+- **Node.js** - Runtime environment
+- **Express.js** - Web framework
+- **TypeScript** - Type-safe development
+- **PostgreSQL** - Relational database
+- **JWT** - Authentication tokens
+- **Bcrypt** - Password hashing
+- **Zod** - Schema validation
+- **Winston** - Logging
+- **Jest** - Testing framework
+- **Swagger** - API documentation
+
+### Infrastructure
+- **Docker** - Containerization
+- **Docker Compose** - Multi-container orchestration
+- **PostgreSQL 15** - Database
+- **PgAdmin** - Database management
+
+## 📋 Prerequisites
+
+- **Node.js** v20 or higher
+- **PostgreSQL** v15 or higher (or Docker)
+- **npm** or **yarn**
+- **Git**
+- **Docker & Docker Compose** (optional, for containerized deployment)
+
+## 🚀 Quick Start
+
+### Option 1: Development with Docker Compose (Recommended)
+
+```bash
+# Clone the repository
+git clone https://github.com/josueguido/TaskFlow-App
+cd TaskFlow-App
+
+# Create environment file
+cp .env.example .env
+
+# Start the application
+docker-compose up -d
+
+# Access the application
+# Frontend: http://localhost:5173
+# Backend: http://localhost:3000
+# Backend API Docs: http://localhost:3000/api-docs
+```
+
+### Option 2: Local Development
+
+#### Backend Setup
+```bash
+cd backend
+
+# Install dependencies
+npm install
+
+# Create environment file
+cp .env.example .env
+
+# Update .env with your database credentials
+# DB_HOST=localhost
+# DB_PORT=5432
+# DB_NAME=taskflow
+
+# Run database migrations
+psql -U postgres -d taskflow -f ../db/init.sql
+psql -U postgres -d taskflow -f ../db/seed.sql
+
+# Start development server
+npm run dev
+
+# Server runs on http://localhost:3000
+```
+
+#### Frontend Setup
+```bash
+cd frontend
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Application runs on http://localhost:5173
+```
+
+## 📁 Project Structure
+
+```
+TaskFlow-App/
+├── backend/                     # Express.js API server
+│   ├── src/
+│   │   ├── controllers/        # Route controllers
+│   │   ├── models/             # Database models
+│   │   ├── routes/             # API routes
+│   │   ├── services/           # Business logic
+│   │   ├── schemas/            # Zod validation schemas
+│   │   ├── middlewares/        # Custom middlewares
+│   │   ├── interfaces/         # TypeScript interfaces
+│   │   ├── config/             # Configuration files
+│   │   ├── utils/              # Utility functions
+│   │   ├── validators/         # Validation logic
+│   │   └── app.ts              # Express app setup
+│   ├── tests/                  # Test files
+│   ├── Dockerfile              # Production Docker image
+│   ├── Dockerfile.dev          # Development Docker image
+│   ├── jest.config.js          # Jest configuration
+│   ├── tsconfig.json           # TypeScript configuration
+│   └── package.json            # Dependencies
+│
+├── frontend/                    # React application
+│   ├── src/
+│   │   ├── api/                # API client methods
+│   │   ├── components/         # React components
+│   │   ├── contexts/           # React Context API
+│   │   ├── hooks/              # Custom React hooks
+│   │   ├── services/           # Business logic services
+│   │   ├── store/              # Zustand store
+│   │   ├── types/              # TypeScript types
+│   │   ├── utils/              # Utility functions
+│   │   ├── assets/             # Static assets
+│   │   ├── App.tsx             # Main component
+│   │   └── main.tsx            # Entry point
+│   ├── nginx/                  # Nginx config for Docker
+│   ├── public/                 # Static files
+│   ├── Dockerfile              # Production Docker image
+│   ├── Dockerfile.dev          # Development Docker image
+│   ├── vite.config.ts          # Vite configuration
+│   ├── tsconfig.json           # TypeScript configuration
+│   └── package.json            # Dependencies
+│
+├── db/                         # Database files
+│   ├── init.sql               # Database initialization
+│   └── seed.sql               # Sample data
+│
+├── infra/                      # Infrastructure configuration
+│   └── pgadmin/               # PgAdmin configuration
+│
+├── docker-compose.yml          # Development docker-compose
+├── docker-compose.prod.yml     # Production docker-compose
+└── README.md                   # This file
+```
+
+## 🔧 Environment Configuration
+
+### Backend Environment Variables (.env)
+
+```env
+# Server Configuration
+NODE_ENV=development
+PORT=3000
+
+# Database Configuration
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=taskflow
+DB_USERNAME=postgres
+DB_PASSWORD=your_secure_password
+
+# JWT Configuration
+JWT_SECRET=your_jwt_secret
+JWT_EXPIRATION=24h
+
+# CORS Configuration
+CORS_ORIGIN=http://localhost:5173
+
+# Rate Limiting
+RATE_LIMIT_WINDOW_MS=900000
+RATE_LIMIT_MAX_REQUESTS=100
+
+# Logging
+LOG_LEVEL=debug
+```
+
+### Frontend Environment Variables (.env)
+
+```env
+VITE_API_URL=http://localhost:3000
+VITE_API_BASE_PATH=/api
+```
+
+## 💻 Development
+
+### Backend Development
+
+```bash
+cd backend
+
+# Install dependencies
+npm install
+
+# Start development server with hot reload
+npm run dev
+
+# Run tests
+npm run test
+
+# Run linter
+npm run lint
+
+# Format code
+npm run format
+
+# Build for production
+npm run build
+```
+
+### Frontend Development
+
+```bash
+cd frontend
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
+
+# Run linter
+npm run lint
+```
+
+## 🐳 Docker Deployment
+
+### Development Environment
+
+```bash
+# Build and start all services
+docker-compose up -d
+
+# View logs
+docker-compose logs -f
+
+# Stop services
+docker-compose down
+
+# Stop and remove volumes
+docker-compose down -v
+```
+
+### Production Environment
+
+```bash
+# Build and start with production configuration
+docker-compose -f docker-compose.prod.yml up -d
+
+# View logs
+docker-compose -f docker-compose.prod.yml logs -f
+
+# Stop services
+docker-compose -f docker-compose.prod.yml down
+```
+
+### Service Management
+
+```bash
+# View running containers
+docker-compose ps
+
+# Access backend logs
+docker-compose logs backend
+
+# Access frontend logs
+docker-compose logs frontend
+
+# Access database logs
+docker-compose logs db
+
+# Execute command in backend container
+docker-compose exec backend npm run lint
+
+# Connect to database
+docker-compose exec db psql -U postgres -d taskflow
+```
+
+## 🗄️ Database
+
+### Database Schema
+
+The application uses PostgreSQL with the following main entities:
+
+- **users** - User accounts and authentication
+- **roles** - User roles and permissions
+- **businesses** - Business units
+- **projects** - Project management
+- **tasks** - Task tracking
+- **task_history** - Task change history
+- **assignments** - User-task assignments
+- **status** - Task status definitions
+- **refresh_tokens** - JWT token management
+
+### Database Initialization
+
+The database is automatically initialized using SQL scripts:
+
+1. **01-init.sql** - Creates tables and schema
+2. **02-seed.sql** - Populates sample data
+
+### Database Management
+
+Access PgAdmin at `http://localhost:5050` (if running with Docker Compose)
+
+```bash
+# Backup database
+docker-compose exec db pg_dump -U postgres taskflow > backup.sql
+
+# Restore database
+docker-compose exec -T db psql -U postgres taskflow < backup.sql
+
+# Connect directly
+psql -h localhost -U postgres -d taskflow
+```
+
+## 📚 API Documentation
+
+### Swagger/OpenAPI Documentation
+
+Once the backend is running, access the interactive API documentation:
+
+```
+http://localhost:3000/api-docs
+```
+
+### Main API Endpoints
+
+#### Authentication
+- `POST /api/auth/register` - Register new user
+- `POST /api/auth/login` - Login user
+- `POST /api/auth/refresh` - Refresh JWT token
+- `POST /api/auth/logout` - Logout user
+
+#### Users
+- `GET /api/users` - Get all users
+- `GET /api/users/:id` - Get user by ID
+- `PUT /api/users/:id` - Update user
+- `DELETE /api/users/:id` - Delete user
+
+#### Projects
+- `GET /api/projects` - Get all projects
+- `POST /api/projects` - Create project
+- `GET /api/projects/:id` - Get project by ID
+- `PUT /api/projects/:id` - Update project
+- `DELETE /api/projects/:id` - Delete project
+
+#### Tasks
+- `GET /api/tasks` - Get all tasks
+- `POST /api/tasks` - Create task
+- `GET /api/tasks/:id` - Get task by ID
+- `PUT /api/tasks/:id` - Update task
+- `DELETE /api/tasks/:id` - Delete task
+
+#### Assignments
+- `GET /api/assignments` - Get all assignments
+- `POST /api/assignments` - Create assignment
+- `DELETE /api/assignments/:id` - Delete assignment
+
+#### Reports
+- `GET /api/reports` - Generate reports
+
+For complete API documentation, see the [Backend README](./backend/README.md) and the Swagger documentation.
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+### Development Workflow
+
+1. Create a new branch from `main` or `develop`
+2. Make your changes
+3. Run tests and linting: `npm run test && npm run lint`
+4. Commit with meaningful messages
+5. Submit a Pull Request
+
+### Code Quality
+
+- Follow the existing code style
+- Use TypeScript for type safety
+- Write tests for new features
+- Keep commits atomic and meaningful
+
+## 📝 License
+
+This project is licensed under the ISC License - see the LICENSE file for details.
+
+## 👥 Contact
+
+**Project Owner**: Josue Guido  
+**Repository**: [https://github.com/josueguido/TaskFlow-App](https://github.com/josueguido/TaskFlow-App)
+
+For questions or suggestions, please open an issue on GitHub.
+
+---
+
+**Last Updated**: December 2024  
+**Current Branch**: fix-bugs

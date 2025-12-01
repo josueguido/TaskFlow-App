@@ -18,12 +18,22 @@ export const getTaskById = async (id: number): Promise<TaskWithRelations> => {
 };
 
 export const createTask = async (data: CreateTaskData): Promise<Task> => {
-  const response = await axios.post("/tasks", data);
+  // Convertir status_id a string ya que el backend lo espera así
+  const payload = {
+    ...data,
+    status_id: String(data.status_id)
+  };
+  const response = await axios.post("/tasks", payload);
   return response.data.data || response.data;
 };
 
 export const updateTask = async (id: number, data: UpdateTaskData): Promise<Task> => {
-  const response = await axios.put(`/tasks/${id}`, data);
+  // Convertir status_id a string ya que el backend lo espera así
+  const payload = {
+    ...data,
+    ...(data.status_id && { status_id: String(data.status_id) })
+  };
+  const response = await axios.put(`/tasks/${id}`, payload);
   return response.data.data || response.data;
 };
 

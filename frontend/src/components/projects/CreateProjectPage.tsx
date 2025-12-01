@@ -10,12 +10,12 @@ import { ArrowLeft, Loader } from "lucide-react";
 const createProjectSchema = z.object({
   name: z
     .string()
-    .min(1, "El nombre del proyecto es requerido")
-    .min(3, "El nombre debe tener al menos 3 caracteres")
-    .max(255, "El nombre no puede exceder 255 caracteres"),
+    .min(1, "Project name is required")
+    .min(3, "Name must be at least 3 characters")
+    .max(255, "Name cannot exceed 255 characters"),
   description: z
     .string()
-    .max(1000, "La descripción no puede exceder 1000 caracteres")
+    .max(1000, "Description cannot exceed 1000 characters")
     .optional()
     .or(z.literal("")),
 });
@@ -64,7 +64,7 @@ export const CreateProjectPage: React.FC = () => {
 
       const newProject = await createProject(projectPayload);
 
-      setSuccessMessage(`¡Proyecto "${newProject.name}" creado exitosamente!`);
+      setSuccessMessage(`Project "${newProject.name}" created successfully!`);
       reset();
 
       setTimeout(() => {
@@ -75,7 +75,7 @@ export const CreateProjectPage: React.FC = () => {
       const errorMessage =
         err?.message ||
         err?.response?.data?.message ||
-        "Error al crear el proyecto. Por favor, intenta de nuevo.";
+        "Error creating project. Please try again.";
       setError(errorMessage);
     } finally {
       setLoading(false);
@@ -100,10 +100,10 @@ export const CreateProjectPage: React.FC = () => {
 
           <div>
             <h1 className="text-3xl font-bold text-gray-900 mb-2">
-              Crear nuevo proyecto
+              Create new project
             </h1>
             <p className="text-gray-600">
-              Completa el formulario para crear un nuevo proyecto en tu negocio
+              Complete the form to create a new project in your business
             </p>
           </div>
         </div>
@@ -129,7 +129,7 @@ export const CreateProjectPage: React.FC = () => {
                 htmlFor="name"
                 className="block text-sm font-semibold text-gray-700 mb-2"
               >
-                Nombre del proyecto <span className="text-red-500">*</span>
+                Project Name <span className="text-red-500">*</span>
               </label>
               <input
                 {...register("name")}
@@ -153,12 +153,12 @@ export const CreateProjectPage: React.FC = () => {
                 htmlFor="description"
                 className="block text-sm font-semibold text-gray-700 mb-2"
               >
-                Descripción <span className="text-gray-400">(opcional)</span>
+                Description <span className="text-gray-400">(optional)</span>
               </label>
               <textarea
                 {...register("description")}
                 id="description"
-                placeholder="Agrega una descripción para tu proyecto..."
+                placeholder="Add a description for your project..."
                 disabled={loading}
                 rows={5}
                 className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 transition-colors disabled:bg-gray-50 disabled:cursor-not-allowed resize-none text-base ${
@@ -173,7 +173,7 @@ export const CreateProjectPage: React.FC = () => {
                 </p>
               )}
               <p className="mt-2 text-xs text-gray-500">
-                Máximo 1000 caracteres
+                Maximum 1000 characters
               </p>
             </div>
 
@@ -184,7 +184,7 @@ export const CreateProjectPage: React.FC = () => {
                 disabled={loading}
                 className="flex-1 px-6 py-3 border border-gray-300 text-gray-700 font-semibold rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Cancelar
+                Cancel
               </button>
               <button
                 type="submit"
@@ -192,14 +192,14 @@ export const CreateProjectPage: React.FC = () => {
                 className="flex-1 px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {loading && <Loader size={20} className="animate-spin" />}
-                {loading ? "Creando..." : "Crear proyecto"}
+                {loading ? "Creating..." : "Create project"}
               </button>
             </div>
           </form>
 
           <div className="mt-8 p-4 bg-blue-50 border border-blue-200 rounded-lg">
             <p className="text-sm text-blue-700">
-              ℹ️ Se creará dentro de tu negocio actual. Podrás agregar miembros al equipo una vez creado.
+              ℹ️ It will be created in your current business. You can add team members once it's created.
             </p>
           </div>
         </div>

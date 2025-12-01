@@ -43,8 +43,8 @@ services:
       POSTGRES_DB: ${DB_NAME}
     volumes:
       - pgdata:/var/lib/postgresql/data
-      - ./db/init.sql:/docker-entrypoint-initdb.d/01-init.sql
-      - ./db/seed.sql:/docker-entrypoint-initdb.d/02-seed.sql
+      - ./db/01-init.sql:/docker-entrypoint-initdb.d/01-init.sql
+      - ./db/02-seed.sql:/docker-entrypoint-initdb.d/02-seed.sql
     ports:
       - "${DB_HOST_PORT}:${DB_CONTAINER_PORT}"
     restart: always

@@ -81,7 +81,7 @@ export const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
       onClose();
     } catch (err: any) {
       setError(
-        err.message || "Error al crear la tarea"
+        err.message || "Error creating task"
       );
       console.error("Error creating task:", err);
     } finally {
@@ -134,7 +134,7 @@ export const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="Nombre de la tarea"
+              placeholder="Task name"
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               disabled={loading}
             />
@@ -142,12 +142,12 @@ export const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Descripción
+              Description
             </label>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Descripción detallada"
+              placeholder="Detailed description"
               rows={3}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
               disabled={loading}
@@ -169,7 +169,7 @@ export const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Asignar a
+              Assign to
             </label>
             <div className="space-y-2 max-h-40 overflow-y-auto">
               {users.length === 0 ? (
@@ -201,7 +201,7 @@ export const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
             disabled={loading}
             className="px-4 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-100 transition-colors disabled:opacity-50"
           >
-            Cancelar
+            Cancel
           </button>
           <button
             onClick={handleSubmit}
@@ -214,7 +214,7 @@ export const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
                 Creando...
               </>
             ) : (
-              "Crear Tarea"
+              "Create Task"
             )}
           </button>
         </div>

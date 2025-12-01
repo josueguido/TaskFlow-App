@@ -28,11 +28,7 @@ export interface UpdateProjectUserRoleRequest {
   role_id: number;
 }
 
-/**
- * Get all users in a project
- * @param projectId - Project ID
- * @returns Array of project users
- */
+
 export const getProjectUsers = async (projectId: number): Promise<ProjectUser[]> => {
   try {
     const response = await axios.get<ApiResponse<ProjectUser[]>>(
@@ -48,13 +44,7 @@ export const getProjectUsers = async (projectId: number): Promise<ProjectUser[]>
   }
 };
 
-/**
- * Add a user to a project
- * @param projectId - Project ID
- * @param userId - User ID to add
- * @param roleId - Role ID for the user
- * @returns Added project user
- */
+
 export const addUserToProject = async (
   projectId: number,
   userId: number,
@@ -92,11 +82,7 @@ export const addUserToProject = async (
   }
 };
 
-/**
- * Remove a user from a project
- * @param projectId - Project ID
- * @param userId - User ID to remove
- */
+
 export const removeUserFromProject = async (
   projectId: number,
   userId: number
@@ -119,13 +105,7 @@ export const removeUserFromProject = async (
   }
 };
 
-/**
- * Update a user's role in a project
- * @param projectId - Project ID
- * @param userId - User ID
- * @param roleId - New role ID
- * @returns Updated project user
- */
+
 export const updateProjectUserRole = async (
   projectId: number,
   userId: number,
@@ -162,11 +142,7 @@ export const updateProjectUserRole = async (
   }
 };
 
-/**
- * Get current user's role in a project
- * @param projectId - Project ID
- * @returns Current user's role information
- */
+
 export const getMyProjectRole = async (projectId: number): Promise<UserRole> => {
   try {
     if (!projectId) {

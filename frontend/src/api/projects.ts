@@ -91,8 +91,6 @@ export const createProject = async (data: CreateProjectDTO): Promise<Project> =>
     return response.data.data;
   } catch (error: any) {
     console.error("Error creating project:", error);
-    console.error("Response data:", error?.response?.data);
-    console.error("Full error:", error);
     throw {
       message: error.response?.data?.message || error.message || "Error creating project",
       status: error.response?.status

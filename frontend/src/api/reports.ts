@@ -52,31 +52,31 @@ export interface CombinedReport {
   statuses: StatusDistribution[];
 }
 
-// Overview - Resumen general
+// Overview - General summary
 export const getOverviewReport = async (): Promise<OverviewReport> => {
   const response = await axios.get("/reports/overview");
   return response.data.data || response.data;
 };
 
-// Projects - Progreso por proyecto
+// Projects - Progress by project
 export const getProjectsReport = async (): Promise<ProjectReport[]> => {
   const response = await axios.get("/reports/projects");
   return response.data.data || [];
 };
 
-// Activity - Últimos cambios
+// Activity - Recent changes
 export const getActivityReport = async (): Promise<ActivityLog[]> => {
   const response = await axios.get("/reports/activity");
   return response.data.data || [];
 };
 
-// Users - Carga de trabajo por usuario
+// Users - Workload by user
 export const getUsersReport = async (): Promise<UserWorkload[]> => {
   const response = await axios.get("/reports/users");
   return response.data.data || [];
 };
 
-// Statuses - Distribución por estado
+// Statuses - Distribution by status
 export const getStatusesReport = async (): Promise<StatusDistribution[]> => {
   const response = await axios.get("/reports/statuses");
   return response.data.data || [];

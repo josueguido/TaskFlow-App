@@ -1,4 +1,5 @@
 import axios from '../lib/axios';
+import { handleApiError, shouldShowError } from '../utils/errorHandler';
 import type {
   BusinessSignupRequest,
   BusinessSignupResponse,
@@ -21,12 +22,30 @@ abstract class BaseApiService {
       const response = await apiCall();
       return response.data;
     } catch (error: any) {
-      console.error('API Error:', error);
-      throw {
-        success: false,
-        message: error.response?.data?.message || 'Error en la petición',
-        error: error.response?.data?.error || error.message
-      };
+      if (!shouldShowError(error)) {
+        throw new Error('Solicitud cancelada');
+      }
+
+      const serverError = error.response?.data;
+      const statusCode = error.response?.status;
+      const originalMessage = error.response?.data?.message || 
+                             error.response?.data?.error || 
+                             error.message;
+
+
+
+      const { message: friendlyMessage } = handleApiError({
+        message: originalMessage,
+        statusCode,
+        error: serverError?.error
+      });
+
+      const err = new Error(friendlyMessage);
+      Object.assign(err, {
+        statusCode,
+        originalError: originalMessage
+      });
+      throw err;
     }
   }
 }

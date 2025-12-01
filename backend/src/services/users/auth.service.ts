@@ -131,13 +131,11 @@ export async function loginService(email: string, password: string) {
 export async function refreshTokenService(token: string) {
   try {
     const payload = jwt.verifyRefreshToken(token);
-    console.log('[REFRESH] JWT signature valid for user:', payload.userId);
 
     const found = await rtModel.findRefreshToken(token);
-    console.log('[REFRESH] Token found in DB:', found.rows.length > 0);
 
     if (found.rows.length === 0) {
-      console.warn('[REFRESH] Token not found in database');
+      console.warn('Token not found in database');
       throw new UnauthorizedError("Token has been revoked or logged out");
     }
 
@@ -148,10 +146,9 @@ export async function refreshTokenService(token: string) {
       role_id: payload.role_id,
     });
 
-    console.log('[REFRESH] New access token generated for user:', payload.userId);
     return { accessToken: newAccessToken };
   } catch (err) {
-    console.error('[REFRESH] Error:', err instanceof Error ? err.message : String(err));
+    console.error('Error:', err instanceof Error ? err.message : String(err));
     throw err;
   }
 }
@@ -171,7 +168,7 @@ export async function completeUserRegistration(
   );
 
   if (rows.length === 0) {
-    throw new UnauthorizedError("Token de invitación inválido o ya utilizado");
+    throw new UnauthorizedError("Invalid or already used invitation token");
   }
 
   const user = rows[0];

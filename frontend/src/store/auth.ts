@@ -3,27 +3,16 @@ import { persist } from "zustand/middleware";
 import type { UserData, BusinessData } from "../types/api";
 
 interface AuthState {
-  // Tokens
   token: string | null;
   refreshToken: string | null;
-  
-  // User data del backend
   user: UserData | null;
-  
-  // Business data (derivado de user.business_id o separado)
   business: BusinessData | null;
-  
-  // Estado de hidratación
   rehydrated: boolean;
-  
-  // Actions
   setAuth: (token: string, refreshToken: string, user: UserData, business?: BusinessData) => void;
   setBusiness: (business: BusinessData) => void;
   updateToken: (token: string) => void;
   updateTokens: (token: string, refreshToken: string) => void;
   clearAuth: () => void;
-  
-  // Getters derivados
   isAuthenticated: () => boolean;
   businessId: () => number | null;
   userRole: () => number | null;
@@ -32,14 +21,12 @@ interface AuthState {
 export const useAuth = create<AuthState>()(
   persist(
     (set, get) => ({
-      // Estado inicial
       token: null,
       refreshToken: null,
       user: null,
       business: null,
       rehydrated: false,
 
-      // Actions
       setAuth: (token: string, refreshToken: string, user: UserData, business?: BusinessData) =>
         set({ 
           token, 
@@ -65,7 +52,6 @@ export const useAuth = create<AuthState>()(
           business: null
         }),
 
-      // Getters derivados
       isAuthenticated: () => {
         const state = get();
         return !!state.token && !!state.user;

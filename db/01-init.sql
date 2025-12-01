@@ -79,7 +79,7 @@ CREATE TABLE IF NOT EXISTS statuses (
     "order" INTEGER NOT NULL DEFAULT 0,
     business_id INTEGER REFERENCES businesses (id) ON DELETE NO ACTION,
     CONSTRAINT statuses_pkey PRIMARY KEY (id),
-    CONSTRAINT statuses_name_key UNIQUE (name)
+    CONSTRAINT statuses_business_id_name_key UNIQUE (business_id, name)
 );
 
 -- ========== TASKS ==========
