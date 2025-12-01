@@ -39,7 +39,7 @@ export const getAllRoles = async (): Promise<Role[]> => {
 
 export const getAvailableRoles = async (): Promise<Role[]> => {
   try {
-    const response = await axios.get("/api/roles");
+    const response = await axios.get("/roles");
     return response.data.data || response.data || [];
   } catch (error: any) {
     console.error("Error fetching roles:", error);

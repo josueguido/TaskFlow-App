@@ -55,7 +55,7 @@ export const EditTaskModal: React.FC<EditTaskModalProps> = ({
         setAssignedUsers((prev) => [...prev, userId]);
       }
     } catch (err: any) {
-      setError(err.message || "Error al actualizar la asignación");
+      setError(err.message || "Error updating assignment");
     }
   };
 
@@ -81,7 +81,7 @@ export const EditTaskModal: React.FC<EditTaskModalProps> = ({
       onTaskUpdated?.();
       onClose();
     } catch (err: any) {
-      setError(err.message || "Error al actualizar la tarea");
+      setError(err.message || "Error updating task");
       console.error("Error updating task:", err);
     } finally {
       setLoading(false);
@@ -99,7 +99,7 @@ export const EditTaskModal: React.FC<EditTaskModalProps> = ({
       onTaskDeleted?.();
       onClose();
     } catch (err: any) {
-      setError(err.message || "Error al eliminar la tarea");
+      setError(err.message || "Error deleting task");
       console.error("Error deleting task:", err);
     } finally {
       setDeleting(false);
@@ -116,7 +116,7 @@ export const EditTaskModal: React.FC<EditTaskModalProps> = ({
     <div className="fixed inset-0 bg-black/50 z-[9999] flex items-center justify-center">
       <div className="bg-white rounded-lg shadow-2xl max-w-md w-full mx-4 z-[10000]">
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
-          <h2 className="text-lg font-semibold text-gray-900">Editar Tarea</h2>
+          <h2 className="text-lg font-semibold text-gray-900">Edit Task</h2>
           <button
             onClick={onClose}
             className="text-gray-400 hover:text-gray-600 transition-colors"
@@ -156,7 +156,7 @@ export const EditTaskModal: React.FC<EditTaskModalProps> = ({
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="Nombre de la tarea"
+              placeholder="Task name"
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               disabled={loading || deleting}
             />
@@ -164,12 +164,12 @@ export const EditTaskModal: React.FC<EditTaskModalProps> = ({
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Descripción
+              Description
             </label>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Descripción detallada"
+              placeholder="Detailed description"
               rows={3}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
               disabled={loading || deleting}
@@ -232,7 +232,7 @@ export const EditTaskModal: React.FC<EditTaskModalProps> = ({
               disabled={loading || deleting}
               className="px-4 py-2 text-red-600 border border-red-300 rounded-lg hover:bg-red-50 transition-colors disabled:opacity-50"
             >
-              Eliminar
+              Delete
             </button>
           )}
           {showDeleteConfirm && (
@@ -241,7 +241,7 @@ export const EditTaskModal: React.FC<EditTaskModalProps> = ({
               disabled={deleting}
               className="px-3 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-100 text-sm"
             >
-              Cancelar borrado
+              Cancel deletion
             </button>
           )}
 
@@ -259,7 +259,7 @@ export const EditTaskModal: React.FC<EditTaskModalProps> = ({
                       Eliminando...
                     </>
                   ) : (
-                    "Confirmar"
+                    "Confirm"
                   )}
                 </button>
               </>
@@ -284,7 +284,7 @@ export const EditTaskModal: React.FC<EditTaskModalProps> = ({
                       Guardando...
                     </>
                   ) : (
-                    "Guardar"
+                    "Save"
                   )}
                 </button>
               </>

@@ -26,38 +26,38 @@ export interface UpdateStatusData {
 }
 
 export const getAllStatuses = async (): Promise<Status[]> => {
-  const response = await axios.get("/api/status");
+  const response = await axios.get("/status");
   const result = response.data.data || response.data || [];
   return result;
 };
 
 export const getStatusById = async (id: string): Promise<Status> => {
-  const response = await axios.get(`/api/status/${id}`);
+  const response = await axios.get(`/status/${id}`);
   return response.data.data || response.data;
 };
 
 export const createStatus = async (data: CreateStatusData): Promise<Status> => {
-  const response = await axios.post("/api/status", data);
+  const response = await axios.post("/status", data);
   return response.data.data || response.data;
 };
 
 export const updateStatus = async (id: string, data: UpdateStatusData): Promise<Status> => {
-  const response = await axios.put(`/api/status/${id}`, data);
+  const response = await axios.put(`/status/${id}`, data);
   return response.data.data || response.data;
 };
 
 export const deleteStatus = async (id: string): Promise<void> => {
-  const response = await axios.delete(`/api/status/${id}`);
+  const response = await axios.delete(`/status/${id}`);
   return response.data;
 };
 
 
 export const getActiveStatuses = async (): Promise<Status[]> => {
-  const response = await axios.get("/api/status/active");
+  const response = await axios.get("/status/active");
   return response.data.data || [];
 };
 
 export const reorderStatuses = async (statusIds: string[]): Promise<Status[]> => {
-  const response = await axios.put("/api/status/reorder", { statusIds });
+  const response = await axios.put("/status/reorder", { statusIds });
   return response.data.data || [];
 };

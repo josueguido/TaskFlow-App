@@ -3,6 +3,8 @@ export interface ApiResponse<T = any> {
   message: string;
   data?: T;
   error?: string;
+  isDatabaseError?: boolean;
+  statusCode?: number;
 }
 
 export interface LoginRequest {
@@ -28,7 +30,6 @@ export interface UserInviteRequest {
   role_id?: number;
 }
 
-// Auth Response Types
 export interface LoginResponse {
   token: string;
   refreshToken: string;

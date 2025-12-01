@@ -226,14 +226,14 @@ export const KanbanBoard = forwardRef<KanbanBoardRef, KanbanBoardProps>(({
         <div className="fixed top-4 right-4 z-50 bg-blue-100 text-blue-800 px-4 py-2 rounded-lg shadow-lg">
           <div className="flex items-center">
             <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600 mr-2"></div>
-            Actualizando tareas...
+            Updating tasks...
           </div>
         </div>
       )}
 
       <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
         <h1 className="text-xl font-semibold text-gray-900">Tablero Kanban</h1>
-        <div className="text-xs text-gray-500">
+        {/* <div className="text-xs text-gray-500">
           <details>
             <summary className="cursor-pointer">Debug</summary>
             <div className="bg-gray-100 p-2 rounded mt-2 max-w-md">
@@ -244,7 +244,7 @@ export const KanbanBoard = forwardRef<KanbanBoardRef, KanbanBoardProps>(({
               <p>Orphaned: {orphanedStatusIds.join(', ')}</p>
             </div>
           </details>
-        </div>
+        </div> */}
       </div>
 
       <DndContext
@@ -316,7 +316,7 @@ export const KanbanBoard = forwardRef<KanbanBoardRef, KanbanBoardProps>(({
 
       {tasks.length > 0 && (
         <div className="mt-0 px-6 py-2 flex gap-4 text-xs text-gray-600 flex-wrap border-t border-gray-200 overflow-x-auto">
-          <span>Total tareas: {tasks.length}</span>
+          <span>Total tasks: {tasks.length}</span>
           {sortedStatuses.map((status: Status) => (
             <span key={status.id}>
               {status.name}: {getTasksByStatusId(status.id).length}

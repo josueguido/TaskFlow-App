@@ -41,7 +41,7 @@ export const useCreateProject = (): UseCreateProjectResult => {
         const errorMessage =
           err?.message ||
           err?.response?.data?.message ||
-          "Error al crear el proyecto";
+          "Error creating project";
 
         setState({
           loading: false,

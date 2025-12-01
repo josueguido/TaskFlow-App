@@ -5,7 +5,7 @@ import { BadRequestError } from "../../errors/BadRequestError";
 export const validateRegister = (req: Request, res: Response, next: NextFunction) => {
   const result = userSchema.safeParse(req.body);
   if (!result.success) {
-    throw new BadRequestError("Datos inválidos para registro");
+    throw new BadRequestError("Invalid data for registration");
   }
   next();
 };

@@ -7,10 +7,6 @@ export interface SwitchTenantRequest {
   business_id: number;
 }
 
-/**
- * Get all businesses/tenants for current user
- * @returns Array of businesses
- */
 export const getMyBusinesses = async (): Promise<BusinessData[]> => {
   try {
     const response = await axios.get<ApiResponse<BusinessData[]>>(
@@ -26,10 +22,7 @@ export const getMyBusinesses = async (): Promise<BusinessData[]> => {
   }
 };
 
-/**
- * Get current business information
- * @returns Current business details
- */
+
 export const getCurrentBusiness = async (): Promise<BusinessData> => {
   try {
     const response = await axios.get<ApiResponse<BusinessData>>(
@@ -51,11 +44,7 @@ export const getCurrentBusiness = async (): Promise<BusinessData> => {
   }
 };
 
-/**
- * Switch to a different business/tenant
- * @param businessId - Business ID to switch to
- * @returns New business details
- */
+
 export const switchBusiness = async (businessId: number): Promise<BusinessData> => {
   try {
     if (!businessId) {
@@ -86,10 +75,7 @@ export const switchBusiness = async (businessId: number): Promise<BusinessData> 
   }
 };
 
-/**
- * Get user's projects for current business
- * @returns Array of projects
- */
+
 export const getMyProjects = async (): Promise<Project[]> => {
   try {
     const response = await axios.get<ApiResponse<Project[]>>(

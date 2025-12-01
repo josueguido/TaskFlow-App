@@ -26,21 +26,7 @@ import { errorHandler } from './middlewares/error.handler';
 startSecurityCleanup();
 const app = express();
 
-app.use(cors({
-  origin: ['http://localhost:5173', 'http://localhost:3000'],
-  credentials: true,
-  optionsSuccessStatus: 200,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: [
-    'Origin',
-    'X-Requested-With',
-    'Content-Type',
-    'Accept',
-    'Authorization',
-    'Cache-Control',
-    'x-business-id'
-  ]
-}));
+app.use(cors(securityConfig.cors));
 
 
 app.use(helmet({

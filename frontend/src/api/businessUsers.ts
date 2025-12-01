@@ -31,13 +31,10 @@ export interface UpdateUserRoleRequest {
   role_id: number;
 }
 
-/**
- * Get all users in the current business
- * @returns Array of business users
- */
+
 export const getBusinessUsers = async (): Promise<BusinessUser[]> => {
   try {
-    const response = await axios.get<ApiResponse<BusinessUser[]>>("/api/users");
+    const response = await axios.get<ApiResponse<BusinessUser[]>>("/users");
     return response.data.data || [];
   } catch (error: any) {
     console.error("Error fetching business users:", error);
@@ -48,12 +45,7 @@ export const getBusinessUsers = async (): Promise<BusinessUser[]> => {
   }
 };
 
-/**
- * Invite a new user to the business
- * @param email - Email address to invite
- * @param roleId - Role ID for the new user
- * @returns Invite response with token
- */
+
 export const inviteUser = async (
   email: string,
   roleId: number
@@ -63,7 +55,6 @@ export const inviteUser = async (
       throw new Error("Email and Role ID are required");
     }
 
-    // Basic email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       throw new Error("Invalid email format");
@@ -75,7 +66,7 @@ export const inviteUser = async (
     };
 
     const response = await axios.post<ApiResponse<InviteResponse>>(
-      "/api/users/invite",
+      "/users/invite",
       payload
     );
 
@@ -93,17 +84,14 @@ export const inviteUser = async (
   }
 };
 
-/**
- * Remove a user from the business
- * @param userId - User ID to remove
- */
+
 export const removeBusinessUser = async (userId: number | string): Promise<void> => {
   try {
     if (!userId) {
       throw new Error("User ID is required");
     }
 
-    await axios.delete(`/api/users/${userId}`);
+    await axios.delete(`/users/${userId}`);
   } catch (error: any) {
     console.error("Error removing user:", error);
     throw {
@@ -113,12 +101,7 @@ export const removeBusinessUser = async (userId: number | string): Promise<void>
   }
 };
 
-/**
- * Update a user's role in the business
- * @param userId - User ID
- * @param roleId - New role ID
- * @returns Updated user
- */
+
 export const updateBusinessUserRole = async (
   userId: number | string,
   roleId: number
@@ -152,10 +135,7 @@ export const updateBusinessUserRole = async (
   }
 };
 
-/**
- * Resend invite to a pending user
- * @param userId - User ID to resend invite
- */
+
 export const resendInvite = async (userId: number | string): Promise<void> => {
   try {
     if (!userId) {
@@ -172,17 +152,12 @@ export const resendInvite = async (userId: number | string): Promise<void> => {
   }
 };
 
-/**
- * Check if email is already invited or in business
- * @param email - Email to check
- * @returns True if email exists, false otherwise
- */
+
 export const checkEmailExists = async (email: string): Promise<boolean> => {
   try {
     const users = await getBusinessUsers();
     return users.some(user => user.email.toLowerCase() === email.toLowerCase());
   } catch {
-    // If check fails, allow user to proceed (will catch on submit)
     return false;
   }
 };
