@@ -4,6 +4,7 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile.dev
+    image: taskflow-app:frontend-${APP_VERSION:-latest}
     container_name: ${FRONTEND_CONTAINER_NAME}
     restart: always
     networks:
@@ -20,6 +21,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile.dev
+    image: taskflow-app:backend-${APP_VERSION:-latest}
     container_name: ${BACKEND_CONTAINER_NAME}
     env_file:
       - .env
