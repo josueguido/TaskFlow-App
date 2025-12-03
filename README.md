@@ -222,6 +222,23 @@ TaskFlow-App/
 
 ## 🔧 Environment Configuration
 
+### About .env Files
+
+The backend uses environment variables in two scenarios:
+
+- **Local Development** (without Docker): Environment variables are loaded from `backend/config/DB/.env.dev`
+- **Docker Environment**: Environment variables are passed through `docker-compose.yml` and the root `.env` file (no need to use config/DB/.env files)
+
+The backend automatically detects the environment and loads the appropriate configuration:
+```typescript
+// In backend/src/config/DB/index.ts
+dotenv.config({
+  path: process.env.NODE_ENV === 'production'
+    ? './config/DB/.env.production'
+    : './config/DB/.env.dev',
+});
+```
+
 ### Backend Environment Variables (.env)
 
 ```env
@@ -493,7 +510,7 @@ TaskFlow is actively under development with the following planned features and i
 - ⏳ **Makefiles**: Simplified development and deployment workflows
 
 ### Phase 3: Advanced Features (Future)
-- ⏳ Real-time notifications and WebSocket support (Using SNS,SQS and EventBridge)
+- ⏳ Real-time notifications and WebSocket support (Using SNS, SQS and EventBridge)
 - ⏳ Advanced filtering and search capabilities
 - ⏳ Custom workflows and automation
 - ⏳ Integration with third-party services
@@ -502,12 +519,12 @@ TaskFlow is actively under development with the following planned features and i
 
 ## 👥 Contact
 
-**Project Owner**: Josue Guido  
+**Project Owner**: Josue Guido
 **Repository**: [https://github.com/josueguido/TaskFlow-App](https://github.com/josueguido/TaskFlow-App)
 
 For questions or suggestions, please open an issue on GitHub.
 
 ---
 
-**Last Updated**: December 2024  
+**Last Updated**: December 2024
 **Current Branch**: fix-bugs
