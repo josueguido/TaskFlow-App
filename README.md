@@ -1,5 +1,6 @@
 # TaskFlow App
 
+![Status](https://img.shields.io/badge/status-in%20progress-yellow)
 ![Node.js](https://img.shields.io/badge/node-%3E%3D20.0.0-green)
 ![React](https://img.shields.io/badge/react-%3E%3D19.0.0-blue?logo=react)
 ![TypeScript](https://img.shields.io/badge/typescript-%3E%3D5.0.0-blue?logo=typescript)
@@ -22,6 +23,7 @@ A comprehensive full-stack project and task management system built with modern 
 - [Docker Deployment](#docker-deployment)
 - [Database](#database)
 - [API Documentation](#api-documentation)
+- [Roadmap](#roadmap)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -468,6 +470,35 @@ For complete API documentation, see the [Backend README](./backend/README.md) an
 ## 📝 License
 
 This project is licensed under the ISC License - see the LICENSE file for details.
+
+## 🗺️ Roadmap
+
+TaskFlow is actively under development with the following planned features and improvements:
+
+### Phase 1: Core Features (In Progress)
+- ✅ Project and task management
+- ✅ User authentication and authorization
+- ✅ Kanban board interface
+- ✅ Calendar view
+- ✅ Reporting and analytics
+- ✅ Team management
+- 🔄 Enhanced error handling and validation
+
+### Phase 2: DevOps & Infrastructure (Upcoming)
+- ⏳ **CI/CD Pipeline**: GitHub Actions/GitLab CI for automated testing and deployment
+- ⏳ **Terraform**: Infrastructure as Code for AWS resource management
+- ⏳ **AWS Deployment**: Production deployment on AWS (EC2, RDS, S3)
+- ⏳ **Kubernetes**: Container orchestration for scalable deployments
+- ⏳ **Observability**: Monitoring, logging, and tracing (Prometheus, ELK Stack, Jaeger, cAdvisor)
+- ⏳ **Makefiles**: Simplified development and deployment workflows
+
+### Phase 3: Advanced Features (Future)
+- ⏳ Real-time notifications and WebSocket support (Using SNS,SQS and EventBridge)
+- ⏳ Advanced filtering and search capabilities
+- ⏳ Custom workflows and automation
+- ⏳ Integration with third-party services
+- ⏳ Mobile app support
+- ⏳ Audit logging and compliance features
 
 ## 👥 Contact
 
