@@ -22,12 +22,18 @@ import projectRoutes from './routes/projects/project.routes';
 import projectUsersRoutes from './routes/projects/projectUsers.routes';
 import reportsRoutes from './routes/reports/reports.routes';
 import { errorHandler } from './middlewares/error.handler';
+import promClient from 'prom-client';
+import { metricsMiddleware, errorMetricsMiddleware } from './middlewares/metrics.middleware';
+import { collectDefaultMetrics } from './utils/metrics';
+
+collectDefaultMetrics();
 
 startSecurityCleanup();
 const app = express();
 
 app.use(cors(securityConfig.cors));
 
+app.use(metricsMiddleware);
 
 app.use(helmet({
   crossOriginEmbedderPolicy: false
@@ -62,11 +68,18 @@ app.use('/api/projects', projectRoutes);
 app.use('/api/projects', projectUsersRoutes);
 app.use('/api/reports', reportsRoutes);
 
+app.get('/metrics', (req, res) => {
+  res.set('Content-Type', promClient.register.contentType);
+  res.end(promClient.register.metrics());
+});
+
+
+app.use(errorMetricsMiddleware);
 
 setupSwagger(app);
 
 app.use(errorHandler);
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3003;
 
 export { app };
