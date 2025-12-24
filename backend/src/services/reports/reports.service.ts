@@ -6,64 +6,106 @@ import {
   getStatusDistributionReport,
   getCombinedReport
 } from '../../models/reports.model';
-import { logger } from '../../utils/logger';
+import { contextLogger } from '../../utils/contextLogger';
 
 export const getOverviewReportService = async (businessId: number) => {
   try {
-    logger.info(`[REPORTS] Getting overview report for business ${businessId}`);
+    contextLogger.debug(`Getting overview report`, {
+      businessId,
+      action: 'GET_OVERVIEW_REPORT'
+    });
     return await getOverviewReport(businessId);
   } catch (error) {
-    logger.error('[REPORTS] Error getting overview report:', error);
+    contextLogger.error('Error getting overview report', {
+      businessId,
+      action: 'GET_OVERVIEW_REPORT_FAILED',
+      error: error instanceof Error ? error.message : String(error)
+    });
     throw error;
   }
 };
 
 export const getProjectProgressReportService = async (businessId: number) => {
   try {
-    logger.info(`[REPORTS] Getting project progress report for business ${businessId}`);
+    contextLogger.debug(`Getting project progress report`, {
+      businessId,
+      action: 'GET_PROJECT_PROGRESS_REPORT'
+    });
     return await getProjectProgressReport(businessId);
   } catch (error) {
-    logger.error('[REPORTS] Error getting project progress report:', error);
+    contextLogger.error('Error getting project progress report', {
+      businessId,
+      action: 'GET_PROJECT_PROGRESS_REPORT_FAILED',
+      error: error instanceof Error ? error.message : String(error)
+    });
     throw error;
   }
 };
 
 export const getActivityReportService = async (businessId: number, limit?: number) => {
   try {
-    logger.info(`[REPORTS] Getting activity report for business ${businessId}`);
+    contextLogger.debug(`Getting activity report`, {
+      businessId,
+      action: 'GET_ACTIVITY_REPORT'
+    });
     return await getActivityReport(businessId, limit || 20);
   } catch (error) {
-    logger.error('[REPORTS] Error getting activity report:', error);
+    contextLogger.error('Error getting activity report', {
+      businessId,
+      action: 'GET_ACTIVITY_REPORT_FAILED',
+      error: error instanceof Error ? error.message : String(error)
+    });
     throw error;
   }
 };
 
 export const getUserWorkloadReportService = async (businessId: number) => {
   try {
-    logger.info(`[REPORTS] Getting user workload report for business ${businessId}`);
+    contextLogger.debug(`Getting user workload report`, {
+      businessId,
+      action: 'GET_USER_WORKLOAD_REPORT'
+    });
     return await getUserWorkloadReport(businessId);
   } catch (error) {
-    logger.error('[REPORTS] Error getting user workload report:', error);
+    contextLogger.error('Error getting user workload report', {
+      businessId,
+      action: 'GET_USER_WORKLOAD_REPORT_FAILED',
+      error: error instanceof Error ? error.message : String(error)
+    });
     throw error;
   }
 };
 
 export const getStatusDistributionReportService = async (businessId: number) => {
   try {
-    logger.info(`[REPORTS] Getting status distribution report for business ${businessId}`);
+    contextLogger.debug(`Getting status distribution report`, {
+      businessId,
+      action: 'GET_STATUS_DISTRIBUTION_REPORT'
+    });
     return await getStatusDistributionReport(businessId);
   } catch (error) {
-    logger.error('[REPORTS] Error getting status distribution report:', error);
+    contextLogger.error('Error getting status distribution report', {
+      businessId,
+      action: 'GET_STATUS_DISTRIBUTION_REPORT_FAILED',
+      error: error instanceof Error ? error.message : String(error)
+    });
     throw error;
   }
 };
 
 export const getCombinedReportService = async (businessId: number) => {
   try {
-    logger.info(`[REPORTS] Getting combined report for business ${businessId}`);
+    contextLogger.debug(`Getting combined report`, {
+      businessId,
+      action: 'GET_COMBINED_REPORT'
+    });
     return await getCombinedReport(businessId);
   } catch (error) {
-    logger.error('[REPORTS] Error getting combined report:', error);
+    contextLogger.error('Error getting combined report', {
+      businessId,
+      action: 'GET_COMBINED_REPORT_FAILED',
+      error: error instanceof Error ? error.message : String(error)
+    });
     throw error;
   }
 };

@@ -22,6 +22,7 @@ A robust and scalable backend API for TaskFlow application built with Node.js, T
 - [API Endpoints](#api-endpoints)
 - [API Documentation](#api-documentation)
 - [Testing](#testing)
+- [Logging & Monitoring](#-logging--monitoring)
 - [Docker Support](#docker-support)
 - [Contributing](#contributing)
 - [Troubleshooting](#troubleshooting)
@@ -282,7 +283,161 @@ npm run test:watch
 npm test -- assignment.controller.test.ts
 ```
 
-## 🐳 Docker Support
+## � Logging & Monitoring
+
+TaskFlow uses a sophisticated structured logging system with **Winston** and **contextLogger** for comprehensive application monitoring and debugging.
+
+### Log Architecture
+
+#### Core Components
+
+- **logger.ts** (`src/utils/logger.ts`): Winston instance configuration with dual transports
+  - Combined logs: `backend/logs/combined-YYYY-MM-DD.log` (20MB max, 14-day retention)
+  - Error logs: `backend/logs/error-YYYY-MM-DD.log` (20MB max, 30-day retention)
+  - Format: JSON with timestamp, level, message, and metadata
+
+- **contextLogger.ts** (`src/utils/contextLogger.ts`): Wrapper that automatically injects request context
+  - Uses Node.js AsyncLocalStorage for context propagation
+  - Automatically includes `requestId` and `userId` in all logs
+  - No need to pass context through function parameters
+
+- **logging.middleware.ts** (`src/middlewares/logging.middleware.ts`): Request lifecycle tracking
+  - Generates unique `requestId` for each HTTP request
+  - Tracks request duration, status code, and user information
+  - Sets `X-Request-ID` header for client correlation
+
+### Log Levels
+
+| Level | Usage | Example |
+|-------|-------|---------|
+| `error` | Error conditions and exceptions | Database errors, validation failures, unhandled exceptions |
+| `warn` | Warning messages | Deprecated API usage, unusual conditions |
+| `info` | Important business events | User login, task creation, role changes |
+| `debug` | Detailed diagnostic information | Function entry/exit, data transformations, read operations |
+
+### Using contextLogger in Your Code
+
+**Controllers & Services:**
+
+```typescript
+import { contextLogger } from '../utils/contextLogger';
+
+// Logs automatically include requestId and userId from request context
+contextLogger.info('User action performed', {
+  action: 'task_created',
+  taskId: task.id,
+  projectId: project.id
+});
+
+contextLogger.error('Operation failed', {
+  action: 'task_update',
+  error: error.message
+});
+```
+
+### Log Format
+
+All file-based logs use JSON format compatible with ELK Stack (Elasticsearch, Logstash, Kibana):
+
+```json
+{
+  "timestamp": "2025-12-24 10:30:45.123",
+  "level": "info",
+  "message": "User action performed",
+  "service": "TaskFlow-API",
+  "environment": "development",
+  "hostname": "pc-computer",
+  "requestId": "550e8400-e29b-41d4-a716-446655440000",
+  "userId": "12345",
+  "action": "task_created",
+  "taskId": "67890",
+  "projectId": "11111"
+}
+```
+
+### Log Location
+
+- **Development**: Logs appear in terminal (stdout) + saved to `backend/logs/`
+- **Production**: Logs saved to `backend/logs/` with daily rotation
+- **ELK Stack** (future): Logs streamed to Elasticsearch for centralized monitoring
+
+### Environment Variables
+
+```env
+# Logging Configuration
+LOG_LEVEL=info                              # debug, info, warn, error (default: info)
+ELASTICSEARCH_URL=http://localhost:9200    # For ELK Stack integration (optional)
+```
+
+### ELK Stack Integration (Planned)
+
+The logging infrastructure is pre-configured for ELK Stack integration:
+
+1. **Install Elasticsearch transport**:
+   ```bash
+   npm install winston-elasticsearch
+   ```
+
+2. **Configure in logger.ts**:
+   ```typescript
+   import ElasticsearchTransport from 'winston-elasticsearch';
+   
+   const esTransport = new ElasticsearchTransport({
+     level: 'info',
+     clientOpts: {
+       node: process.env.ELASTICSEARCH_URL || 'http://localhost:9200'
+     }
+   });
+   
+   logger.add(esTransport);
+   ```
+
+3. **Query logs in Kibana**:
+   - Index: `logstash-*`
+   - Filter by `requestId` for request tracing
+   - Filter by `userId` for user activity auditing
+   - Create dashboards for monitoring
+
+### Accessing Logs
+
+**View recent logs in development**:
+```bash
+# Combined logs
+tail -f backend/logs/combined-*.log
+
+# Error logs only
+tail -f backend/logs/error-*.log
+
+# Parse JSON logs
+tail -f backend/logs/combined-*.log | jq '.'
+```
+
+**Docker logs**:
+```bash
+# View container logs
+docker logs taskflow-backend
+
+# Follow logs
+docker logs -f taskflow-backend
+```
+
+### Best Practices
+
+ **DO:**
+- Use `contextLogger.info()` for important business events
+- Include structured metadata (objects) instead of string interpolation
+- Use consistent `action` field for auditability
+- Include relevant IDs (userId, taskId, projectId) for tracing
+
+ **DON'T:**
+- Avoid string interpolation: `logger.info('User ${userId} created task')`
+- Use structured metadata instead: `logger.info('Task created', { userId, action: 'task_created' })`
+- Don't log sensitive data (passwords, tokens, API keys)
+- Don't use `debug` level for production errors (use `error`)
+
+For detailed logging patterns and code examples, see [LOGGING_GUIDE.md](./docs/LOGGING_GUIDE.md)
+
+## �🐳 Docker Support
 
 ### Using Docker Compose
 
@@ -436,6 +591,8 @@ The application uses PostgreSQL with the following main entities:
 | RATE_LIMIT_WINDOW_MS     | Rate limit window (ms)     | No       | 900000      |
 | RATE_LIMIT_MAX_REQUESTS  | Max requests per window    | No       | 100         |
 | ALLOWED_ORIGINS          | CORS allowed origins       | No       | *           |
+| LOG_LEVEL                | Logging level              | No       | info        |
+| ELASTICSEARCH_URL        | Elasticsearch endpoint     | No       | -           |
 
 ## 🚀 Deployment
 

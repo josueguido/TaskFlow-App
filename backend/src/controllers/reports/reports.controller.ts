@@ -1,7 +1,7 @@
 import { RequestHandler } from 'express';
 import * as reportsService from '../../services/reports/reports.service';
 import { BadRequestError } from '../../errors/BadRequestError';
-import { logger } from '../../utils/logger';
+import { contextLogger } from '../../utils/contextLogger';
 
 export const getOverviewReport: RequestHandler = async (req, res, next) => {
   try {
@@ -11,7 +11,10 @@ export const getOverviewReport: RequestHandler = async (req, res, next) => {
       throw new BadRequestError('Business ID not found in request');
     }
 
-    logger.info(`[REPORTS_CTRL] Getting overview report for business ${businessId}`);
+    contextLogger.debug(`Getting overview report`, {
+      businessId,
+      action: 'GET_OVERVIEW_REPORT'
+    });
 
     const report = await reportsService.getOverviewReportService(businessId);
 
@@ -30,7 +33,10 @@ export const getProjectProgressReport: RequestHandler = async (req, res, next) =
     const businessId = (req as any).user?.business_id;
 
     if (!businessId) {
-      throw new BadRequestError('Business ID not found in request');
+    contextLogger.debug(`Getting project progress report`, {
+      businessId,
+      action: 'GET_PROJECT_PROGRESS_REPORT'
+    }
     }
 
     logger.info(`[REPORTS_CTRL] Getting project progress report for business ${businessId}`);
@@ -53,7 +59,10 @@ export const getActivityReport: RequestHandler = async (req, res, next) => {
     const { limit } = req.query;
 
     if (!businessId) {
-      throw new BadRequestError('Business ID not found in request');
+    contextLogger.debug(`Getting activity report`, {
+      businessId,
+      action: 'GET_ACTIVITY_REPORT'
+    }
     }
 
     logger.info(`[REPORTS_CTRL] Getting activity report for business ${businessId}`);
@@ -78,7 +87,10 @@ export const getUserWorkloadReport: RequestHandler = async (req, res, next) => {
     const businessId = (req as any).user?.business_id;
 
     if (!businessId) {
-      throw new BadRequestError('Business ID not found in request');
+    contextLogger.debug(`Getting user workload report`, {
+      businessId,
+      action: 'GET_USER_WORKLOAD_REPORT'
+    }
     }
 
     logger.info(`[REPORTS_CTRL] Getting user workload report for business ${businessId}`);
@@ -100,7 +112,10 @@ export const getStatusDistributionReport: RequestHandler = async (req, res, next
     const businessId = (req as any).user?.business_id;
 
     if (!businessId) {
-      throw new BadRequestError('Business ID not found in request');
+    contextLogger.debug(`Getting status distribution report`, {
+      businessId,
+      action: 'GET_STATUS_DISTRIBUTION_REPORT'
+    }
     }
 
     logger.info(`[REPORTS_CTRL] Getting status distribution report for business ${businessId}`);
@@ -119,7 +134,10 @@ export const getStatusDistributionReport: RequestHandler = async (req, res, next
 
 export const getCombinedReport: RequestHandler = async (req, res, next) => {
   try {
-    const businessId = (req as any).user?.business_id;
+    contextLogger.debug(`Getting combined report`, {
+      businessId,
+      action: 'GET_COMBINED_REPORT'
+    }
 
     if (!businessId) {
       throw new BadRequestError('Business ID not found in request');

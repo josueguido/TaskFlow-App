@@ -1,12 +1,15 @@
 import { AnyZodObject } from "zod";
 import { Request, Response, NextFunction } from "express";
 import { BadRequestError } from "../../errors/BadRequestError";
-import { logger } from "../../utils/logger";
+import { contextLogger } from "../../utils/contextLogger";
 
 export const validate =
   (schema: AnyZodObject) =>
     (req: Request, res: Response, next: NextFunction) => {
-      logger.info('[VALIDATE] Validating request body:', JSON.stringify(req.body));
+      contextLogger.debug('Validating request body', {
+        path: req.path,
+        action: 'VALIDATE_REQUEST'
+      });
 
       const result = schema.safeParse({
         body: req.body,
@@ -16,7 +19,11 @@ export const validate =
 
       if (!result.success) {
         const formatted = result.error.format();
-        logger.error('[VALIDATE] Validation error:', JSON.stringify(formatted));
+        contextLogger.error('Validation error', {
+          path: req.path,
+          action: 'VALIDATION_FAILED',
+          errors: JSON.stringify(formatted)
+        });
         throw new BadRequestError("Validation failed: " + JSON.stringify(formatted));
       }
 

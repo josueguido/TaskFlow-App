@@ -11,7 +11,7 @@ import {
   getCalendarEvents,
 } from "../../models/task.model";
 import { NotFoundError } from "../../errors/NotFoundError";
-import { logger } from "../../utils/logger";
+import { contextLogger } from "../../utils/contextLogger";
 
 export const getAllTasks = async () => {
   const tasks = await getTasks();
@@ -56,7 +56,12 @@ export const deleteTask = async (id: string) => {
 
 export const changeTaskStatus = async (taskId: string, statusId: string, userId?: number) => {
   try {
-    logger.info(`[CHANGE_STATUS] Changing task ${taskId} status to ${statusId}${userId ? ` by user ${userId}` : ''}`);
+    contextLogger.info(`Changing task status`, {
+      taskId,
+      statusId,
+      userId,
+      action: 'CHANGE_TASK_STATUS'
+    });
 
     const task = await findTaskById(taskId);
     if (!task) {
@@ -65,10 +70,20 @@ export const changeTaskStatus = async (taskId: string, statusId: string, userId?
 
     const updated = await updateStatus(taskId, statusId, userId);
 
-    logger.info(`[CHANGE_STATUS] Status changed successfully for task ${taskId}`);
+    contextLogger.info(`Task status changed successfully`, {
+      taskId,
+      newStatusId: statusId,
+      userId,
+      action: 'CHANGE_TASK_STATUS_SUCCESS'
+    });
     return updated;
   } catch (error) {
-    logger.error(`[CHANGE_STATUS] Error changing task status:`, error);
+    contextLogger.error(`Failed to change task status`, {
+      taskId,
+      statusId,
+      action: 'CHANGE_TASK_STATUS_FAILED',
+      error: error instanceof Error ? error.message : String(error)
+    });
     throw error;
   }
 };
@@ -95,14 +110,28 @@ export const getTaskHistory = async (taskId: string) => {
 
 export const getCalendarEventsService = async (businessId: number, projectId?: number): Promise<ICalendarEvent[]> => {
   try {
-    logger.info(`[CALENDAR] Getting calendar events for business ${businessId}${projectId ? `, project ${projectId}` : ''}`);
+    contextLogger.debug(`Getting calendar events`, {
+      businessId,
+      projectId,
+      action: 'GET_CALENDAR_EVENTS'
+    });
 
     const events = await getCalendarEvents(businessId, projectId);
 
-    logger.info(`[CALENDAR] Found ${events.length} calendar events`);
+    contextLogger.debug(`Calendar events retrieved`, {
+      businessId,
+      projectId,
+      eventCount: events.length,
+      action: 'GET_CALENDAR_EVENTS_SUCCESS'
+    });
     return events;
   } catch (error) {
-    logger.error('[CALENDAR] Error getting calendar events:', error);
+    contextLogger.error('Failed to get calendar events', {
+      businessId,
+      projectId,
+      action: 'GET_CALENDAR_EVENTS_FAILED',
+      error: error instanceof Error ? error.message : String(error)
+    });
     throw error;
   }
 };

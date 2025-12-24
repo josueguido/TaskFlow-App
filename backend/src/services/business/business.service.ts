@@ -8,7 +8,7 @@ import { createUser } from '../../models/user.model';
 import { hash, genSalt } from "bcryptjs";
 import * as jwt from "../../utils/jwt";
 import { BadRequestError } from '../../errors/BadRequestError';
-import { logger } from '../../utils/logger';
+import { contextLogger } from '../../utils/contextLogger';
 
 export const signupBusiness = async (businessData: {
   name: string;
@@ -17,7 +17,10 @@ export const signupBusiness = async (businessData: {
   password: string;
 }) => {
   try {
-    logger.info('Starting business signup process');
+    contextLogger.info('Starting business signup process', {
+      adminEmail: businessData.admin_email,
+      action: 'SIGNUP_BUSINESS_START'
+    });
 
     const { pool } = await import('../../config/DB');
     const existingUser = await pool.query('SELECT 1 FROM users WHERE email = $1', [businessData.admin_email]);
@@ -29,7 +32,11 @@ export const signupBusiness = async (businessData: {
       name: businessData.name
     });
 
-    logger.info(`Business created with ID: ${business.id}`);
+    contextLogger.info(`Business created`, {
+      businessId: business.id,
+      businessName: businessData.name,
+      action: 'BUSINESS_CREATED'
+    });
 
     const salt = await genSalt(10);
     const hashedPassword = await hash(businessData.password, salt);
@@ -43,7 +50,12 @@ export const signupBusiness = async (businessData: {
       'active'
     );
 
-    logger.info(`Admin user created with ID: ${adminUser.id}`);
+    contextLogger.info(`Admin user created`, {
+      businessId: business.id,
+      adminUserId: adminUser.id,
+      adminEmail: adminUser.email,
+      action: 'ADMIN_USER_CREATED'
+    });
 
     await updateBusinessOwner(business.id.toString(), adminUser.id.toString());
 
@@ -57,7 +69,11 @@ export const signupBusiness = async (businessData: {
     const accessToken = jwt.generateAccessToken(payload);
     const refreshToken = jwt.generateRefreshToken(payload);
 
-    logger.info('Business signup completed successfully');
+    contextLogger.info('Business signup completed successfully', {
+      businessId: business.id,
+      adminUserId: adminUser.id,
+      action: 'SIGNUP_BUSINESS_SUCCESS'
+    });
 
     return {
       success: true,
@@ -83,7 +99,11 @@ export const signupBusiness = async (businessData: {
     };
 
   } catch (error) {
-    logger.error('Error in business signup:', error);
+    contextLogger.error('Error in business signup', {
+      adminEmail: businessData.admin_email,
+      action: 'SIGNUP_BUSINESS_FAILED',
+      error: error instanceof Error ? error.message : String(error)
+    });
     throw error;
   }
 };
@@ -93,7 +113,10 @@ export const getBusinessesList = async () => {
     const businesses = await getAllBusinesses();
     return businesses;
   } catch (error) {
-    logger.error('Error getting businesses list:', error);
+    contextLogger.error('Error getting businesses list', {
+      action: 'GET_BUSINESSES_LIST_FAILED',
+      error: error instanceof Error ? error.message : String(error)
+    });
     throw error;
   }
 };
@@ -103,7 +126,11 @@ export const getBusinessDetails = async (businessId: string) => {
     const business = await getBusinessById(businessId);
     return business;
   } catch (error) {
-    logger.error(`Error getting business details for ID ${businessId}:`, error);
+    contextLogger.error(`Error getting business details`, {
+      businessId,
+      action: 'GET_BUSINESS_DETAILS_FAILED',
+      error: error instanceof Error ? error.message : String(error)
+    });
     throw error;
   }
 };

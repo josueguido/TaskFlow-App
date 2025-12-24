@@ -1,0 +1,38 @@
+
+
+services:
+  elasticsearch:
+    image: elasticsearch:9.2.
+    container_name: elasticsearch
+    ports:
+      - "9200:9200"
+    restart: unless-stopped
+    environment:
+      - discovery.type=single-node
+
+  kibana:
+    image: kibana:9.2.3
+    container_name: kibana
+    ports:
+      - "5601:5601"
+    environment:
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+    restart: unless-stopped
+    networks:
+      - monitoring
+      - taskflow_network
+
+  logstash:
+    image: logstash:9.2.3
+    container_name: logstash
+    ports:
+      - "5044:5044"
+    volumes:
+      - ./logstash/pipeline:/usr/share/logstash/pipeline
+    environment:
+      - xpack.monitoring.enabled=true
+      - xpack.monitoring.elasticsearch.hosts=http://elasticsearch:9200
+    restart: unless-stopped
+    networks:
+      - monitoring
+      - taskflow_network

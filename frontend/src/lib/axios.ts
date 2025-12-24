@@ -10,7 +10,7 @@ const getApiUrl = () => {
 
   const protocol = window.location.protocol;
   const hostname = window.location.hostname;
-  const apiUrl = `${protocol}//${hostname}:3000/api`;
+  const apiUrl = `${protocol}//${hostname}:3003/api`;
   return apiUrl;
 };
 

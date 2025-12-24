@@ -5,7 +5,7 @@ import {
   getBusinessDetails
 } from '../../services/business/business.service';
 import { BadRequestError } from '../../errors/BadRequestError';
-import { logger } from '../../utils/logger';
+import { contextLogger } from '../../utils/contextLogger';
 
 export const businessSignup = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -22,7 +22,11 @@ export const businessSignup = async (req: Request, res: Response, next: NextFunc
       password
     });
 
-    logger.info(`Business signup successful for: ${admin_email}`);
+    contextLogger.info(`Business signup successful`, {
+      adminEmail: admin_email,
+      businessName: name,
+      action: 'BUSINESS_SIGNUP'
+    });
     res.status(201).json(result);
 
   } catch (error) {
