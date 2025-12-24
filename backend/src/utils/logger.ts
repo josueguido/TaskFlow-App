@@ -12,7 +12,7 @@ export const logger = winston.createLogger({
   level: process.env.LOG_LEVEL || 'info',
   defaultMeta: {
     service: 'taskflow-backend',
-    enviroment: process.env.NODE_ENV,
+    environment: process.env.NODE_ENV,
     hostname: require('os').hostname(),
   },
   format: winston.format.combine(

@@ -222,7 +222,7 @@ logs/
 - [ ] ¿Se logueó el error con contexto suficiente?
 - [ ] ¿Incluye `action` para auditoria?
 - [ ] ¿Se usa `contextLogger` en lugar de `logger` (excepción: error handler)?
-- [ ] ¿Hay información sensible (passwords, tokens) en los logs? ❌ NO
+- [ ] ¿Hay información sensible (passwords, tokens) en los logs?  NO
 - [ ] ¿Los metadatos son suficientes para troubleshooting?
 
 ---
@@ -230,17 +230,17 @@ logs/
 ## 🚨 Qué NO Hacer
 
 ```typescript
-// ❌ EVITAR: Información sensible
+//  EVITAR: Información sensible
 logger.info('User logged in', {
-  password: user.password,  // NUNCA
-  token: authToken,         // NUNCA
-  ssn: '123-45-6789'        // NUNCA
+  password: user.password,  // NEVER
+  token: authToken,         // NEVER
+  ssn: '123-45-6789'        // NEVER
 });
 
-// ❌ EVITAR: Mensaje genérico sin contexto
+//  EVITAR: Mensaje genérico sin contexto
 logger.error('Error occurred');
 
-// ❌ EVITAR: Logs en strings dinámicos sin estructura
+// EVITAR: Logs en strings dinámicos sin estructura
 logger.info(`User ${id} did ${action} on ${resource}`);
 // Mejor:
 contextLogger.info('User action performed', {
