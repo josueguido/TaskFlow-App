@@ -7,6 +7,7 @@ import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import { SwaggerUiOptions } from 'swagger-ui-express';
 import { logger } from './utils/logger';
+import { loggingMiddleware } from './middlewares/logging.middleware';
 import { securityConfig } from './config/security';
 import { sanitizeInput } from './middlewares/sanitize.middleware';
 import { startSecurityCleanup } from './middlewares/security.cleanup';
@@ -34,6 +35,8 @@ const app = express();
 app.use(cors(securityConfig.cors));
 
 app.use(metricsMiddleware);
+
+app.use(loggingMiddleware);
 
 app.use(helmet({
   crossOriginEmbedderPolicy: false

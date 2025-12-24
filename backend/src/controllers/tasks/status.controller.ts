@@ -1,6 +1,6 @@
 import { RequestHandler } from "express";
 import * as statusService from "../../services/tasks/status.service";
-import { logger } from "../../utils/logger";
+import { contextLogger } from "../../utils/contextLogger";
 
 export const getAllStatuses: RequestHandler = async (req, res, next) => {
   try {
@@ -9,7 +9,10 @@ export const getAllStatuses: RequestHandler = async (req, res, next) => {
       throw new Error('Business ID not found in request');
     }
 
-    logger.info(`[STATUS] Getting all statuses for business ${businessId}`);
+    contextLogger.debug(`Getting all statuses`, {
+      businessId,
+      action: 'GET_ALL_STATUSES'
+    });
     const statuses = await statusService.getStatuses(businessId);
 
     res.json({
@@ -31,7 +34,11 @@ export const getStatusById: RequestHandler = async (req, res, next) => {
       throw new Error('Business ID not found in request');
     }
 
-    logger.info(`[STATUS] Getting status ${id} for business ${businessId}`);
+    contextLogger.debug(`Getting status`, {
+      statusId: id,
+      businessId,
+      action: 'GET_STATUS'
+    });
     const status = await statusService.getStatusByIdService(id, businessId);
 
     res.json({
@@ -44,7 +51,11 @@ export const getStatusById: RequestHandler = async (req, res, next) => {
   }
 }
 
-export const createStatus: RequestHandler = async (req, res, next) => {
+expocontextLogger.info(`Creating status`, {
+      statusName: name,
+      businessId: business_id,
+      action: 'CREATE_STATUS'
+    }
   try {
     const { name, order, business_id } = req.body;
 
@@ -67,7 +78,12 @@ export const updateStatus: RequestHandler = async (req, res, next) => {
     const { name, order } = req.body;
     const businessId = (req as any).user?.business_id;
 
-    if (!businessId) {
+    contextLogger.info(`Updating status`, {
+      statusId: id,
+      statusName: name,
+      businessId,
+      action: 'UPDATE_STATUS'
+    }
       throw new Error('Business ID not found in request');
     }
 
@@ -84,7 +100,11 @@ export const updateStatus: RequestHandler = async (req, res, next) => {
   }
 }
 
-export const deleteStatus: RequestHandler = async (req, res, next) => {
+expocontextLogger.info(`Deleting status`, {
+      statusId: id,
+      businessId,
+      action: 'DELETE_STATUS'
+    }
   try {
     const { id } = req.params;
     const businessId = (req as any).user?.business_id;

@@ -1,7 +1,7 @@
 import { RequestHandler } from "express";
 import * as taskService from "../../services/tasks/task.service";
 import { BadRequestError } from "../../errors/BadRequestError";
-import { logger } from "../../utils/logger";
+import { contextLogger } from "../../utils/contextLogger";
 
 export const getAllTasks: RequestHandler = async (req, res, next) => {
   try {
@@ -64,7 +64,12 @@ export const changeTaskStatus: RequestHandler = async (req, res, next) => {
     const { statusId } = req.body;
     const userId = (req as any).user?.id;
 
-    logger.info(`[CHANGE_STATUS_CTRL] Changing task ${id} status to ${statusId} by user ${userId}`);
+    contextLogger.info(`Changing task status`, {
+      taskId: id,
+      statusId,
+      userId,
+      action: 'CHANGE_TASK_STATUS'
+    });
 
     const task = await taskService.changeTaskStatus(id, statusId.toString(), userId);
 
@@ -83,7 +88,11 @@ export const assignUsersToTask: RequestHandler = async (req, res, next) => {
     const { id } = req.params;
     const { user_id } = req.body;
 
-    logger.info(`[ASSIGN_USER] Assigning user ${user_id} to task ${id}`);
+    contextLogger.info(`Assigning user to task`, {
+      taskId: id,
+      userId: user_id,
+      action: 'ASSIGN_USER_TO_TASK'
+    });
 
     const result = await taskService.assignUsersToTask(id, [user_id.toString()]);
 
@@ -112,7 +121,11 @@ export const getCalendarEvents: RequestHandler = async (req, res, next) => {
     const businessId = (req as any).user?.business_id;
     const { projectId } = req.query;
 
-    if (!businessId) {
+    contextLogger.debug(`Getting calendar events`, {
+      businessId,
+      projectId,
+      action: 'GET_CALENDAR_EVENTS'
+    }
       throw new BadRequestError("Business ID not found in request");
     }
 

@@ -9,6 +9,8 @@ export const errorHandler = (
   _next: NextFunction
 ): void => {
   logger.error(`Error: ${err.message}`, {
+    requestId: req.id,
+    userId: req.user?.userId,
     stack: err.stack,
     url: req.url,
     method: req.method,
