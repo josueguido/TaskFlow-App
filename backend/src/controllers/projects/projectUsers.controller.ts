@@ -63,14 +63,14 @@ export const getUserRole = async (req: Request, res: Response, next: NextFunctio
     const userId = (req as any).user?.id;
 
     if (!userId) {
+      throw new BadRequestError('User ID not found in request');
+    }
+
     contextLogger.debug(`Getting user role in project`, {
       projectId,
       userId,
       action: 'GET_USER_ROLE'
-    }
-    }
-
-    logger.info(`[PROJECT_USERS_CTRL] Getting role for user ${userId} in project ${projectId}`);
+    });
 
     const result = await projectUsersService.getUserRoleService(Number(projectId), userId);
 
@@ -84,15 +84,15 @@ export const getUserRole = async (req: Request, res: Response, next: NextFunctio
   }
 };
 
-expocontextLogger.info(`Removing user from project`, {
-      projectId,
-      userId,
-      action: 'REMOVE_USER_FROM_PROJECT'
-    }ion) => {
+export const removeUserFromProject = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { projectId, userId } = req.params;
 
-    logger.info(`[PROJECT_USERS_CTRL] Removing user ${userId} from project ${projectId}`);
+    contextLogger.info(`Removing user from project`, {
+      projectId,
+      userId,
+      action: 'REMOVE_USER_FROM_PROJECT'
+    });
 
     await projectUsersService.removeUserFromProjectService(
       Number(projectId),
@@ -113,16 +113,16 @@ export const updateUserRole = async (req: Request, res: Response, next: NextFunc
     const { projectId, userId } = req.params;
     const { role } = req.body;
 
+    if (!role || !['admin', 'member'].includes(role)) {
+      throw new BadRequestError('Role must be either "admin" or "member"');
+    }
+
     contextLogger.warn(`Updating user role`, {
       projectId,
       userId,
       newRole: role,
       action: 'UPDATE_USER_ROLE'
-    }
-      throw new BadRequestError('Role must be either "admin" or "member"');
-    }
-
-    logger.info(`[PROJECT_USERS_CTRL] Updating user ${userId} role to ${role} in project ${projectId}`);
+    });
 
     const result = await projectUsersService.updateUserRoleService(
       Number(projectId),
@@ -140,11 +140,7 @@ export const updateUserRole = async (req: Request, res: Response, next: NextFunc
   }
 };
 
-expocontextLogger.debug(`Getting user projects`, {
-      userId,
-      businessId,
-      action: 'GET_USER_PROJECTS'
-    }
+export const getProjectsByUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userId = (req as any).user?.id;
     const businessId = (req as any).user?.business_id;
@@ -153,7 +149,11 @@ expocontextLogger.debug(`Getting user projects`, {
       throw new BadRequestError('User ID or Business ID not found in request');
     }
 
-    logger.info(`[PROJECT_USERS_CTRL] Getting projects for user ${userId} in business ${businessId}`);
+    contextLogger.debug(`Getting user projects`, {
+      userId,
+      businessId,
+      action: 'GET_USER_PROJECTS'
+    });
 
     const projects = await projectUsersService.getProjectsByUserService(userId, businessId);
 

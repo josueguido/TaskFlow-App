@@ -51,15 +51,15 @@ export const getStatusById: RequestHandler = async (req, res, next) => {
   }
 }
 
-expocontextLogger.info(`Creating status`, {
-      statusName: name,
-      businessId: business_id,
-      action: 'CREATE_STATUS'
-    }
+export const createStatus: RequestHandler = async (req, res, next) => {
   try {
     const { name, order, business_id } = req.body;
 
-    logger.info(`[STATUS] Creating status: ${name} for business ${business_id}`);
+    contextLogger.info(`Creating status`, {
+      statusName: name,
+      businessId: business_id,
+      action: 'CREATE_STATUS'
+    });
     const status = await statusService.createStatusService({ name, order, business_id });
 
     res.status(201).json({
@@ -78,16 +78,16 @@ export const updateStatus: RequestHandler = async (req, res, next) => {
     const { name, order } = req.body;
     const businessId = (req as any).user?.business_id;
 
+    if (!businessId) {
+      throw new Error('Business ID not found in request');
+    }
+
     contextLogger.info(`Updating status`, {
       statusId: id,
       statusName: name,
       businessId,
       action: 'UPDATE_STATUS'
-    }
-      throw new Error('Business ID not found in request');
-    }
-
-    logger.info(`[STATUS] Updating status ${id} for business ${businessId}`);
+    });
     const status = await statusService.updateStatusService(Number(id), businessId, { name, order });
 
     res.json({
@@ -100,11 +100,7 @@ export const updateStatus: RequestHandler = async (req, res, next) => {
   }
 }
 
-expocontextLogger.info(`Deleting status`, {
-      statusId: id,
-      businessId,
-      action: 'DELETE_STATUS'
-    }
+export const deleteStatus: RequestHandler = async (req, res, next) => {
   try {
     const { id } = req.params;
     const businessId = (req as any).user?.business_id;
@@ -113,7 +109,11 @@ expocontextLogger.info(`Deleting status`, {
       throw new Error('Business ID not found in request');
     }
 
-    logger.info(`[STATUS] Deleting status ${id} for business ${businessId}`);
+    contextLogger.info(`Deleting status`, {
+      statusId: id,
+      businessId,
+      action: 'DELETE_STATUS'
+    });
     const status = await statusService.deleteStatusService(Number(id), businessId);
 
     res.json({
