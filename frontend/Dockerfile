@@ -7,10 +7,10 @@ COPY . .
 FROM dev-deps AS builder
 COPY . .
 RUN npm run build
+
 FROM dev-deps AS test
 COPY . .
 RUN npm test 
-
 
 FROM nginx:alpine3.22 AS prod
 RUN rm /etc/nginx/conf.d/default.conf

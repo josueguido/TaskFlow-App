@@ -13,7 +13,7 @@ export const logger = winston.createLogger({
   defaultMeta: {
     service: 'taskflow-backend',
     environment: process.env.NODE_ENV,
-    hostname: require('os').hostname(),
+    hostname: hostname(),
   },
   format: winston.format.combine(
     winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss.SSS' }),

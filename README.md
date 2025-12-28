@@ -119,8 +119,8 @@ docker-compose up -d
 
 # Access the application
 # Frontend: http://localhost:5173
-# Backend: http://localhost:3000
-# Backend API Docs: http://localhost:3000/api-docs
+# Backend: http://localhost:3003
+# Backend API Docs: http://localhost:3003/api-docs
 ```
 
 ### Option 2: Local Development
@@ -147,7 +147,7 @@ psql -U postgres -d taskflow -f ../db/seed.sql
 # Start development server
 npm run dev
 
-# Server runs on http://localhost:3000
+# Server runs on http://localhost:3003
 ```
 
 #### Frontend Setup
@@ -244,7 +244,7 @@ dotenv.config({
 ```env
 # Server Configuration
 NODE_ENV=development
-PORT=3000
+PORT=3003
 
 # Database Configuration
 DB_HOST=localhost
@@ -271,7 +271,7 @@ LOG_LEVEL=debug
 ### Frontend Environment Variables (.env)
 
 ```env
-VITE_API_URL=http://localhost:3000
+VITE_API_URL=http://localhost:3003
 VITE_API_BASE_PATH=/api
 ```
 
@@ -420,7 +420,7 @@ psql -h localhost -U postgres -d taskflow
 Once the backend is running, access the interactive API documentation:
 
 ```
-http://localhost:3000/api-docs
+http://localhost:3003/api-docs
 ```
 
 ### Main API Endpoints

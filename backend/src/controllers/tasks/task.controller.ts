@@ -125,11 +125,13 @@ export const getCalendarEvents: RequestHandler = async (req, res, next) => {
       businessId,
       projectId,
       action: 'GET_CALENDAR_EVENTS'
-    }
+    });
+
+    if (!businessId) {
       throw new BadRequestError("Business ID not found in request");
     }
 
-    logger.info(`[CALENDAR_CTRL] Getting calendar events for business ${businessId}${projectId ? `, project ${projectId}` : ''}`);
+    contextLogger.info(`[CALENDAR_CTRL] Getting calendar events for business ${businessId}${projectId ? `, project ${projectId}` : ''}`);
 
     const events = await taskService.getCalendarEventsService(
       businessId,
