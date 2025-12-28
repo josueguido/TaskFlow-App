@@ -1,0 +1,20 @@
+filebeat.inputs:
+- type: docker
+  enabled: true
+  containers.ids:
+    - "*"
+  containers.stream: all
+
+processors:
+  - add_docker_metadata: ~
+  - add_fields:
+      target: taskflow
+      fields:
+        environment: local
+        app: taskflow
+
+output.logstash:
+  hosts: ["logstash:5044"]
+
+logging.level: info
+

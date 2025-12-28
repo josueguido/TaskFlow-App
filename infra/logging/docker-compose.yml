@@ -1,14 +1,23 @@
-
+version: '3.8'
 
 services:
   elasticsearch:
-    image: elasticsearch:9.2.
+    image: elasticsearch:9.2.3
     container_name: elasticsearch
     ports:
       - "9200:9200"
     restart: unless-stopped
     environment:
       - discovery.type=single-node
+      - xpack.security.enabled=false
+      - xpack.ml.enabled=false
+    healthcheck:
+      test: ["CMD-SHELL", "curl -s http://localhost:9200/_cluster/health | grep -q 'green\\|yellow'"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - monitoring
 
   kibana:
     image: kibana:9.2.3
@@ -17,10 +26,14 @@ services:
       - "5601:5601"
     environment:
       ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+      ELASTICSEARCH_USERNAME: ${ELASTICSEARCH_USERNAME}
+      ELASTICSEARCH_PASSWORD: ${ELASTICSEARCH_PASSWORD}
     restart: unless-stopped
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
     networks:
       - monitoring
-      - taskflow_network
 
   logstash:
     image: logstash:9.2.3
@@ -32,7 +45,31 @@ services:
     environment:
       - xpack.monitoring.enabled=true
       - xpack.monitoring.elasticsearch.hosts=http://elasticsearch:9200
+      - xpack.security.enabled=false
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
     restart: unless-stopped
     networks:
       - monitoring
-      - taskflow_network
+
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:9.2.3
+    container_name: filebeat
+    user: root
+    volumes:
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+    environment:
+      - strict.perms=false
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - monitoring
+
+networks:
+  monitoring:
+    driver: bridge
