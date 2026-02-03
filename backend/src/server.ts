@@ -8,7 +8,7 @@ dotenv.config({
     : './config/DB/.env.dev'
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3003;
 
 process.on('uncaughtException', (error) => {
   logger.error('Uncaught Exception:', error);
