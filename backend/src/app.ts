@@ -27,7 +27,7 @@ import promClient from 'prom-client';
 import { metricsMiddleware, errorMetricsMiddleware } from './middlewares/metrics.middleware';
 import { collectDefaultMetrics } from './utils/metrics';
 
-collectDefaultMetrics();
+promClient.collectDefaultMetrics();
 
 startSecurityCleanup();
 const app = express();
@@ -71,11 +71,11 @@ app.use('/api/projects', projectRoutes);
 app.use('/api/projects', projectUsersRoutes);
 app.use('/api/reports', reportsRoutes);
 
-app.get('/metrics', (req, res) => {
+app.get('/metrics', async (req, res) => {
   res.set('Content-Type', promClient.register.contentType);
-  res.end(promClient.register.metrics());
+  const metrics = await promClient.register.metrics();
+  res.send(metrics);
 });
-
 
 app.use(errorMetricsMiddleware);
 

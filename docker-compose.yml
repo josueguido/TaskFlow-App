@@ -1,5 +1,4 @@
 services:
-
   frontend:
     build:
       context: ./frontend
@@ -36,6 +35,7 @@ services:
     restart: unless-stopped
     networks:
       - taskflow_net
+      - monitoring
     volumes:
       - ./backend:/app
       - /app/node_modules
@@ -82,6 +82,9 @@ services:
 networks:
   taskflow_net:
     name: ${TASKFLOW_NETWORK_NAME}
+    driver: bridge
+  monitoring:
+    name: monitoring
     driver: bridge
 
 volumes:

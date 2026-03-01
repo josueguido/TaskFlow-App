@@ -23,12 +23,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ onProjectSelect, onManageColum
 	// Determinar qué item está activo basado en la ruta actual
 	const getIsActive = (name: string): boolean => {
 		const path = location.pathname;
-		
 		switch (name) {
 			case "Dashboard":
 				return path === "/app";
 			case "Projects":
-				return path === "/app" || path.includes("/app/projects");
+				return path.startsWith("/app/projects");
 			case "Team":
 				return path === "/app/team";
 			case "Calendar":
