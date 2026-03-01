@@ -1,5 +1,4 @@
 services:
-
   frontend:
     build:
       context: ./frontend
@@ -29,12 +28,17 @@ services:
       - DB_HOST=db
       - DB_PORT=5432
     ports:
-      - "3000:3000"
+      - "3003:3003"
     depends_on:
-      - db
-    restart: always
+      db:
+        condition: service_healthy
+    restart: unless-stopped
     networks:
       - taskflow_net
+      - monitoring
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
 
   db:
     image: postgres:15-alpine
@@ -49,12 +53,19 @@ services:
       - ./db/02-seed.sql:/docker-entrypoint-initdb.d/02-seed.sql
     ports:
       - "${DB_HOST_PORT}:${DB_CONTAINER_PORT}"
-    restart: always
+    restart: unless-stopped
     networks:
       - taskflow_net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
   pgAdmin:
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     image: dpage/pgadmin4:9.10
     container_name: ${PGADMIN_CONTAINER_NAME}
     environment:
@@ -64,13 +75,16 @@ services:
       - "8080:80"
     volumes:
       - ./pgadmin/data:/var/lib/pgadmin
-    restart: always
+    restart: unless-stopped
     networks:
       - taskflow_net
 
 networks:
   taskflow_net:
     name: ${TASKFLOW_NETWORK_NAME}
+    driver: bridge
+  monitoring:
+    name: monitoring
     driver: bridge
 
 volumes:

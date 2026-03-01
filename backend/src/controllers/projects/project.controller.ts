@@ -8,7 +8,7 @@ import {
   getBusinessProjectStats
 } from '../../services/projects/project.service';
 import { BadRequestError } from '../../errors/BadRequestError';
-import { logger } from '../../utils/logger';
+import { contextLogger } from '../../utils/contextLogger';
 
 export const getProjectsByBusinessId = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -50,7 +50,10 @@ export const getProjectById = async (req: Request, res: Response, next: NextFunc
 
 export const createProject = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    logger.info('[CREATE_PROJECT] Raw body received:', JSON.stringify(req.body));
+    contextLogger.debug(`Creating project`, {
+      body: req.body,
+      action: 'CREATE_PROJECT_START'
+    });
 
     const { businessId, name, description } = req.body;
     const currentUserId = (req as any).user?.id;
@@ -59,7 +62,12 @@ export const createProject = async (req: Request, res: Response, next: NextFunct
       throw new BadRequestError("Business ID and project name are required");
     }
 
-    logger.info('[CREATE_PROJECT] Creating project with:', { businessId, name, description, createdBy: currentUserId });
+    contextLogger.info(`Creating project`, {
+      businessId,
+      projectName: name,
+      createdBy: currentUserId,
+      action: 'CREATE_PROJECT'
+    });
     const newProject = await createNewProject(
       { business_id: businessId, name, description },
       currentUserId

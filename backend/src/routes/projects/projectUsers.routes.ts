@@ -34,6 +34,6 @@ router.delete(
   projectUsersCtrl.removeUserFromProject
 );
 
-router.get('/me/all', projectUsersCtrl.getUserProjects);
+// router.get('/me/all', projectUsersCtrl.getUserProjects);
 
 export default router;

@@ -1,7 +1,7 @@
 import { RequestHandler } from 'express';
 import * as reportsService from '../../services/reports/reports.service';
 import { BadRequestError } from '../../errors/BadRequestError';
-import { logger } from '../../utils/logger';
+import { contextLogger } from '../../utils/contextLogger';
 
 export const getOverviewReport: RequestHandler = async (req, res, next) => {
   try {
@@ -11,7 +11,10 @@ export const getOverviewReport: RequestHandler = async (req, res, next) => {
       throw new BadRequestError('Business ID not found in request');
     }
 
-    logger.info(`[REPORTS_CTRL] Getting overview report for business ${businessId}`);
+    contextLogger.debug(`Getting overview report`, {
+      businessId,
+      action: 'GET_OVERVIEW_REPORT'
+    });
 
     const report = await reportsService.getOverviewReportService(businessId);
 
@@ -33,7 +36,12 @@ export const getProjectProgressReport: RequestHandler = async (req, res, next) =
       throw new BadRequestError('Business ID not found in request');
     }
 
-    logger.info(`[REPORTS_CTRL] Getting project progress report for business ${businessId}`);
+    contextLogger.debug(`Getting project progress report`, {
+      businessId,
+      action: 'GET_PROJECT_PROGRESS_REPORT'
+    });
+
+    contextLogger.info(`[REPORTS_CTRL] Getting project progress report for business ${businessId}`);
 
     const report = await reportsService.getProjectProgressReportService(businessId);
 
@@ -56,7 +64,12 @@ export const getActivityReport: RequestHandler = async (req, res, next) => {
       throw new BadRequestError('Business ID not found in request');
     }
 
-    logger.info(`[REPORTS_CTRL] Getting activity report for business ${businessId}`);
+    contextLogger.debug(`Getting activity report`, {
+      businessId,
+      action: 'GET_ACTIVITY_REPORT'
+    });
+
+    contextLogger.info(`[REPORTS_CTRL] Getting activity report for business ${businessId}`);
 
     const report = await reportsService.getActivityReportService(
       businessId,
@@ -81,7 +94,12 @@ export const getUserWorkloadReport: RequestHandler = async (req, res, next) => {
       throw new BadRequestError('Business ID not found in request');
     }
 
-    logger.info(`[REPORTS_CTRL] Getting user workload report for business ${businessId}`);
+    contextLogger.debug(`Getting user workload report`, {
+      businessId,
+      action: 'GET_USER_WORKLOAD_REPORT'
+    });
+
+    contextLogger.info(`[REPORTS_CTRL] Getting user workload report for business ${businessId}`);
 
     const report = await reportsService.getUserWorkloadReportService(businessId);
 
@@ -103,7 +121,12 @@ export const getStatusDistributionReport: RequestHandler = async (req, res, next
       throw new BadRequestError('Business ID not found in request');
     }
 
-    logger.info(`[REPORTS_CTRL] Getting status distribution report for business ${businessId}`);
+    contextLogger.debug(`Getting status distribution report`, {
+      businessId,
+      action: 'GET_STATUS_DISTRIBUTION_REPORT'
+    });
+
+    contextLogger.info(`[REPORTS_CTRL] Getting status distribution report for business ${businessId}`);
 
     const report = await reportsService.getStatusDistributionReportService(businessId);
 
@@ -125,7 +148,12 @@ export const getCombinedReport: RequestHandler = async (req, res, next) => {
       throw new BadRequestError('Business ID not found in request');
     }
 
-    logger.info(`[REPORTS_CTRL] Getting combined report for business ${businessId}`);
+    contextLogger.debug(`Getting combined report`, {
+      businessId,
+      action: 'GET_COMBINED_REPORT'
+    });
+
+    contextLogger.info(`[REPORTS_CTRL] Getting combined report for business ${businessId}`);
 
     const report = await reportsService.getCombinedReportService(businessId);
 

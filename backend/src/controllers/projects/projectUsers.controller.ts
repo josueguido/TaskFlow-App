@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import * as projectUsersService from '../../services/projects/projectUsers.service';
-import { logger } from '../../utils/logger';
+import { contextLogger } from '../../utils/contextLogger';
 import { BadRequestError } from '../../errors/BadRequestError';
 
 export const addUserToProject = async (req: Request, res: Response, next: NextFunction) => {
@@ -13,7 +13,12 @@ export const addUserToProject = async (req: Request, res: Response, next: NextFu
       throw new BadRequestError('User ID is required');
     }
 
-    logger.info(`[PROJECT_USERS_CTRL] Adding user ${userId} to project ${projectId}`);
+    contextLogger.info(`Adding user to project`, {
+      projectId,
+      userId,
+      role,
+      action: 'ADD_USER_TO_PROJECT'
+    });
 
     const result = await projectUsersService.addUserToProjectService(
       Number(projectId),
@@ -35,7 +40,10 @@ export const getProjectUsers = async (req: Request, res: Response, next: NextFun
   try {
     const { projectId } = req.params;
 
-    logger.info(`[PROJECT_USERS_CTRL] Getting users for project ${projectId}`);
+    contextLogger.debug(`Getting project users`, {
+      projectId,
+      action: 'GET_PROJECT_USERS'
+    });
 
     const users = await projectUsersService.getProjectUsersService(Number(projectId));
 
@@ -58,7 +66,11 @@ export const getUserRole = async (req: Request, res: Response, next: NextFunctio
       throw new BadRequestError('User ID not found in request');
     }
 
-    logger.info(`[PROJECT_USERS_CTRL] Getting role for user ${userId} in project ${projectId}`);
+    contextLogger.debug(`Getting user role in project`, {
+      projectId,
+      userId,
+      action: 'GET_USER_ROLE'
+    });
 
     const result = await projectUsersService.getUserRoleService(Number(projectId), userId);
 
@@ -76,7 +88,11 @@ export const removeUserFromProject = async (req: Request, res: Response, next: N
   try {
     const { projectId, userId } = req.params;
 
-    logger.info(`[PROJECT_USERS_CTRL] Removing user ${userId} from project ${projectId}`);
+    contextLogger.info(`Removing user from project`, {
+      projectId,
+      userId,
+      action: 'REMOVE_USER_FROM_PROJECT'
+    });
 
     await projectUsersService.removeUserFromProjectService(
       Number(projectId),
@@ -101,7 +117,12 @@ export const updateUserRole = async (req: Request, res: Response, next: NextFunc
       throw new BadRequestError('Role must be either "admin" or "member"');
     }
 
-    logger.info(`[PROJECT_USERS_CTRL] Updating user ${userId} role to ${role} in project ${projectId}`);
+    contextLogger.warn(`Updating user role`, {
+      projectId,
+      userId,
+      newRole: role,
+      action: 'UPDATE_USER_ROLE'
+    });
 
     const result = await projectUsersService.updateUserRoleService(
       Number(projectId),
@@ -119,7 +140,7 @@ export const updateUserRole = async (req: Request, res: Response, next: NextFunc
   }
 };
 
-export const getUserProjects = async (req: Request, res: Response, next: NextFunction) => {
+export const getProjectsByUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userId = (req as any).user?.id;
     const businessId = (req as any).user?.business_id;
@@ -128,7 +149,11 @@ export const getUserProjects = async (req: Request, res: Response, next: NextFun
       throw new BadRequestError('User ID or Business ID not found in request');
     }
 
-    logger.info(`[PROJECT_USERS_CTRL] Getting projects for user ${userId} in business ${businessId}`);
+    contextLogger.debug(`Getting user projects`, {
+      userId,
+      businessId,
+      action: 'GET_USER_PROJECTS'
+    });
 
     const projects = await projectUsersService.getProjectsByUserService(userId, businessId);
 

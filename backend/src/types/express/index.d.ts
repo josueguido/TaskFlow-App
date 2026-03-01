@@ -12,6 +12,7 @@ export interface AuthUserPayload extends JwtPayload {
 declare global {
   namespace Express {
     interface Request {
+      id?: string;
       user?: AuthUserPayload;
     }
   }
