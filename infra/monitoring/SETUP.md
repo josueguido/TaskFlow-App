@@ -4,8 +4,11 @@
 
 ### Option A: Using Make (recommended)
 ```bash
-cd infra
-make up
+# From project root
+make build_monitoring   # Start Prometheus + Grafana
+make build_logging      # Start ELK stack
+# Or start everything at once:
+make start_all
 ```
 
 ### Option B: Manual
@@ -106,16 +109,20 @@ View alerts at: http://localhost:9090/alerts
 
 ## Useful Commands
 
+All commands run from the **project root**:
+
 ```bash
 # View status
-make status
+make show_monitoring
+make show_logging
 
 # Restart
-make restart
+make restart_monitoring
+make restart_logging
 
 # View logs
-make monitor-logs
-make logs-view
+make logs_monitoring
+make logs_logging
 
 # Clean everything
 make clean

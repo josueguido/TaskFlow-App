@@ -35,6 +35,7 @@ networks:
     name: monitoring
   taskflow_network:
     external: true
+    name: ${TASKFLOW_NETWORK_NAME:-taskflow_net}
 
 volumes:
   grafana-storage:

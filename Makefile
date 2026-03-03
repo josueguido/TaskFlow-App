@@ -199,6 +199,29 @@ prune: ## Clean unused Docker resources
 # HELP
 # ============================================
 
+# ============================================
+# LEGACY ALIASES (backward compatibility)
+# ============================================
+# These aliases map old target names (from the
+# previous infra/Makefile) to the new ones.
+# Safe to remove once all docs/scripts updated.
+# ============================================
+
+up: start_all             ## (legacy) Alias for start_all
+down: stop_all            ## (legacy) Alias for stop_all
+status: show_all          ## (legacy) Alias for show_all
+restart: restart_all      ## (legacy) Alias for restart_all
+monitor-up: build_monitoring   ## (legacy) Alias for build_monitoring
+monitor-logs: logs_monitoring  ## (legacy) Alias for logs_monitoring
+logs-up: build_logging         ## (legacy) Alias for build_logging
+logs-view: logs_logging        ## (legacy) Alias for logs_logging
+
+.PHONY: up down status restart monitor-up monitor-logs logs-up logs-view
+
+# ============================================
+# HELP
+# ============================================
+
 help: ## Display this help message
 	@echo ''
 	@echo 'TaskFlow - Available Commands'
@@ -239,4 +262,14 @@ help: ## Display this help message
 	@echo 'Maintenance:'
 	@echo '  make clean              Remove containers + volumes'
 	@echo '  make prune              Clean unused Docker resources'
+	@echo ''
+	@echo 'Legacy Aliases (backward compatibility):'
+	@echo '  make up                 → start_all'
+	@echo '  make down               → stop_all'
+	@echo '  make status             → show_all'
+	@echo '  make restart            → restart_all'
+	@echo '  make monitor-up         → build_monitoring'
+	@echo '  make monitor-logs       → logs_monitoring'
+	@echo '  make logs-up            → build_logging'
+	@echo '  make logs-view          → logs_logging'
 	@echo ''
