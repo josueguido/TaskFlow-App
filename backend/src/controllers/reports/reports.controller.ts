@@ -41,8 +41,6 @@ export const getProjectProgressReport: RequestHandler = async (req, res, next) =
       action: 'GET_PROJECT_PROGRESS_REPORT'
     });
 
-    contextLogger.info(`[REPORTS_CTRL] Getting project progress report for business ${businessId}`);
-
     const report = await reportsService.getProjectProgressReportService(businessId);
 
     res.json({
@@ -68,8 +66,6 @@ export const getActivityReport: RequestHandler = async (req, res, next) => {
       businessId,
       action: 'GET_ACTIVITY_REPORT'
     });
-
-    contextLogger.info(`[REPORTS_CTRL] Getting activity report for business ${businessId}`);
 
     const report = await reportsService.getActivityReportService(
       businessId,
@@ -99,8 +95,6 @@ export const getUserWorkloadReport: RequestHandler = async (req, res, next) => {
       action: 'GET_USER_WORKLOAD_REPORT'
     });
 
-    contextLogger.info(`[REPORTS_CTRL] Getting user workload report for business ${businessId}`);
-
     const report = await reportsService.getUserWorkloadReportService(businessId);
 
     res.json({
@@ -126,8 +120,6 @@ export const getStatusDistributionReport: RequestHandler = async (req, res, next
       action: 'GET_STATUS_DISTRIBUTION_REPORT'
     });
 
-    contextLogger.info(`[REPORTS_CTRL] Getting status distribution report for business ${businessId}`);
-
     const report = await reportsService.getStatusDistributionReportService(businessId);
 
     res.json({
@@ -152,8 +144,6 @@ export const getCombinedReport: RequestHandler = async (req, res, next) => {
       businessId,
       action: 'GET_COMBINED_REPORT'
     });
-
-    contextLogger.info(`[REPORTS_CTRL] Getting combined report for business ${businessId}`);
 
     const report = await reportsService.getCombinedReportService(businessId);
 

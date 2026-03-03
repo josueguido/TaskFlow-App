@@ -5,9 +5,6 @@ import { hostname } from 'os';
 
 const logDir = "logs";
 
-const errorFilter = (info: any) => info.level === 'error';
-const infoFilter = (info: any) => !errorFilter(info);
-
 export const logger = winston.createLogger({
   level: process.env.LOG_LEVEL || 'info',
   defaultMeta: {

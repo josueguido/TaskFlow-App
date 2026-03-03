@@ -1,24 +1,24 @@
-# 📊 Guía de Logging - TaskFlow Backend
+# Logging Guide - TaskFlow Backend
 
 ## Overview
-El backend utiliza **Winston** como logger con soporte para ELK Stack. Los logs se registran en formato JSON para análisis centralizado.
+The backend uses **Winston** as logger with ELK Stack support. Logs are recorded in JSON format for centralized analysis.
 
 ---
 
-## 🎯 Estructura de Logs
+## Log Structure
 
-### Componentes
-- **timestamp**: Hora exacta del evento (ISO 8601)
+### Fields
+- **timestamp**: Event time (ISO 8601)
 - **level**: `debug`, `info`, `warn`, `error`
-- **message**: Descripción del evento
-- **service**: `taskflow-backend` (automático)
-- **environment**: `development` o `production` (automático)
-- **hostname**: Máquina donde corre la aplicación (automático)
-- **requestId**: ID único por solicitud HTTP (automático)
-- **userId**: ID del usuario autenticado (automático)
-- **metadata**: Información adicional relevante
+- **message**: Event description
+- **service**: `taskflow-backend` (automatic)
+- **environment**: `development` or `production` (automatic)
+- **hostname**: Machine hostname (automatic)
+- **requestId**: Unique ID per HTTP request (automatic via `loggingMiddleware`)
+- **userId**: Authenticated user ID (automatic, populated by `authMiddleware` after token decode)
+- **metadata**: Additional relevant information
 
-### Ejemplo de Log Registrado
+### Example Log Output
 ```json
 {
   "timestamp": "2025-12-24 10:30:45.123",
@@ -37,15 +37,15 @@ El backend utiliza **Winston** como logger con soporte para ELK Stack. Los logs 
 
 ---
 
-## 🔧 Cómo Usarlo
+## Usage
 
-### 1. Logs de Negocio (Recomendado)
-Usa `contextLogger` para que se propague automáticamente `requestId` y `userId`:
+### 1. Business Logs (Recommended)
+Use `contextLogger` to automatically propagate `requestId` and `userId`:
 
 ```typescript
 import { contextLogger } from '../utils/contextLogger';
 
-// Info - evento exitoso
+// Info - successful event
 contextLogger.info('User added to project successfully', {
   projectId: 45,
   userId: 123,
@@ -53,7 +53,7 @@ contextLogger.info('User added to project successfully', {
   action: 'ADD_USER_TO_PROJECT_SUCCESS'
 });
 
-// Error - con contexto
+// Error - with context
 contextLogger.error('Failed to add user to project', {
   projectId: 45,
   userId: 123,
@@ -61,28 +61,28 @@ contextLogger.error('Failed to add user to project', {
   action: 'ADD_USER_TO_PROJECT_FAILED'
 });
 
-// Warn - situación anómala recuperable
+// Warn - recoverable anomaly
 contextLogger.warn('Slow database query detected', {
   query: 'getProjectUsers',
   duration: 1250,
   threshold: 1000
 });
 
-// Debug - información para desarrollo
+// Debug - development information
 contextLogger.debug('Project loaded from cache', {
   projectId: 45,
   cacheAge: 305
 });
 ```
 
-### 2. Logs Manuales (Contextos Especiales)
-Cuando necesites incluir metadata específica:
+### 2. Manual Logs (Special Contexts)
+When you need to include specific metadata outside the request context:
 
 ```typescript
 import { logger } from '../utils/logger';
 
 logger.info('Payment processed', {
-  requestId: req.id,  // Obligatorio si no usas contextLogger
+  requestId: req.id,  // Required if not using contextLogger
   userId: req.user?.userId,
   amount: 99.99,
   currency: 'USD',
@@ -94,20 +94,81 @@ logger.info('Payment processed', {
 
 ---
 
-## 📋 Niveles de Log
+## Log Levels
 
-| Nivel | Cuándo Usar | Ejemplo |
-|-------|------------|---------|
-| **debug** | Desarrollo, troubleshooting | `Cache miss para projectId: 45` |
-| **info** | Eventos de negocio normales | Usuario creado, proyecto actualizado |
-| **warn** | Situaciones anómalas recuperables | Timeout en BD, reintentos, degradación |
-| **error** | Fallos que requieren atención | Excepción no controlada, BD caída |
+| Level | When to Use | Example |
+|-------|-------------|---------|
+| **debug** | Development, troubleshooting | `Cache miss for projectId: 45` |
+| **info** | Normal business events | User created, project updated |
+| **warn** | Recoverable anomalies | DB timeout, retries, degradation |
+| **error** | Failures requiring attention | Unhandled exception, DB down |
 
 ---
 
-## 🎬 Patrones de Eventos
+## Important Rules
 
-### Operaciones CRUD
+### One log per event
+Do **not** log the same event twice at different levels. Pick the appropriate level and log once with structured metadata:
+
+```typescript
+// BAD - duplicate log
+contextLogger.debug('Getting report', { action: 'GET_REPORT' });
+contextLogger.info(`[CTRL] Getting report for business ${id}`);
+
+// GOOD - single structured log
+contextLogger.debug('Getting report', {
+  businessId,
+  action: 'GET_REPORT'
+});
+```
+
+### Always use structured metadata
+Never embed values in the message string. Pass them as metadata fields for proper querying in ELK:
+
+```typescript
+// BAD - unstructured
+contextLogger.info(`User ${id} created project ${projectId}`);
+
+// GOOD - structured
+contextLogger.info('Project created', {
+  userId: id,
+  projectId,
+  action: 'CREATE_PROJECT'
+});
+```
+
+### Log objects directly, never stringify
+Pass objects as-is for proper indexing. Only use `JSON.stringify` in human-readable messages (e.g., error responses):
+
+```typescript
+// BAD - stringified object in structured log
+contextLogger.error('Validation error', {
+  errors: JSON.stringify(formatted)
+});
+
+// GOOD - object passed directly
+contextLogger.error('Validation error', {
+  errors: formatted
+});
+```
+
+---
+
+## Request Context Flow
+
+The `requestId` and `userId` are automatically attached to all `contextLogger` calls:
+
+1. **`loggingMiddleware`** creates the `requestContext` with a `requestId` (from header or UUID)
+2. **`authMiddleware`** patches `requestContext.getStore().userId` after decoding the JWT token
+3. Any subsequent `contextLogger.*()` call includes both fields automatically
+
+> **Note:** `userId` is only available after `authMiddleware` runs. Logs before auth (e.g., in public endpoints) will have `userId: undefined`.
+
+---
+
+## Event Patterns
+
+### CRUD Operations
 ```typescript
 // CREATE
 contextLogger.info('User created', {
@@ -120,7 +181,7 @@ contextLogger.info('User created', {
 contextLogger.debug('Project loaded', {
   action: 'READ_PROJECT',
   projectId: 45,
-  source: 'database' // o 'cache'
+  source: 'database' // or 'cache'
 });
 
 // UPDATE
@@ -139,17 +200,16 @@ contextLogger.info('User removed from project', {
 });
 ```
 
-### Operaciones Críticas
+### Critical Operations
 ```typescript
-// Cambios de rol/permisos
+// Role/permission changes
 contextLogger.warn('Admin privileges granted', {
   action: 'GRANT_ADMIN_PRIVILEGES',
   targetUserId: 456,
-  grantedBy: req.user?.userId,
-  timestamp: new Date().toISOString()
+  grantedBy: req.user?.userId
 });
 
-// Fallos de seguridad
+// Security failures
 contextLogger.error('Unauthorized access attempt', {
   action: 'UNAUTHORIZED_ACCESS',
   targetResource: '/api/projects/45',
@@ -160,26 +220,30 @@ contextLogger.error('Unauthorized access attempt', {
 
 ---
 
-## 📍 Dónde se Guardan
+## Log Storage
 
-### Desarrollo
+### Development
 ```
 logs/
-  combined-2025-12-24.log   # Todos los logs (info, warn, error)
-  error-2025-12-24.log      # Solo errores
+  combined-2025-12-24.log   # All logs (debug, info, warn, error)
+  error-2025-12-24.log      # Errors only
 ```
 
-### Producción (con ELK)
-- **Elasticsearch**: Logs indexados por timestamp, searchables
-- **Logstash**: Procesamiento, enriquecimiento de logs
-- **Kibana**: Dashboards y análisis visual
+Files rotate daily (`winston-daily-rotate-file`):
+- Combined logs: max 20MB per file, retained 14 days
+- Error logs: max 20MB per file, retained 30 days
+
+### Production (with ELK)
+- **Elasticsearch**: Logs indexed by timestamp, searchable
+- **Logstash**: Processing, enrichment pipeline
+- **Kibana**: Dashboards and visual analysis
 
 ---
 
-## 🔍 Queries Útiles en Kibana (Futuro)
+## Useful Kibana Queries
 
 ```json
-// Todos los errores de un usuario
+// All errors for a specific user
 {
   "query": {
     "bool": {
@@ -191,7 +255,7 @@ logs/
   }
 }
 
-// Operaciones lentas (> 1s)
+// Slow operations (> 1s)
 {
   "query": {
     "range": {
@@ -200,7 +264,7 @@ logs/
   }
 }
 
-// Cambios de rol en último día
+// Role changes in the last day
 {
   "query": {
     "bool": {
@@ -215,44 +279,49 @@ logs/
 
 ---
 
-## ✅ Checklist para Code Review
+## Code Review Checklist
 
-- [ ] ¿Se logueó el inicio de la operación?
-- [ ] ¿Se logueó el resultado exitoso con timestamp?
-- [ ] ¿Se logueó el error con contexto suficiente?
-- [ ] ¿Incluye `action` para auditoria?
-- [ ] ¿Se usa `contextLogger` en lugar de `logger` (excepción: error handler)?
-- [ ] ¿Hay información sensible (passwords, tokens) en los logs?  NO
-- [ ] ¿Los metadatos son suficientes para troubleshooting?
+- [ ] Is the operation start logged (at `debug` level)?
+- [ ] Is the successful result logged with relevant metadata?
+- [ ] Are errors logged with enough context for troubleshooting?
+- [ ] Does the log include an `action` field for auditing?
+- [ ] Is `contextLogger` used instead of `logger` (exception: error handler)?
+- [ ] Is there **no** sensitive data (passwords, tokens) in the logs?
+- [ ] Is there only **one** log entry per event (no duplicates)?
+- [ ] Are metadata objects passed directly (not `JSON.stringify`)?
 
 ---
 
-## 🚨 Qué NO Hacer
+## What NOT to Do
 
 ```typescript
-//  EVITAR: Información sensible
+// AVOID: Sensitive information
 logger.info('User logged in', {
   password: user.password,  // NEVER
   token: authToken,         // NEVER
   ssn: '123-45-6789'        // NEVER
 });
 
-//  EVITAR: Mensaje genérico sin contexto
+// AVOID: Generic message without context
 logger.error('Error occurred');
 
-// EVITAR: Logs en strings dinámicos sin estructura
+// AVOID: Dynamic strings without structure
 logger.info(`User ${id} did ${action} on ${resource}`);
-// Mejor:
+// Better:
 contextLogger.info('User action performed', {
   userId: id,
   action,
   resource
 });
+
+// AVOID: Duplicate logs for the same event
+contextLogger.debug('Fetching data', { action: 'FETCH' });
+contextLogger.info('[CTRL] Fetching data');  // redundant
 ```
 
 ---
 
-## 📚 Referencias
+## References
 
 - Winston Docs: https://github.com/winstonjs/winston
 - ELK Stack: https://www.elastic.co/what-is/elk-stack

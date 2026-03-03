@@ -4,6 +4,8 @@ export const collectDefaultMetrics = () => {
   promClient.collectDefaultMetrics();
 };
 
+export const metricsRegistry = promClient.register;
+
 export const httpRequestDuration = new promClient.Histogram({
   name: 'http_request_duration_seconds',
   help: 'Duration of HTTP requests in seconds',

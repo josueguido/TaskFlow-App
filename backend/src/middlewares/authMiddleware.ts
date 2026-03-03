@@ -2,6 +2,7 @@ import pkg from "jsonwebtoken";
 const { sign, verify } = pkg;
 import { RequestHandler } from "express";
 import { AuthUserPayload } from "../types/express";
+import { requestContext } from "../utils/contextLogger";
 
 
 export const authMiddleware: RequestHandler = (req, res, next) => {
@@ -29,6 +30,12 @@ export const authMiddleware: RequestHandler = (req, res, next) => {
   try {
     const decoded = verify(token, secret);
     req.user = decoded as AuthUserPayload;
+
+    const store = requestContext.getStore();
+    if (store) {
+      store.userId = req.user.userId;
+    }
+
     next();
   } catch (error) {
     if (error instanceof Error) {

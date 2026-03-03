@@ -22,7 +22,7 @@ export const validate =
         contextLogger.error('Validation error', {
           path: req.path,
           action: 'VALIDATION_FAILED',
-          errors: JSON.stringify(formatted)
+          errors: formatted
         });
         throw new BadRequestError("Validation failed: " + JSON.stringify(formatted));
       }
