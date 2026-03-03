@@ -101,26 +101,27 @@ infra/
 │   ├── filebeat/
 │   └── .env
 │
-└── Makefile/            # Useful commands
+└── ../Makefile          # Project-wide Makefile (at repo root)
 ```
 
 ---
 
 ## Useful Commands
 
+All commands run from the **project root** using the root `Makefile`:
+
 ```bash
-# View logs
-docker logs prometheus
-docker logs grafana
-
-# Restart services
-docker-compose restart
-
-# Clean volumes
-docker-compose down -v
-
-# View status
-docker ps
+make build_monitoring   # Start Prometheus + Grafana
+make stop_monitoring    # Stop monitoring
+make show_monitoring    # View monitoring status
+make logs_monitoring    # View monitoring logs
+make build_logging      # Start ELK stack
+make stop_logging       # Stop ELK stack
+make show_logging       # View logging status
+make logs_logging       # View logging logs
+make start_all          # Start everything
+make stop_all           # Stop everything
+make help               # View all targets
 ```
 
 ---

@@ -196,7 +196,6 @@ TaskFlow-App/
 ├── infra/                       # Infrastructure & Monitoring
 │   ├── monitoring/             # Prometheus + Grafana
 │   ├── logging/                # ELK Stack (Elasticsearch, Logstash, Kibana)
-│   ├── Makefile/               # Infrastructure commands
 │   └── README.md               # Infrastructure documentation
 │
 ├── db/                          # Database scripts
@@ -236,8 +235,7 @@ TaskFlow includes a complete observability stack with metrics collection, dashbo
 
 ### Quick Start
 ```bash
-cd infra
-make up              # Start all monitoring and logging services
+make start_all       # Start all services (app + monitoring + logging)
 make help            # View all available commands
 ```
 
@@ -252,7 +250,7 @@ See [infra/README.md](./infra/README.md) for complete infrastructure documentati
 - Setup instructions
 - Available metrics and queries
 - Alert configuration
-- Useful Makefile commands
+- Makefile targets reference
 
 ## Database
 
