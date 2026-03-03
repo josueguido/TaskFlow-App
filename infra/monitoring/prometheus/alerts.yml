@@ -2,9 +2,9 @@ groups:
   - name: taskflow_alerts
     interval: 30s
     rules:
-      # High Error Rate
+      # High Error Rate (>5% of requests returning errors)
       - alert: HighErrorRate
-        expr: rate(errors_total[5m]) > 0.05
+        expr: sum(rate(errors_total[5m])) / sum(rate(http_requests_total[5m])) > 0.05
         for: 2m
         labels:
           severity: warning

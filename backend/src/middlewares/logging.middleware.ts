@@ -9,7 +9,7 @@ export const loggingMiddleware = (req: Request, res: Response, next: NextFunctio
   req.id = requestId;
   res.setHeader('X-Request-ID', requestId);
 
-  requestContext.run({ requestId, userId: req.user?.userId }, () => {
+  requestContext.run({ requestId }, () => {
     const startTime = Date.now();
 
     res.on('finish', () => {

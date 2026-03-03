@@ -23,11 +23,10 @@ import projectRoutes from './routes/projects/project.routes';
 import projectUsersRoutes from './routes/projects/projectUsers.routes';
 import reportsRoutes from './routes/reports/reports.routes';
 import { errorHandler } from './middlewares/error.handler';
-import promClient from 'prom-client';
 import { metricsMiddleware, errorMetricsMiddleware } from './middlewares/metrics.middleware';
-import { collectDefaultMetrics } from './utils/metrics';
+import { collectDefaultMetrics, metricsRegistry } from './utils/metrics';
 
-promClient.collectDefaultMetrics();
+collectDefaultMetrics();
 
 startSecurityCleanup();
 const app = express();
@@ -72,8 +71,8 @@ app.use('/api/projects', projectUsersRoutes);
 app.use('/api/reports', reportsRoutes);
 
 app.get('/metrics', async (req, res) => {
-  res.set('Content-Type', promClient.register.contentType);
-  const metrics = await promClient.register.metrics();
+  res.set('Content-Type', metricsRegistry.contentType);
+  const metrics = await metricsRegistry.metrics();
   res.send(metrics);
 });
 
