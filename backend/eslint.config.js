@@ -6,7 +6,7 @@ import prettierPlugin from "eslint-plugin-prettier";
 export default [
   // Global ignores (replaces .eslintignore)
   {
-    ignores: ["node_modules/", "dist/", "build/", "coverage/", "jest.config.js"],
+    ignores: ["node_modules/", "dist/", "build/", "coverage/", "jest.config.cjs"],
   },
 
   // Base JS recommended rules
