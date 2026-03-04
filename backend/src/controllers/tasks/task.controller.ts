@@ -1,7 +1,7 @@
-import { RequestHandler } from "express";
-import * as taskService from "../../services/tasks/task.service";
-import { BadRequestError } from "../../errors/BadRequestError";
-import { contextLogger } from "../../utils/contextLogger";
+import { RequestHandler } from 'express';
+import * as taskService from '../../services/tasks/task.service';
+import { BadRequestError } from '../../errors/BadRequestError';
+import { contextLogger } from '../../utils/contextLogger';
 
 export const getAllTasks: RequestHandler = async (req, res, next) => {
   try {
@@ -10,14 +10,14 @@ export const getAllTasks: RequestHandler = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-}
+};
 
 export const getTaskById: RequestHandler = async (req, res, next) => {
   try {
     const id = req.params.id as string;
 
     if (!id) {
-      throw new BadRequestError("Task ID is required");
+      throw new BadRequestError('Task ID is required');
     }
 
     const task = await taskService.getTaskById(id);
@@ -25,28 +25,33 @@ export const getTaskById: RequestHandler = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-}
+};
 
 export const createTask: RequestHandler = async (req, res, next) => {
   try {
     const { title, description, status_id } = req.body;
-    const task = await taskService.createTask({ title, description, status_id, created_at: new Date() });
+    const task = await taskService.createTask({
+      title,
+      description,
+      status_id,
+      created_at: new Date(),
+    });
     res.status(201).json(task);
   } catch (error) {
     next(error);
   }
-}
+};
 
 export const updateTask: RequestHandler = async (req, res, next) => {
   try {
     const id = req.params.id as string;
-    const { title, description, status_id, assignedTo } = req.body;
+    const { title, description, status_id } = req.body;
     const task = await taskService.updateTask(id, { title, description, status_id });
     res.json(task);
   } catch (error) {
     next(error);
   }
-}
+};
 
 export const deleteTask: RequestHandler = async (req, res, next) => {
   try {
@@ -56,7 +61,7 @@ export const deleteTask: RequestHandler = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-}
+};
 
 export const changeTaskStatus: RequestHandler = async (req, res, next) => {
   try {
@@ -68,7 +73,7 @@ export const changeTaskStatus: RequestHandler = async (req, res, next) => {
       taskId: id,
       statusId,
       userId,
-      action: 'CHANGE_TASK_STATUS'
+      action: 'CHANGE_TASK_STATUS',
     });
 
     const task = await taskService.changeTaskStatus(id, statusId.toString(), userId);
@@ -76,12 +81,12 @@ export const changeTaskStatus: RequestHandler = async (req, res, next) => {
     res.json({
       success: true,
       message: 'Task status updated successfully',
-      data: task
+      data: task,
     });
   } catch (error) {
     next(error);
   }
-}
+};
 
 export const assignUsersToTask: RequestHandler = async (req, res, next) => {
   try {
@@ -91,7 +96,7 @@ export const assignUsersToTask: RequestHandler = async (req, res, next) => {
     contextLogger.info(`Assigning user to task`, {
       taskId: id,
       userId: user_id,
-      action: 'ASSIGN_USER_TO_TASK'
+      action: 'ASSIGN_USER_TO_TASK',
     });
 
     const result = await taskService.assignUsersToTask(id, [user_id.toString()]);
@@ -99,12 +104,12 @@ export const assignUsersToTask: RequestHandler = async (req, res, next) => {
     res.status(201).json({
       success: true,
       message: 'User assigned to task successfully',
-      data: result
+      data: result,
     });
   } catch (error) {
     next(error);
   }
-}
+};
 
 export const getTaskHistory: RequestHandler = async (req, res, next) => {
   try {
@@ -114,7 +119,7 @@ export const getTaskHistory: RequestHandler = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-}
+};
 
 export const getCalendarEvents: RequestHandler = async (req, res, next) => {
   try {
@@ -124,14 +129,16 @@ export const getCalendarEvents: RequestHandler = async (req, res, next) => {
     contextLogger.debug(`Getting calendar events`, {
       businessId,
       projectId,
-      action: 'GET_CALENDAR_EVENTS'
+      action: 'GET_CALENDAR_EVENTS',
     });
 
     if (!businessId) {
-      throw new BadRequestError("Business ID not found in request");
+      throw new BadRequestError('Business ID not found in request');
     }
 
-    contextLogger.info(`[CALENDAR_CTRL] Getting calendar events for business ${businessId}${projectId ? `, project ${projectId}` : ''}`);
+    contextLogger.info(
+      `[CALENDAR_CTRL] Getting calendar events for business ${businessId}${projectId ? `, project ${projectId}` : ''}`
+    );
 
     const events = await taskService.getCalendarEventsService(
       businessId,
@@ -141,9 +148,9 @@ export const getCalendarEvents: RequestHandler = async (req, res, next) => {
     res.json({
       success: true,
       message: 'Calendar events retrieved successfully',
-      data: events
+      data: events,
     });
   } catch (error) {
     next(error);
   }
-}
+};

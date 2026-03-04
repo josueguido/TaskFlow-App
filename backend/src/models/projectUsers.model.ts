@@ -1,9 +1,13 @@
-import { pool } from "../config/DB";
-import { IProjectUser, IProjectUserWithUser } from "../interfaces/projectUsers.interface";
+import { pool } from '../config/DB';
+import { IProjectUser, IProjectUserWithUser } from '../interfaces/projectUsers.interface';
 import { NotFoundError } from '../errors/NotFoundError';
 
 // Agregar usuario a proyecto
-export const addUserToProject = async (projectId: number, userId: number, role: 'admin' | 'member' = 'member'): Promise<IProjectUser> => {
+export const addUserToProject = async (
+  projectId: number,
+  userId: number,
+  role: 'admin' | 'member' = 'member'
+): Promise<IProjectUser> => {
   const result = await pool.query(
     `INSERT INTO project_users (project_id, user_id, role)
      VALUES ($1, $2, $3)
@@ -38,7 +42,7 @@ export const getProjectUsers = async (projectId: number): Promise<IProjectUserWi
     [projectId]
   );
 
-  return result.rows.map(row => ({
+  return result.rows.map((row) => ({
     id: row.id,
     project_id: row.project_id,
     user_id: row.user_id,
@@ -48,13 +52,16 @@ export const getProjectUsers = async (projectId: number): Promise<IProjectUserWi
     user: {
       id: row.user_id_obj,
       name: row.name,
-      email: row.email
-    }
+      email: row.email,
+    },
   }));
 };
 
 // Obtener rol del usuario en un proyecto
-export const getUserRoleInProject = async (projectId: number, userId: number): Promise<'admin' | 'member' | null> => {
+export const getUserRoleInProject = async (
+  projectId: number,
+  userId: number
+): Promise<'admin' | 'member' | null> => {
   const result = await pool.query(
     `SELECT role FROM project_users WHERE project_id = $1 AND user_id = $2`,
     [projectId, userId]
@@ -80,7 +87,11 @@ export const removeUserFromProject = async (projectId: number, userId: number): 
 };
 
 // Cambiar rol del usuario en proyecto
-export const updateUserRoleInProject = async (projectId: number, userId: number, role: 'admin' | 'member'): Promise<IProjectUser> => {
+export const updateUserRoleInProject = async (
+  projectId: number,
+  userId: number,
+  role: 'admin' | 'member'
+): Promise<IProjectUser> => {
   const result = await pool.query(
     `UPDATE project_users SET role = $1, updated_at = CURRENT_TIMESTAMP WHERE project_id = $2 AND user_id = $3 RETURNING id, project_id, user_id, role, created_at, updated_at`,
     [role, projectId, userId]

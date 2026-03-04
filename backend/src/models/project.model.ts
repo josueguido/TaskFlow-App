@@ -1,5 +1,4 @@
-import { pool } from "../config/DB";
-import { IProject } from '../interfaces/project.interface';
+import { pool } from '../config/DB';
 import { NotFoundError } from '../errors/NotFoundError';
 
 export const getProjects = async () => {
@@ -15,10 +14,11 @@ export const getProjects = async () => {
     ORDER BY created_at DESC
   `);
   return result.rows;
-}
+};
 
 export const getProjectsByBusinessId = async (businessId: string) => {
-  const result = await pool.query(`
+  const result = await pool.query(
+    `
     SELECT
       id,
       business_id,
@@ -29,13 +29,16 @@ export const getProjectsByBusinessId = async (businessId: string) => {
     FROM projects
     WHERE business_id = $1
     ORDER BY created_at DESC
-  `, [businessId]);
+  `,
+    [businessId]
+  );
 
   return result.rows;
-}
+};
 
 export const getProjectById = async (projectId: string) => {
-  const result = await pool.query(`
+  const result = await pool.query(
+    `
     SELECT
       id,
       business_id,
@@ -45,16 +48,23 @@ export const getProjectById = async (projectId: string) => {
       updated_at
     FROM projects
     WHERE id = $1
-  `, [projectId]);
+  `,
+    [projectId]
+  );
 
   if (result.rows.length === 0) {
     throw new NotFoundError(`Project with ID ${projectId} not found`);
   }
 
   return result.rows[0];
-}
+};
 
-export const createProject = async (projectData: { business_id: string, name: string, description?: string, creatorUserId?: number }) => {
+export const createProject = async (projectData: {
+  business_id: string;
+  name: string;
+  description?: string;
+  creatorUserId?: number;
+}) => {
   const client = await pool.connect();
 
   try {
@@ -75,7 +85,7 @@ export const createProject = async (projectData: { business_id: string, name: st
     const result = await client.query(query, [
       parseInt(projectData.business_id, 10),
       projectData.name,
-      projectData.description || null
+      projectData.description || null,
     ]);
 
     const projectId = result.rows[0].id;
@@ -96,9 +106,12 @@ export const createProject = async (projectData: { business_id: string, name: st
   } finally {
     client.release();
   }
-}
+};
 
-export const updateProject = async (projectId: string, updateData: { name?: string, description?: string }) => {
+export const updateProject = async (
+  projectId: string,
+  updateData: { name?: string; description?: string }
+) => {
   const client = await pool.connect();
 
   try {
@@ -151,7 +164,7 @@ export const updateProject = async (projectId: string, updateData: { name?: stri
   } finally {
     client.release();
   }
-}
+};
 
 export const deleteProject = async (projectId: string) => {
   const client = await pool.connect();
@@ -162,9 +175,12 @@ export const deleteProject = async (projectId: string) => {
     const projectCheck = await client.query('SELECT id FROM projects WHERE id = $1', [projectId]);
     if (projectCheck.rows.length === 0) throw new NotFoundError('Project not found');
 
-    const result = await client.query(`
+    const result = await client.query(
+      `
       DELETE FROM projects WHERE id = $1 RETURNING *
-    `, [projectId]);
+    `,
+      [projectId]
+    );
 
     await client.query('COMMIT');
     return result.rows[0];
@@ -174,16 +190,19 @@ export const deleteProject = async (projectId: string) => {
   } finally {
     client.release();
   }
-}
+};
 
 export const getProjectStats = async (businessId: string) => {
-  const result = await pool.query(`
+  const result = await pool.query(
+    `
     SELECT
       COUNT(*) as total_projects,
       COUNT(CASE WHEN created_at >= CURRENT_DATE - INTERVAL '30 days' THEN 1 END) as recent_projects
     FROM projects
     WHERE business_id = $1
-  `, [businessId]);
+  `,
+    [businessId]
+  );
 
   return result.rows[0];
-}
+};

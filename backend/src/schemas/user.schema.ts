@@ -5,4 +5,3 @@ export const userSchema = z.object({
   email: z.string().email(),
   age: z.number().int().min(0),
 });
-

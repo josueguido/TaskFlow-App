@@ -1,4 +1,8 @@
-import { ICreateTaskInput, IUpdateTaskInput, ICalendarEvent } from "../../interfaces/task.interface";
+import {
+  ICreateTaskInput,
+  IUpdateTaskInput,
+  ICalendarEvent,
+} from '../../interfaces/task.interface';
 import {
   getTasks,
   getTaskById as findTaskById,
@@ -9,9 +13,9 @@ import {
   assignUsers,
   getHistoryByTaskId,
   getCalendarEvents,
-} from "../../models/task.model";
-import { NotFoundError } from "../../errors/NotFoundError";
-import { contextLogger } from "../../utils/contextLogger";
+} from '../../models/task.model';
+import { NotFoundError } from '../../errors/NotFoundError';
+import { contextLogger } from '../../utils/contextLogger';
 
 export const getAllTasks = async () => {
   const tasks = await getTasks();
@@ -60,7 +64,7 @@ export const changeTaskStatus = async (taskId: string, statusId: string, userId?
       taskId,
       statusId,
       userId,
-      action: 'CHANGE_TASK_STATUS'
+      action: 'CHANGE_TASK_STATUS',
     });
 
     const task = await findTaskById(taskId);
@@ -74,7 +78,7 @@ export const changeTaskStatus = async (taskId: string, statusId: string, userId?
       taskId,
       newStatusId: statusId,
       userId,
-      action: 'CHANGE_TASK_STATUS_SUCCESS'
+      action: 'CHANGE_TASK_STATUS_SUCCESS',
     });
     return updated;
   } catch (error) {
@@ -82,7 +86,7 @@ export const changeTaskStatus = async (taskId: string, statusId: string, userId?
       taskId,
       statusId,
       action: 'CHANGE_TASK_STATUS_FAILED',
-      error: error instanceof Error ? error.message : String(error)
+      error: error instanceof Error ? error.message : String(error),
     });
     throw error;
   }
@@ -108,12 +112,15 @@ export const getTaskHistory = async (taskId: string) => {
   return history;
 };
 
-export const getCalendarEventsService = async (businessId: number, projectId?: number): Promise<ICalendarEvent[]> => {
+export const getCalendarEventsService = async (
+  businessId: number,
+  projectId?: number
+): Promise<ICalendarEvent[]> => {
   try {
     contextLogger.debug(`Getting calendar events`, {
       businessId,
       projectId,
-      action: 'GET_CALENDAR_EVENTS'
+      action: 'GET_CALENDAR_EVENTS',
     });
 
     const events = await getCalendarEvents(businessId, projectId);
@@ -122,7 +129,7 @@ export const getCalendarEventsService = async (businessId: number, projectId?: n
       businessId,
       projectId,
       eventCount: events.length,
-      action: 'GET_CALENDAR_EVENTS_SUCCESS'
+      action: 'GET_CALENDAR_EVENTS_SUCCESS',
     });
     return events;
   } catch (error) {
@@ -130,7 +137,7 @@ export const getCalendarEventsService = async (businessId: number, projectId?: n
       businessId,
       projectId,
       action: 'GET_CALENDAR_EVENTS_FAILED',
-      error: error instanceof Error ? error.message : String(error)
+      error: error instanceof Error ? error.message : String(error),
     });
     throw error;
   }

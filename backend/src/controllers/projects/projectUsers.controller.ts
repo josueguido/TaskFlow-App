@@ -7,7 +7,6 @@ export const addUserToProject = async (req: Request, res: Response, next: NextFu
   try {
     const { projectId } = req.params;
     const { userId, role = 'member' } = req.body;
-    const currentUserId = (req as any).user?.id;
 
     if (!userId) {
       throw new BadRequestError('User ID is required');
@@ -17,7 +16,7 @@ export const addUserToProject = async (req: Request, res: Response, next: NextFu
       projectId,
       userId,
       role,
-      action: 'ADD_USER_TO_PROJECT'
+      action: 'ADD_USER_TO_PROJECT',
     });
 
     const result = await projectUsersService.addUserToProjectService(
@@ -29,7 +28,7 @@ export const addUserToProject = async (req: Request, res: Response, next: NextFu
     res.status(201).json({
       success: true,
       message: 'User added to project successfully',
-      data: result
+      data: result,
     });
   } catch (error) {
     next(error);
@@ -42,7 +41,7 @@ export const getProjectUsers = async (req: Request, res: Response, next: NextFun
 
     contextLogger.debug(`Getting project users`, {
       projectId,
-      action: 'GET_PROJECT_USERS'
+      action: 'GET_PROJECT_USERS',
     });
 
     const users = await projectUsersService.getProjectUsersService(Number(projectId));
@@ -50,7 +49,7 @@ export const getProjectUsers = async (req: Request, res: Response, next: NextFun
     res.json({
       success: true,
       message: 'Project users retrieved successfully',
-      data: users
+      data: users,
     });
   } catch (error) {
     next(error);
@@ -69,7 +68,7 @@ export const getUserRole = async (req: Request, res: Response, next: NextFunctio
     contextLogger.debug(`Getting user role in project`, {
       projectId,
       userId,
-      action: 'GET_USER_ROLE'
+      action: 'GET_USER_ROLE',
     });
 
     const result = await projectUsersService.getUserRoleService(Number(projectId), userId);
@@ -77,7 +76,7 @@ export const getUserRole = async (req: Request, res: Response, next: NextFunctio
     res.json({
       success: true,
       message: 'User role retrieved successfully',
-      data: result
+      data: result,
     });
   } catch (error) {
     next(error);
@@ -91,17 +90,14 @@ export const removeUserFromProject = async (req: Request, res: Response, next: N
     contextLogger.info(`Removing user from project`, {
       projectId,
       userId,
-      action: 'REMOVE_USER_FROM_PROJECT'
+      action: 'REMOVE_USER_FROM_PROJECT',
     });
 
-    await projectUsersService.removeUserFromProjectService(
-      Number(projectId),
-      Number(userId)
-    );
+    await projectUsersService.removeUserFromProjectService(Number(projectId), Number(userId));
 
     res.json({
       success: true,
-      message: 'User removed from project successfully'
+      message: 'User removed from project successfully',
     });
   } catch (error) {
     next(error);
@@ -121,7 +117,7 @@ export const updateUserRole = async (req: Request, res: Response, next: NextFunc
       projectId,
       userId,
       newRole: role,
-      action: 'UPDATE_USER_ROLE'
+      action: 'UPDATE_USER_ROLE',
     });
 
     const result = await projectUsersService.updateUserRoleService(
@@ -133,7 +129,7 @@ export const updateUserRole = async (req: Request, res: Response, next: NextFunc
     res.json({
       success: true,
       message: 'User role updated successfully',
-      data: result
+      data: result,
     });
   } catch (error) {
     next(error);
@@ -152,7 +148,7 @@ export const getProjectsByUser = async (req: Request, res: Response, next: NextF
     contextLogger.debug(`Getting user projects`, {
       userId,
       businessId,
-      action: 'GET_USER_PROJECTS'
+      action: 'GET_USER_PROJECTS',
     });
 
     const projects = await projectUsersService.getProjectsByUserService(userId, businessId);
@@ -160,7 +156,7 @@ export const getProjectsByUser = async (req: Request, res: Response, next: NextF
     res.json({
       success: true,
       message: 'User projects retrieved successfully',
-      data: projects
+      data: projects,
     });
   } catch (error) {
     next(error);

@@ -1,9 +1,9 @@
-import { compare, hash, genSalt } from "bcryptjs";
-import * as jwt from "../../utils/jwt";
-import * as rtModel from "../../models/refreshToken.model";
-import { pool } from "../../config/DB";
-import { BadRequestError } from "../../errors/BadRequestError";
-import { UnauthorizedError } from "../../errors/UnauthorizedError";
+import { compare, hash, genSalt } from 'bcryptjs';
+import * as jwt from '../../utils/jwt';
+import * as rtModel from '../../models/refreshToken.model';
+import { pool } from '../../config/DB';
+import { BadRequestError } from '../../errors/BadRequestError';
+import { UnauthorizedError } from '../../errors/UnauthorizedError';
 
 export async function signupBusinessService({
   businessName,
@@ -19,19 +19,18 @@ export async function signupBusinessService({
   const client = await pool.connect();
 
   try {
-    await client.query("BEGIN");
+    await client.query('BEGIN');
 
-    const { rows: existingUser } = await client.query(
-      "SELECT 1 FROM users WHERE email = $1",
-      [adminEmail]
-    );
+    const { rows: existingUser } = await client.query('SELECT 1 FROM users WHERE email = $1', [
+      adminEmail,
+    ]);
 
     if (existingUser.length > 0) {
-      throw new BadRequestError("Email already in use");
+      throw new BadRequestError('Email already in use');
     }
 
     const businessResult = await client.query(
-      "INSERT INTO businesses (name, created_at) VALUES ($1, NOW()) RETURNING id",
+      'INSERT INTO businesses (name, created_at) VALUES ($1, NOW()) RETURNING id',
       [businessName]
     );
 
@@ -49,12 +48,12 @@ export async function signupBusinessService({
 
     const createdUser = userResult.rows[0];
 
-    await client.query(
-      "UPDATE businesses SET owner_id = $1 WHERE id = $2",
-      [createdUser.id, businessId]
-    );
+    await client.query('UPDATE businesses SET owner_id = $1 WHERE id = $2', [
+      createdUser.id,
+      businessId,
+    ]);
 
-    await client.query("COMMIT");
+    await client.query('COMMIT');
 
     const payload = {
       userId: createdUser.id.toString(),
@@ -84,7 +83,7 @@ export async function signupBusinessService({
       },
     };
   } catch (err) {
-    await client.query("ROLLBACK");
+    await client.query('ROLLBACK');
     throw err;
   } finally {
     client.release();
@@ -92,16 +91,15 @@ export async function signupBusinessService({
 }
 
 export async function loginService(email: string, password: string) {
-  const { rows } = await pool.query(
-    "SELECT * FROM users WHERE email = $1 AND status = 'active'",
-    [email]
-  );
+  const { rows } = await pool.query("SELECT * FROM users WHERE email = $1 AND status = 'active'", [
+    email,
+  ]);
 
   const user = rows[0];
-  if (!user) throw new UnauthorizedError("Invalid credentials");
+  if (!user) throw new UnauthorizedError('Invalid credentials');
 
   const match = await compare(password, user.password_hash);
-  if (!match) throw new UnauthorizedError("Invalid credentials");
+  if (!match) throw new UnauthorizedError('Invalid credentials');
 
   const payload = {
     userId: user.id.toString(),
@@ -136,7 +134,7 @@ export async function refreshTokenService(token: string) {
 
     if (found.rows.length === 0) {
       console.warn('Token not found in database');
-      throw new UnauthorizedError("Token has been revoked or logged out");
+      throw new UnauthorizedError('Token has been revoked or logged out');
     }
 
     const newAccessToken = jwt.generateAccessToken({
@@ -168,10 +166,11 @@ export async function completeUserRegistration(
   );
 
   if (rows.length === 0) {
-    throw new UnauthorizedError("Invalid or already used invitation token");
+    throw new UnauthorizedError('Invalid or already used invitation token');
   }
 
-  const user = rows[0];
+  // Validate invitation exists (rows checked above)
+  const _invitedUser = rows[0];
 
   const salt = await genSalt(10);
   const hashed = await hash(password, salt);
@@ -183,11 +182,7 @@ export async function completeUserRegistration(
     RETURNING id, email, name, business_id, role_id, status
   `;
 
-  const { rows: updatedUser } = await pool.query(updateQuery, [
-    name,
-    hashed,
-    invite_token,
-  ]);
+  const { rows: updatedUser } = await pool.query(updateQuery, [name, hashed, invite_token]);
 
   const completedUser = updatedUser[0];
 
@@ -216,12 +211,6 @@ export async function completeUserRegistration(
   };
 }
 
-export async function registerService(
-  email: string,
-  password: string,
-  name: string
-) {
-  throw new BadRequestError(
-    "This endpoint is deprecated. Use /api/auth/signup-business instead"
-  );
+export async function registerService(_email: string, _password: string, _name: string) {
+  throw new BadRequestError('This endpoint is deprecated. Use /api/auth/signup-business instead');
 }

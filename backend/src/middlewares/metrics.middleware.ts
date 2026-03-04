@@ -1,9 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import {
-  httpRequestDuration,
-  httpRequestTotal,
-  errorTotal
-} from '../utils/metrics';
+import { httpRequestDuration, httpRequestTotal, errorTotal } from '../utils/metrics';
 
 export const metricsMiddleware = (req: Request, res: Response, next: NextFunction) => {
   if (req.path === '/metrics') {
@@ -31,7 +27,12 @@ export const metricsMiddleware = (req: Request, res: Response, next: NextFunctio
   next();
 };
 
-export const errorMetricsMiddleware = (err: any, req: Request, res: Response, next: NextFunction) => {
+export const errorMetricsMiddleware = (
+  err: any,
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const route = `${req.method} ${req.route?.path || req.path}`;
   errorTotal.labels(err.name || 'unknown_error', route).inc();
   next(err);

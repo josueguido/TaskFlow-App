@@ -6,19 +6,22 @@ import {
   updateUserRoleInProject,
   getProjectsByUser,
   isProjectAdmin,
-  countProjectUsers
 } from '../../models/projectUsers.model';
 import { contextLogger } from '../../utils/contextLogger';
 import { BadRequestError } from '../../errors/BadRequestError';
 import { NotFoundError } from '../../errors/NotFoundError';
 
-export const addUserToProjectService = async (projectId: number, userId: number, role: 'admin' | 'member' = 'member') => {
+export const addUserToProjectService = async (
+  projectId: number,
+  userId: number,
+  role: 'admin' | 'member' = 'member'
+) => {
   try {
     contextLogger.info(`Adding user to project`, {
       projectId,
       userId,
       role,
-      action: 'ADD_USER_TO_PROJECT'
+      action: 'ADD_USER_TO_PROJECT',
     });
 
     const existingRole = await getUserRoleInProject(projectId, userId);
@@ -32,7 +35,7 @@ export const addUserToProjectService = async (projectId: number, userId: number,
       projectId,
       userId,
       role,
-      action: 'ADD_USER_TO_PROJECT_SUCCESS'
+      action: 'ADD_USER_TO_PROJECT_SUCCESS',
     });
 
     return result;
@@ -42,7 +45,7 @@ export const addUserToProjectService = async (projectId: number, userId: number,
       userId,
       role,
       action: 'ADD_USER_TO_PROJECT_FAILED',
-      error: error instanceof Error ? error.message : String(error)
+      error: error instanceof Error ? error.message : String(error),
     });
     throw error;
   }
@@ -52,14 +55,14 @@ export const getProjectUsersService = async (projectId: number) => {
   try {
     contextLogger.debug(`Getting project users`, {
       projectId,
-      action: 'GET_PROJECT_USERS'
+      action: 'GET_PROJECT_USERS',
     });
     return await getProjectUsers(projectId);
   } catch (error) {
     contextLogger.error(`Error getting project users`, {
       projectId,
       action: 'GET_PROJECT_USERS_FAILED',
-      error: error instanceof Error ? error.message : String(error)
+      error: error instanceof Error ? error.message : String(error),
     });
     throw error;
   }
@@ -70,7 +73,7 @@ export const getUserRoleService = async (projectId: number, userId: number) => {
     contextLogger.debug(`Getting user role in project`, {
       projectId,
       userId,
-      action: 'GET_USER_ROLE'
+      action: 'GET_USER_ROLE',
     });
     const role = await getUserRoleInProject(projectId, userId);
 
@@ -84,7 +87,7 @@ export const getUserRoleService = async (projectId: number, userId: number) => {
       projectId,
       userId,
       action: 'GET_USER_ROLE_FAILED',
-      error: error instanceof Error ? error.message : String(error)
+      error: error instanceof Error ? error.message : String(error),
     });
     throw error;
   }
@@ -95,7 +98,7 @@ export const removeUserFromProjectService = async (projectId: number, userId: nu
     contextLogger.info(`Removing user from project`, {
       projectId,
       userId,
-      action: 'REMOVE_USER_FROM_PROJECT'
+      action: 'REMOVE_USER_FROM_PROJECT',
     });
 
     const role = await getUserRoleInProject(projectId, userId);
@@ -112,19 +115,23 @@ export const removeUserFromProjectService = async (projectId: number, userId: nu
       projectId,
       userId,
       action: 'REMOVE_USER_FROM_PROJECT_FAILED',
-      error: error instanceof Error ? error.message : String(error)
+      error: error instanceof Error ? error.message : String(error),
     });
     throw error;
   }
 };
 
-export const updateUserRoleService = async (projectId: number, userId: number, role: 'admin' | 'member') => {
+export const updateUserRoleService = async (
+  projectId: number,
+  userId: number,
+  role: 'admin' | 'member'
+) => {
   try {
     contextLogger.warn(`Updating user role`, {
       projectId,
       userId,
       newRole: role,
-      action: 'UPDATE_USER_ROLE'
+      action: 'UPDATE_USER_ROLE',
     });
 
     const currentRole = await getUserRoleInProject(projectId, userId);
@@ -146,7 +153,7 @@ export const updateUserRoleService = async (projectId: number, userId: number, r
       userId,
       previousRole: currentRole,
       newRole: role,
-      action: 'UPDATE_USER_ROLE_SUCCESS'
+      action: 'UPDATE_USER_ROLE_SUCCESS',
     });
 
     return result;
@@ -156,7 +163,7 @@ export const updateUserRoleService = async (projectId: number, userId: number, r
       userId,
       role,
       action: 'UPDATE_USER_ROLE_FAILED',
-      error: error instanceof Error ? error.message : String(error)
+      error: error instanceof Error ? error.message : String(error),
     });
     throw error;
   }
@@ -167,7 +174,7 @@ export const getProjectsByUserService = async (userId: number, businessId: numbe
     contextLogger.debug(`Getting projects for user`, {
       userId,
       businessId,
-      action: 'GET_PROJECTS_FOR_USER'
+      action: 'GET_PROJECTS_FOR_USER',
     });
     return await getProjectsByUser(userId, businessId);
   } catch (error) {
@@ -175,13 +182,16 @@ export const getProjectsByUserService = async (userId: number, businessId: numbe
       userId,
       businessId,
       action: 'GET_PROJECTS_FOR_USER_FAILED',
-      error: error instanceof Error ? error.message : String(error)
+      error: error instanceof Error ? error.message : String(error),
     });
     throw error;
   }
 };
 
-export const isProjectAdminService = async (projectId: number, userId: number): Promise<boolean> => {
+export const isProjectAdminService = async (
+  projectId: number,
+  userId: number
+): Promise<boolean> => {
   try {
     return await isProjectAdmin(projectId, userId);
   } catch (error) {
@@ -189,7 +199,7 @@ export const isProjectAdminService = async (projectId: number, userId: number): 
       projectId,
       userId,
       action: 'CHECK_ADMIN_FAILED',
-      error: error instanceof Error ? error.message : String(error)
+      error: error instanceof Error ? error.message : String(error),
     });
     throw error;
   }
@@ -197,5 +207,5 @@ export const isProjectAdminService = async (projectId: number, userId: number): 
 
 const countProjectAdmins = async (projectId: number): Promise<number> => {
   const users = await getProjectUsers(projectId);
-  return users.filter(u => u.role === 'admin').length;
+  return users.filter((u) => u.role === 'admin').length;
 };

@@ -1,6 +1,6 @@
-import { RequestHandler } from "express";
-import * as statusService from "../../services/tasks/status.service";
-import { contextLogger } from "../../utils/contextLogger";
+import { RequestHandler } from 'express';
+import * as statusService from '../../services/tasks/status.service';
+import { contextLogger } from '../../utils/contextLogger';
 
 export const getAllStatuses: RequestHandler = async (req, res, next) => {
   try {
@@ -11,19 +11,19 @@ export const getAllStatuses: RequestHandler = async (req, res, next) => {
 
     contextLogger.debug(`Getting all statuses`, {
       businessId,
-      action: 'GET_ALL_STATUSES'
+      action: 'GET_ALL_STATUSES',
     });
     const statuses = await statusService.getStatuses(businessId);
 
     res.json({
       success: true,
       message: 'Statuses retrieved successfully',
-      data: statuses
+      data: statuses,
     });
   } catch (error) {
     next(error);
   }
-}
+};
 
 export const getStatusById: RequestHandler = async (req, res, next) => {
   try {
@@ -37,19 +37,19 @@ export const getStatusById: RequestHandler = async (req, res, next) => {
     contextLogger.debug(`Getting status`, {
       statusId: id,
       businessId,
-      action: 'GET_STATUS'
+      action: 'GET_STATUS',
     });
     const status = await statusService.getStatusByIdService(id, businessId);
 
     res.json({
       success: true,
       message: 'Status retrieved successfully',
-      data: status
+      data: status,
     });
   } catch (error) {
     next(error);
   }
-}
+};
 
 export const createStatus: RequestHandler = async (req, res, next) => {
   try {
@@ -58,19 +58,19 @@ export const createStatus: RequestHandler = async (req, res, next) => {
     contextLogger.info(`Creating status`, {
       statusName: name,
       businessId: business_id,
-      action: 'CREATE_STATUS'
+      action: 'CREATE_STATUS',
     });
     const status = await statusService.createStatusService({ name, order, business_id });
 
     res.status(201).json({
       success: true,
       message: 'Status created successfully',
-      data: status
+      data: status,
     });
   } catch (error) {
     next(error);
   }
-}
+};
 
 export const updateStatus: RequestHandler = async (req, res, next) => {
   try {
@@ -86,19 +86,19 @@ export const updateStatus: RequestHandler = async (req, res, next) => {
       statusId: id,
       statusName: name,
       businessId,
-      action: 'UPDATE_STATUS'
+      action: 'UPDATE_STATUS',
     });
     const status = await statusService.updateStatusService(Number(id), businessId, { name, order });
 
     res.json({
       success: true,
       message: 'Status updated successfully',
-      data: status
+      data: status,
     });
   } catch (error) {
     next(error);
   }
-}
+};
 
 export const deleteStatus: RequestHandler = async (req, res, next) => {
   try {
@@ -112,16 +112,16 @@ export const deleteStatus: RequestHandler = async (req, res, next) => {
     contextLogger.info(`Deleting status`, {
       statusId: id,
       businessId,
-      action: 'DELETE_STATUS'
+      action: 'DELETE_STATUS',
     });
     const status = await statusService.deleteStatusService(Number(id), businessId);
 
     res.json({
       success: true,
       message: 'Status deleted successfully',
-      data: status
+      data: status,
     });
   } catch (error) {
     next(error);
   }
-}
+};

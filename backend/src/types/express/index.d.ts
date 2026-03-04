@@ -1,5 +1,4 @@
-import { JwtPayload } from "jsonwebtoken";
-import { User } from "../../models/user.model";
+import { JwtPayload } from 'jsonwebtoken';
 
 export interface AuthUserPayload extends JwtPayload {
   userId: string;

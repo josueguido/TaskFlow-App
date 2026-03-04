@@ -1,4 +1,4 @@
-import { IAssignment, ICreateAssignment, IUpdateAssignment } from '../../interfaces/assignment.interface';
+import { IAssignment } from '../../interfaces/assignment.interface';
 import { NotFoundError } from '../../errors/NotFoundError';
 import {
   getAssignments,
@@ -6,13 +6,12 @@ import {
   assignUsersToTask,
   removeAssignment,
   removeAllAssignments,
-  isUserAssignedToTask
+  isUserAssignedToTask,
 } from '../../models/assignment.model';
-
 
 export const getAllAssignments = async () => {
   return await getAssignments();
-}
+};
 
 export const getAssignmentsByTaskIdService = async (taskId: string): Promise<IAssignment[]> => {
   const assignments = await getAssignmentsByTaskId(taskId);
@@ -56,4 +55,4 @@ export const isUserAssignedToTaskService = async (
   userId: string
 ): Promise<boolean> => {
   return await isUserAssignedToTask(taskId, userId);
-}
+};

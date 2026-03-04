@@ -1,5 +1,5 @@
-import { pool } from "../config/DB";
-import { ITask } from "../interfaces/task.interface";
+import { pool } from '../config/DB';
+import { ITask } from '../interfaces/task.interface';
 
 export const getTasks = async () => {
   const result = await pool.query(`
@@ -9,9 +9,12 @@ export const getTasks = async () => {
 };
 
 export const getTaskById = async (id: string) => {
-  const result = await pool.query(`
+  const result = await pool.query(
+    `
     SELECT * FROM tasks WHERE id = $1
-  `, [id]);
+  `,
+    [id]
+  );
   if (result.rows.length === 0) {
     throw new Error(`Task with id ${id} not found`);
   }
@@ -19,7 +22,8 @@ export const getTaskById = async (id: string) => {
 };
 
 export const createTask = async (task: ITask) => {
-  const result = await pool.query(`
+  const result = await pool.query(
+    `
     INSERT INTO tasks (title, description, status_id, created_at)
     VALUES ($1, $2, $3, $4)
     RETURNING *`,
@@ -29,12 +33,14 @@ export const createTask = async (task: ITask) => {
 };
 
 export const updateTask = async (id: string, task: ITask) => {
-  const result = await pool.query(`
+  const result = await pool.query(
+    `
     UPDATE tasks
     SET title = $1, description = $2, status_id = $3
     WHERE id = $4
     RETURNING *
-  `, [task.title, task.description, task.status_id, id],
+  `,
+    [task.title, task.description, task.status_id, id]
   );
 
   if (result.rows.length === 0) {
@@ -44,9 +50,12 @@ export const updateTask = async (id: string, task: ITask) => {
 };
 
 export const deleteTask = async (id: string) => {
-  const result = await pool.query(`
+  const result = await pool.query(
+    `
     DELETE FROM tasks WHERE id = $1
-  RETURNING *`, [id]);
+  RETURNING *`,
+    [id]
+  );
   if (result.rows.length === 0) {
     throw new Error(`Task with id ${id} not found`);
   }
@@ -59,10 +68,7 @@ export const changeTaskStatus = async (taskId: string, newStatusId: string, user
   try {
     await client.query('BEGIN');
 
-    const oldTaskResult = await client.query(
-      'SELECT status_id FROM tasks WHERE id = $1',
-      [taskId]
-    );
+    const oldTaskResult = await client.query('SELECT status_id FROM tasks WHERE id = $1', [taskId]);
 
     if (oldTaskResult.rows.length === 0) {
       throw new Error(`Task with id ${taskId} not found`);
@@ -106,11 +112,14 @@ export const assignUsers = async (taskId: string, userIds: string[]) => {
 
   const results = [];
   for (const userId of userIds) {
-    const result = await pool.query(`
+    const result = await pool.query(
+      `
       INSERT INTO task_assignments (task_id, user_id, assigned_at)
       VALUES ($1, $2, CURRENT_TIMESTAMP)
       RETURNING task_id, user_id, assigned_at
-    `, [taskId, userId]);
+    `,
+      [taskId, userId]
+    );
 
     if (result.rows.length > 0) {
       results.push(result.rows[0]);
@@ -121,16 +130,19 @@ export const assignUsers = async (taskId: string, userIds: string[]) => {
 };
 
 export const getHistoryByTaskId = async (taskId: string) => {
-  const result = await pool.query(`
+  const result = await pool.query(
+    `
     SELECT * FROM task_history
     WHERE task_id = $1
     ORDER BY created_at DESC
-  `, [taskId]);
+  `,
+    [taskId]
+  );
   if (result.rows.length === 0) {
     throw new Error(`No history found for task with id ${taskId}`);
   }
   return result.rows;
-}
+};
 
 export const getCalendarEvents = async (businessId: number, projectId?: number) => {
   let query = `
@@ -170,4 +182,3 @@ export const getCalendarEvents = async (businessId: number, projectId?: number) 
   const result = await pool.query(query, params);
   return result.rows;
 };
-

@@ -3,7 +3,7 @@ import DailyRotateFile from 'winston-daily-rotate-file';
 import path from 'path';
 import { hostname } from 'os';
 
-const logDir = "logs";
+const logDir = 'logs';
 
 export const logger = winston.createLogger({
   level: process.env.LOG_LEVEL || 'info',
@@ -26,14 +26,14 @@ export const logger = winston.createLogger({
           const metaStr = Object.keys(meta).length ? JSON.stringify(meta, null, 2) : '';
           return `${timestamp} [${level}]: ${message} ${metaStr}`;
         })
-      )
+      ),
     }),
     new DailyRotateFile({
       filename: path.join(logDir, 'combined-%DATE%.log'),
       datePattern: 'YYYY-MM-DD',
       maxSize: '20m',
       maxFiles: '14d',
-      format: winston.format.json()
+      format: winston.format.json(),
     }),
     new DailyRotateFile({
       filename: path.join(logDir, 'error-%DATE%.log'),
@@ -41,7 +41,7 @@ export const logger = winston.createLogger({
       level: 'error',
       maxSize: '20m',
       maxFiles: '30d',
-      format: winston.format.json()
-    })
-  ]
+      format: winston.format.json(),
+    }),
+  ],
 });
