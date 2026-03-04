@@ -36,7 +36,7 @@ export const TenantProvider: React.FC<TenantProviderProps> = ({ children }) => {
   const refreshTenant = async () => {
     const currentBusinessId = businessId();
     if (!currentBusinessId || !token) return;
-    
+
     setIsLoading(true);
     try {
       // TODO: Implementar llamada al API para obtener información del tenant
@@ -53,7 +53,7 @@ export const TenantProvider: React.FC<TenantProviderProps> = ({ children }) => {
 
   const switchTenant = async () => {
     if (!token) return;
-    
+
     setIsLoading(true);
     try {
       // TODO: Implementar cambio de tenant

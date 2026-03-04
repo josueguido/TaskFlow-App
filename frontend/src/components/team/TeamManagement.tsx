@@ -39,7 +39,7 @@ export const TeamManagement: React.FC = () => {
   const [selectedNewRole, setSelectedNewRole] = useState<number | null>(null);
 
   const userRole = useAuth((state) => state.userRole());
-  const isAdmin = userRole === 1; 
+  const isAdmin = userRole === 1;
 
   useEffect(() => {
     const fetchUsers = async () => {
