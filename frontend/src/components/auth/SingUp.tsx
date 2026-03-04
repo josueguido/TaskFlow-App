@@ -15,7 +15,7 @@ const schema = z.object({
         .min(8, "Password must be at least 8 characters long")
         .max(128, "Password must be at most 128 characters long")
         .regex(
-            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-+=\[\]{};':"\\|,.<>\/?]).{8,128}$/,
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-+=[\]{};':"\\|,.<>/?]).{8,128}$/,
             "Password must include uppercase, lowercase, number, and special character"
         ),
     admin_name: z.string().min(2, "Admin name must be at least 2 characters long"),

@@ -46,9 +46,6 @@ export default function SignIn() {
         }
     });
 
-    if (!rehydrated)
-        return <div className="text-white">Loading session...</div>;
-
     const onSubmit = useCallback(async (data: LoginForm) => {
         try {
             setLoading(true);
@@ -85,6 +82,9 @@ export default function SignIn() {
             setLoading(false);
         }
     }, [setAuth, navigate]);
+
+    if (!rehydrated)
+        return <div className="text-white">Loading session...</div>;
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-50 px-4">
