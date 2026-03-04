@@ -104,6 +104,7 @@ const getErrorMessage = (error: any): string => {
         }
       }
     } catch {
+      // ignore JSON parse errors
     }
   }
 

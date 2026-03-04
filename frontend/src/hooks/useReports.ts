@@ -60,7 +60,8 @@ export const useReports = () => {
     try {
       const data = await getOverviewReport();
       setState((prev) => ({ ...prev, overview: data }));
-    } catch (err) {
+    } catch {
+      // silently ignore — individual report fetch
     }
   }, []);
 
@@ -68,7 +69,8 @@ export const useReports = () => {
     try {
       const data = await getProjectsReport();
       setState((prev) => ({ ...prev, projects: data }));
-    } catch (err) {
+    } catch {
+      // silently ignore — individual report fetch
     }
   }, []);
 
@@ -76,7 +78,8 @@ export const useReports = () => {
     try {
       const data = await getActivityReport();
       setState((prev) => ({ ...prev, activity: data }));
-    } catch (err) {
+    } catch {
+      // silently ignore — individual report fetch
     }
   }, []);
 
@@ -84,7 +87,8 @@ export const useReports = () => {
     try {
       const data = await getUsersReport();
       setState((prev) => ({ ...prev, users: data }));
-    } catch (err) {
+    } catch {
+      // silently ignore — individual report fetch
     }
   }, []);
 
@@ -92,7 +96,8 @@ export const useReports = () => {
     try {
       const data = await getStatusesReport();
       setState((prev) => ({ ...prev, statuses: data }));
-    } catch (err) {
+    } catch {
+      // silently ignore — individual report fetch
     }
   }, []);
 
