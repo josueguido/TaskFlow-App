@@ -8,4 +8,8 @@ module.exports = {
   transform: {
     ...tsJestTransformCfg,
   },
+  setupFiles: ["./src/tests/setup.ts"],
+  testPathIgnorePatterns: ["/node_modules/", "/dist/"],
+  // TODO: Remove this when proper tests with DB mocks are implemented
+  testMatch: ["**/__tests__/**/*.[jt]s?(x)", "**/?(*.)+(spec).[jt]s?(x)"],
 };
