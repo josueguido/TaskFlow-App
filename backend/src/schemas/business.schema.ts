@@ -5,13 +5,13 @@ export const createBusinessSchema = z.object({
   email: z.string().email('Invalid email format'),
   admin_name: z.string().min(2, 'Admin name must be at least 2 characters'),
   admin_email: z.string().email('Invalid admin email format'),
-  password: z.string().min(6, 'Password must be at least 6 characters')
+  password: z.string().min(6, 'Password must be at least 6 characters'),
 });
 
 export const updateBusinessSchema = z.object({
   name: z.string().min(2).optional(),
   email: z.string().email().optional(),
-  owner_id: z.number().int().positive().optional()
+  owner_id: z.number().int().positive().optional(),
 });
 
 export type CreateBusinessRequest = z.infer<typeof createBusinessSchema>;

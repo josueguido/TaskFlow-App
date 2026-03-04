@@ -1,7 +1,14 @@
-import { pool } from "../config/DB";
-import { User } from "../interfaces/user.interface";
+import { pool } from '../config/DB';
+import { User } from '../interfaces/user.interface';
 
-export const createUser = async (name: string, email: string, passwordHash: string, business_id: number, roleId = 3, status = 'active') => {
+export const createUser = async (
+  name: string,
+  email: string,
+  passwordHash: string,
+  business_id: number,
+  roleId = 3,
+  status = 'active'
+) => {
   const result = await pool.query(
     `INSERT INTO users (name, email, password_hash, business_id, role_id, status) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,
     [name, email, passwordHash, business_id, roleId, status]
@@ -10,12 +17,16 @@ export const createUser = async (name: string, email: string, passwordHash: stri
 };
 
 export const findUserByEmail = async (email: string) => {
-  const result = await pool.query(`SELECT * FROM users WHERE email = $1 AND status = 'active'`, [email]);
+  const result = await pool.query(`SELECT * FROM users WHERE email = $1 AND status = 'active'`, [
+    email,
+  ]);
   return result.rows[0];
 };
 
 export const getAllUsers = async (): Promise<User[]> => {
-  const result = await pool.query(`SELECT id, name, email, role_id, business_id, created_at FROM users`);
+  const result = await pool.query(
+    `SELECT id, name, email, role_id, business_id, created_at FROM users`
+  );
   return result.rows;
 };
 
@@ -61,25 +72,32 @@ export const createUserInvite = async (email: string, business_id: number, role_
 };
 
 export const findUserByInviteToken = async (inviteToken: string) => {
-  const result = await pool.query(`
+  const result = await pool.query(
+    `
     SELECT * FROM users
     WHERE invite_token = $1 AND status = 'pending'
-  `, [inviteToken]);
+  `,
+    [inviteToken]
+  );
 
   return result.rows[0] || null;
 };
 
-export const completeUserSignup = async (inviteToken: string, name: string, passwordHash: string) => {
+export const completeUserSignup = async (
+  inviteToken: string,
+  name: string,
+  passwordHash: string
+) => {
   const client = await pool.connect();
 
   try {
     await client.query('BEGIN');
 
     // Verificar que el token existe y el usuario está pendiente
-    const user = await client.query(
-      'SELECT * FROM users WHERE invite_token = $1 AND status = $2',
-      [inviteToken, 'pending']
-    );
+    const user = await client.query('SELECT * FROM users WHERE invite_token = $1 AND status = $2', [
+      inviteToken,
+      'pending',
+    ]);
 
     if (user.rows.length === 0) {
       throw new Error('Invalid or expired invite token');

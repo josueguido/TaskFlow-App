@@ -21,7 +21,7 @@ export const loggingMiddleware = (req: Request, res: Response, next: NextFunctio
         statusCode: res.statusCode,
         duration: `${duration}ms`,
         userId: req.user?.userId,
-        ip: req.ip
+        ip: req.ip,
       });
     });
 

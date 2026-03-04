@@ -33,7 +33,7 @@ export const securityLogger: RequestHandler = (req, res, next) => {
         userAgent: req.get('User-Agent'),
         body: { ...(req.body?.email && { email: req.body.email }) },
         params: req.params,
-        query: req.query
+        query: req.query,
       });
     }
 
@@ -42,7 +42,6 @@ export const securityLogger: RequestHandler = (req, res, next) => {
 
   next();
 };
-
 
 export const failedAttempts = new Map<string, { count: number; lastAttempt: number }>();
 
@@ -60,12 +59,12 @@ export const bruteForceProtection: RequestHandler = (req, res, next) => {
         ip,
         attempts: attempts.count,
         path: req.path,
-        userAgent: req.get('User-Agent')
+        userAgent: req.get('User-Agent'),
       });
 
       res.status(429).json({
         status: 'error',
-        message: 'Too many failed attempts. Please try again later.'
+        message: 'Too many failed attempts. Please try again later.',
       });
       return;
     } else {
@@ -79,7 +78,7 @@ export const bruteForceProtection: RequestHandler = (req, res, next) => {
       const current = failedAttempts.get(ip) || { count: 0, lastAttempt: 0 };
       failedAttempts.set(ip, {
         count: current.count + 1,
-        lastAttempt: now
+        lastAttempt: now,
       });
     }
 

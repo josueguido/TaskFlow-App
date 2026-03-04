@@ -16,7 +16,6 @@ const sanitizeFields = (obj: any, fields: string[]) => {
   }
 };
 
-
 export const sanitizeInput = (fieldsToSanitize: string[]): RequestHandler => {
   return (req, res, next) => {
     if (req.body) {

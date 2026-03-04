@@ -1,7 +1,8 @@
-import { pool } from "../config/DB";
+import { pool } from '../config/DB';
 
 export const getOverviewReport = async (businessId: number) => {
-  const result = await pool.query(`
+  const result = await pool.query(
+    `
     SELECT
       COUNT(t.id) AS total_tasks,
       SUM(CASE WHEN s.name = 'Done' THEN 1 ELSE 0 END) AS completed_tasks,
@@ -11,18 +12,23 @@ export const getOverviewReport = async (businessId: number) => {
     JOIN projects p ON p.id = t.project_id
     LEFT JOIN statuses s ON s.id = t.status_id
     WHERE p.business_id = $1
-  `, [businessId]);
+  `,
+    [businessId]
+  );
 
-  return result.rows[0] || {
-    total_tasks: 0,
-    completed_tasks: 0,
-    pending_tasks: 0,
-    completion_rate: 0
-  };
+  return (
+    result.rows[0] || {
+      total_tasks: 0,
+      completed_tasks: 0,
+      pending_tasks: 0,
+      completion_rate: 0,
+    }
+  );
 };
 
 export const getProjectProgressReport = async (businessId: number) => {
-  const result = await pool.query(`
+  const result = await pool.query(
+    `
     SELECT
       p.id AS project_id,
       p.name AS project_name,
@@ -35,13 +41,16 @@ export const getProjectProgressReport = async (businessId: number) => {
     WHERE p.business_id = $1
     GROUP BY p.id, p.name
     ORDER BY completion_rate DESC
-  `, [businessId]);
+  `,
+    [businessId]
+  );
 
   return result.rows;
 };
 
 export const getActivityReport = async (businessId: number, limit: number = 20) => {
-  const result = await pool.query(`
+  const result = await pool.query(
+    `
     SELECT
       th.id,
       th.task_id,
@@ -58,13 +67,16 @@ export const getActivityReport = async (businessId: number, limit: number = 20) 
     WHERE p.business_id = $1
     ORDER BY th.changed_at DESC
     LIMIT $2
-  `, [businessId, limit]);
+  `,
+    [businessId, limit]
+  );
 
   return result.rows;
 };
 
 export const getUserWorkloadReport = async (businessId: number) => {
-  const result = await pool.query(`
+  const result = await pool.query(
+    `
     SELECT
       u.id AS user_id,
       u.name AS user_name,
@@ -80,13 +92,16 @@ export const getUserWorkloadReport = async (businessId: number) => {
     WHERE u.business_id = $1
     GROUP BY u.id, u.name, u.email
     ORDER BY assigned_tasks DESC
-  `, [businessId]);
+  `,
+    [businessId]
+  );
 
   return result.rows;
 };
 
 export const getStatusDistributionReport = async (businessId: number) => {
-  const result = await pool.query(`
+  const result = await pool.query(
+    `
     SELECT
       s.id AS status_id,
       s.name AS status_name,
@@ -98,7 +113,9 @@ export const getStatusDistributionReport = async (businessId: number) => {
     WHERE p.business_id = $1 OR p.business_id IS NULL
     GROUP BY s.id, s.name, s."order"
     ORDER BY s."order" ASC
-  `, [businessId]);
+  `,
+    [businessId]
+  );
 
   return result.rows;
 };
@@ -109,7 +126,7 @@ export const getCombinedReport = async (businessId: number) => {
     getProjectProgressReport(businessId),
     getStatusDistributionReport(businessId),
     getUserWorkloadReport(businessId),
-    getActivityReport(businessId, 10)
+    getActivityReport(businessId, 10),
   ]);
 
   return {
@@ -117,6 +134,6 @@ export const getCombinedReport = async (businessId: number) => {
     projects,
     statuses,
     users,
-    activity
+    activity,
   };
 };

@@ -1,4 +1,4 @@
-import { pool } from "../config/DB";
+import { pool } from '../config/DB';
 import { IBusiness, ICreateBusiness } from '../interfaces/business.interface';
 import { NotFoundError } from '../errors/NotFoundError';
 
@@ -14,9 +14,7 @@ export const createBusiness = async (businessData: ICreateBusiness) => {
       RETURNING *
     `;
 
-    const result = await client.query(query, [
-      businessData.name
-    ]);
+    const result = await client.query(query, [businessData.name]);
 
     await client.query('COMMIT');
     return result.rows[0];
@@ -26,19 +24,22 @@ export const createBusiness = async (businessData: ICreateBusiness) => {
   } finally {
     client.release();
   }
-}
+};
 
 export const getBusinessById = async (businessId: string): Promise<IBusiness> => {
-  const result = await pool.query(`
+  const result = await pool.query(
+    `
     SELECT * FROM businesses WHERE id = $1
-  `, [businessId]);
+  `,
+    [businessId]
+  );
 
   if (result.rows.length === 0) {
     throw new NotFoundError(`Business with ID ${businessId} not found`);
   }
 
   return result.rows[0];
-}
+};
 
 export const updateBusinessOwner = async (businessId: string, ownerId: string) => {
   const client = await pool.connect();
@@ -46,7 +47,9 @@ export const updateBusinessOwner = async (businessId: string, ownerId: string) =
   try {
     await client.query('BEGIN');
 
-    const businessCheck = await client.query('SELECT id FROM businesses WHERE id = $1', [businessId]);
+    const businessCheck = await client.query('SELECT id FROM businesses WHERE id = $1', [
+      businessId,
+    ]);
     if (businessCheck.rows.length === 0) throw new NotFoundError('Business not found');
 
     const userCheck = await client.query('SELECT id FROM users WHERE id = $1', [ownerId]);
@@ -68,7 +71,7 @@ export const updateBusinessOwner = async (businessId: string, ownerId: string) =
   } finally {
     client.release();
   }
-}
+};
 
 export const getAllBusinesses = async (): Promise<IBusiness[]> => {
   const result = await pool.query(`
@@ -81,4 +84,4 @@ export const getAllBusinesses = async (): Promise<IBusiness[]> => {
     ORDER BY b.created_at DESC
   `);
   return result.rows;
-}
+};

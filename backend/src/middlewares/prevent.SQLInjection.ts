@@ -7,11 +7,11 @@ const sqlInjectionPatterns = [
   /\b(OR|AND)\s+\d+\s*=\s*\d+/gi,
   /(--|\/\*|\*\/)/g,
   /\b(WAITFOR|DELAY)\b/gi,
-  /\b(xp_|sp_)\w+/gi
+  /\b(xp_|sp_)\w+/gi,
 ];
 
 const checkForSQLInjection = (value: string): boolean => {
-  return sqlInjectionPatterns.some(pattern => pattern.test(value));
+  return sqlInjectionPatterns.some((pattern) => pattern.test(value));
 };
 
 const validateFields = (obj: any, fields: string[], strict: boolean) => {
@@ -27,7 +27,10 @@ const validateFields = (obj: any, fields: string[], strict: boolean) => {
   }
 };
 
-export const preventSQLInjection = (fieldsToCheck: string[], strictMode = false): RequestHandler => {
+export const preventSQLInjection = (
+  fieldsToCheck: string[],
+  strictMode = false
+): RequestHandler => {
   return (req, res, next) => {
     try {
       if (req.body) {

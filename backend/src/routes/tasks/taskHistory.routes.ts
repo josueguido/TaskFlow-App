@@ -5,11 +5,7 @@ import { createTaskHistorySchema } from '../../schemas/taskHistory.schema';
 import { taskIdSchema } from '../../schemas/assignment.schema';
 const router = Router();
 
-router.get(
-  '/:taskId/history',
-  validateRequest(taskIdSchema),
-  taskHistoryController.getTaskHistory
-);
+router.get('/:taskId/history', validateRequest(taskIdSchema), taskHistoryController.getTaskHistory);
 
 router.post(
   '/history',

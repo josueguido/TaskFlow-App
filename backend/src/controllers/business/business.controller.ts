@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import {
   signupBusiness,
   getBusinessesList,
-  getBusinessDetails
+  getBusinessDetails,
 } from '../../services/business/business.service';
 import { BadRequestError } from '../../errors/BadRequestError';
 import { contextLogger } from '../../utils/contextLogger';
@@ -19,16 +19,15 @@ export const businessSignup = async (req: Request, res: Response, next: NextFunc
       name,
       admin_name,
       admin_email,
-      password
+      password,
     });
 
     contextLogger.info(`Business signup successful`, {
       adminEmail: admin_email,
       businessName: name,
-      action: 'BUSINESS_SIGNUP'
+      action: 'BUSINESS_SIGNUP',
     });
     res.status(201).json(result);
-
   } catch (error) {
     next(error);
   }
@@ -41,9 +40,8 @@ export const getBusinesses = async (req: Request, res: Response, next: NextFunct
     res.status(200).json({
       success: true,
       message: 'Businesses retrieved successfully',
-      data: businesses
+      data: businesses,
     });
-
   } catch (error) {
     next(error);
   }
@@ -62,9 +60,8 @@ export const getBusinessById = async (req: Request, res: Response, next: NextFun
     res.status(200).json({
       success: true,
       message: 'Business details retrieved successfully',
-      data: business
+      data: business,
     });
-
   } catch (error) {
     next(error);
   }
