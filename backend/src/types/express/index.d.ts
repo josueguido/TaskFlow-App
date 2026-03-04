@@ -1,5 +1,4 @@
-import { JwtPayload } from "jsonwebtoken";
-import { User } from "../../models/user.model";
+import { JwtPayload } from 'jsonwebtoken';
 
 export interface AuthUserPayload extends JwtPayload {
   userId: string;
@@ -12,6 +11,7 @@ export interface AuthUserPayload extends JwtPayload {
 declare global {
   namespace Express {
     interface Request {
+      id?: string;
       user?: AuthUserPayload;
     }
   }

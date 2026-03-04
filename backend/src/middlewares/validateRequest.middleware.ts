@@ -1,22 +1,17 @@
-import { Request, Response, NextFunction, RequestHandler } from 'express';
+import { RequestHandler } from 'express';
 import { ZodSchema } from 'zod';
 import { BadRequestError } from '../errors/BadRequestError';
 
-
-export const validateRequest = (
-  schema: ZodSchema<any>
-): RequestHandler => {
+export const validateRequest = (schema: ZodSchema<any>): RequestHandler => {
   return (req, res, next) => {
     const result = schema.safeParse({
       body: req.body,
       params: req.params,
-      query: req.query
+      query: req.query,
     });
 
     if (!result.success) {
-      throw new BadRequestError(
-        JSON.stringify(result.error.flatten().fieldErrors)
-      );
+      throw new BadRequestError(JSON.stringify(result.error.flatten().fieldErrors));
     }
 
     if (result.data.body) req.body = result.data.body;

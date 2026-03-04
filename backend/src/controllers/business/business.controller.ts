@@ -2,10 +2,10 @@ import { Request, Response, NextFunction } from 'express';
 import {
   signupBusiness,
   getBusinessesList,
-  getBusinessDetails
+  getBusinessDetails,
 } from '../../services/business/business.service';
 import { BadRequestError } from '../../errors/BadRequestError';
-import { logger } from '../../utils/logger';
+import { contextLogger } from '../../utils/contextLogger';
 
 export const businessSignup = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -19,12 +19,15 @@ export const businessSignup = async (req: Request, res: Response, next: NextFunc
       name,
       admin_name,
       admin_email,
-      password
+      password,
     });
 
-    logger.info(`Business signup successful for: ${admin_email}`);
+    contextLogger.info(`Business signup successful`, {
+      adminEmail: admin_email,
+      businessName: name,
+      action: 'BUSINESS_SIGNUP',
+    });
     res.status(201).json(result);
-
   } catch (error) {
     next(error);
   }
@@ -33,13 +36,12 @@ export const businessSignup = async (req: Request, res: Response, next: NextFunc
 export const getBusinesses = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const businesses = await getBusinessesList();
-    
+
     res.status(200).json({
       success: true,
       message: 'Businesses retrieved successfully',
-      data: businesses
+      data: businesses,
     });
-
   } catch (error) {
     next(error);
   }
@@ -47,20 +49,19 @@ export const getBusinesses = async (req: Request, res: Response, next: NextFunct
 
 export const getBusinessById = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
 
     if (!id) {
       throw new BadRequestError('Business ID is required');
     }
 
     const business = await getBusinessDetails(id);
-    
+
     res.status(200).json({
       success: true,
       message: 'Business details retrieved successfully',
-      data: business
+      data: business,
     });
-
   } catch (error) {
     next(error);
   }

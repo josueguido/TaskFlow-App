@@ -6,21 +6,24 @@ export const errorHandler = (
   err: Error,
   req: Request,
   res: Response,
+
   _next: NextFunction
 ): void => {
   logger.error(`Error: ${err.message}`, {
+    requestId: req.id,
+    userId: req.user?.userId,
     stack: err.stack,
     url: req.url,
     method: req.method,
     ip: req.ip,
-    userAgent: req.get('User-Agent')
+    userAgent: req.get('User-Agent'),
   });
 
   if (err instanceof CustomError) {
     res.status(err.statusCode).json({
       status: 'error',
       message: err.message,
-      ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
+      ...(process.env.NODE_ENV === 'development' && { stack: err.stack }),
     });
     return;
   }
@@ -29,7 +32,7 @@ export const errorHandler = (
     res.status(500).json({
       status: 'error',
       message: 'Database operation failed',
-      ...(process.env.NODE_ENV === 'development' && { details: err.message })
+      ...(process.env.NODE_ENV === 'development' && { details: err.message }),
     });
     return;
   }
@@ -46,16 +49,14 @@ export const errorHandler = (
     res.status(400).json({
       status: 'error',
       message: 'Validation failed',
-      details: err.message
+      details: err.message,
     });
     return;
   }
 
   res.status(500).json({
     status: 'error',
-    message: process.env.NODE_ENV === 'production'
-      ? 'Internal Server Error'
-      : err.message,
-    ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
+    message: process.env.NODE_ENV === 'production' ? 'Internal Server Error' : err.message,
+    ...(process.env.NODE_ENV === 'development' && { stack: err.stack }),
   });
 };

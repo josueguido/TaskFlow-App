@@ -39,7 +39,7 @@ export const TeamManagement: React.FC = () => {
   const [selectedNewRole, setSelectedNewRole] = useState<number | null>(null);
 
   const userRole = useAuth((state) => state.userRole());
-  const isAdmin = userRole === 1; 
+  const isAdmin = userRole === 1;
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -250,10 +250,7 @@ export const TeamManagement: React.FC = () => {
             <div className="bg-white rounded-lg shadow">
               <TeamUserList
                 users={filteredUsers}
-                currentUserRole={useAuth((state) => {
-                  const role = state.userRole();
-                  return role === 1 ? 'admin' : 'user';
-                })}
+                currentUserRole={isAdmin ? 'admin' : 'user'}
                 onEditRole={handleEditRoleClick}
                 onRemoveUser={handleRemoveUserClick}
                 onResendInvite={handleResendInvite}

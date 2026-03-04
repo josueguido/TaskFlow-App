@@ -10,9 +10,19 @@ const router = Router();
 const authLimiter = rateLimit(securityConfig.rateLimit.auth);
 const registerLimiter = rateLimit(securityConfig.rateLimit.register);
 
-router.post('/signup-business', registerLimiter, validateRequest(businessSignupSchema), authController.businessSignup);
+router.post(
+  '/signup-business',
+  registerLimiter,
+  validateRequest(businessSignupSchema),
+  authController.businessSignup
+);
 
-router.post('/signup-user', registerLimiter, validateRequest(userSignupSchema), authController.userSignup);
+router.post(
+  '/signup-user',
+  registerLimiter,
+  validateRequest(userSignupSchema),
+  authController.userSignup
+);
 
 // Deprecated - use /signup-business instead
 // router.post('/register', registerLimiter, authController.register);

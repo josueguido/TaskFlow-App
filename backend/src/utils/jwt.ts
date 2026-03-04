@@ -14,18 +14,18 @@ export interface JWTPayload {
 export const generateAccessToken = (payload: JWTPayload): string => {
   return sign(payload, securityConfig.jwt.secret, {
     expiresIn: securityConfig.jwt.expiresIn,
-    issuer:    securityConfig.jwt.issuer,
-    audience:  securityConfig.jwt.audience,
-    algorithm: securityConfig.jwt.algorithm
+    issuer: securityConfig.jwt.issuer,
+    audience: securityConfig.jwt.audience,
+    algorithm: securityConfig.jwt.algorithm,
   });
 };
 
 export const generateRefreshToken = (payload: JWTPayload): string => {
   return sign(payload, securityConfig.jwt.refreshSecret, {
     expiresIn: securityConfig.jwt.refreshExpiresIn,
-    issuer:    securityConfig.jwt.issuer,
-    audience:  securityConfig.jwt.audience,
-    algorithm: securityConfig.jwt.algorithm
+    issuer: securityConfig.jwt.issuer,
+    audience: securityConfig.jwt.audience,
+    algorithm: securityConfig.jwt.algorithm,
   });
 };
 
@@ -34,7 +34,7 @@ export const verifyAccessToken = (token: string): JWTPayload => {
     return verify(token, securityConfig.jwt.secret, {
       issuer: securityConfig.jwt.issuer,
       audience: securityConfig.jwt.audience,
-      algorithms: [securityConfig.jwt.algorithm]
+      algorithms: [securityConfig.jwt.algorithm],
     }) as JWTPayload;
   } catch (err) {
     if (err instanceof TokenExpiredError) throw new UnauthorizedError('Token expirado');
@@ -48,7 +48,7 @@ export const verifyRefreshToken = (token: string): JWTPayload => {
     return verify(token, securityConfig.jwt.refreshSecret, {
       issuer: securityConfig.jwt.issuer,
       audience: securityConfig.jwt.audience,
-      algorithms: [securityConfig.jwt.algorithm]
+      algorithms: [securityConfig.jwt.algorithm],
     }) as JWTPayload;
   } catch (err) {
     if (err instanceof TokenExpiredError) throw new UnauthorizedError('Refresh token expirado');

@@ -25,7 +25,7 @@ type LoginForm = z.infer<typeof schema>;
 export default function SignIn() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    
+
     const setAuth = useAuth((state) => state.setAuth);
     const rehydrated = useAuth((state) => state.rehydrated);
     const navigate = useNavigate();
@@ -38,16 +38,13 @@ export default function SignIn() {
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm<LoginForm>({ 
-        resolver: zodResolver(schema), 
+    } = useForm<LoginForm>({
+        resolver: zodResolver(schema),
         mode: "onBlur",
         defaultValues: {
             email: prefillEmail || ""
         }
     });
-
-    if (!rehydrated)
-        return <div className="text-white">Loading session...</div>;
 
     const onSubmit = useCallback(async (data: LoginForm) => {
         try {
@@ -67,10 +64,10 @@ export default function SignIn() {
 
             if (response?.data) {
                 const { user, token, refreshToken } = response.data;
-                
+
                 const business = {
                     id: user.business_id ?? "",
-                    name: "Business" 
+                    name: "Business"
                 };
 
                 setAuth(token, refreshToken, user, business);
@@ -85,6 +82,9 @@ export default function SignIn() {
             setLoading(false);
         }
     }, [setAuth, navigate]);
+
+    if (!rehydrated)
+        return <div className="text-white">Loading session...</div>;
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-50 px-4">
@@ -212,7 +212,7 @@ export default function SignIn() {
                             Sign up
                         </button>
                     </p>
-                    
+
                     <div className="relative">
                         <div className="absolute inset-0 flex items-center">
                             <div className="w-full border-t border-gray-300" />
@@ -221,7 +221,7 @@ export default function SignIn() {
                             <span className="px-2 bg-white text-gray-500">or</span>
                         </div>
                     </div>
-                    
+
                     <p className="text-sm text-gray-600">
                         Want to create a business?{" "}
                         <button

@@ -1,5 +1,5 @@
-import { RequestHandler } from "express";
-import * as roleService from "../../services/users/role.service";
+import { RequestHandler } from 'express';
+import * as roleService from '../../services/users/role.service';
 
 export const getAllRoles: RequestHandler = async (_req, res, next) => {
   try {

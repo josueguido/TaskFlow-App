@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { getProjectsByBusiness } from "@/api/projects";
 import type { Project } from "@/api/projects";
 import { useAuth } from "@/store/auth";
+import { APP_VERSION } from "@/version";
 
 interface SidebarProps {
 	projects?: Project[];
@@ -23,12 +24,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ onProjectSelect, onManageColum
 	// Determinar qué item está activo basado en la ruta actual
 	const getIsActive = (name: string): boolean => {
 		const path = location.pathname;
-		
 		switch (name) {
 			case "Dashboard":
 				return path === "/app";
 			case "Projects":
-				return path === "/app" || path.includes("/app/projects");
+				return path.startsWith("/app/projects");
 			case "Team":
 				return path === "/app/team";
 			case "Calendar":
@@ -309,6 +309,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ onProjectSelect, onManageColum
 					</svg>
 					Settings
 				</button>
+				<p className="mt-2 text-xs text-gray-400 text-center">v{APP_VERSION}</p>
 			</div>
 		</div>
 	);

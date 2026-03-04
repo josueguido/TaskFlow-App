@@ -1,6 +1,6 @@
-import { ICreateTaskHistory, ITaskHistory } from "../../interfaces/taskHistory.interface";
-import { getTaskHistoryByTaskId, inserTaskHistory } from "../../models/taskHistory.model";
-import { NotFoundError } from "../../errors/NotFoundError";
+import { ICreateTaskHistory, ITaskHistory } from '../../interfaces/taskHistory.interface';
+import { getTaskHistoryByTaskId, inserTaskHistory } from '../../models/taskHistory.model';
+import { NotFoundError } from '../../errors/NotFoundError';
 
 export const getTaskHistoryService = async (taskId: string) => {
   const history = await getTaskHistoryByTaskId(Number(taskId));
@@ -8,7 +8,7 @@ export const getTaskHistoryService = async (taskId: string) => {
     throw new NotFoundError(`No history found for task_id ${taskId}`);
   }
   return history;
-}
+};
 
 export const createTaskHistoryService = async (data: ICreateTaskHistory): Promise<ITaskHistory> => {
   const { task_id, user_id, field_changed, old_value, new_value } = data;
@@ -21,8 +21,8 @@ export const createTaskHistoryService = async (data: ICreateTaskHistory): Promis
     user_id,
     field_changed,
     old_value: old_value ?? null,
-    new_value: new_value ?? null
+    new_value: new_value ?? null,
   });
 
   return history;
-}
+};

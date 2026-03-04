@@ -3,12 +3,11 @@ import { logger } from './utils/logger';
 import dotenv from 'dotenv';
 
 dotenv.config({
-  path: process.env.NODE_ENV === 'production'
-    ? './config/DB/.env.production'
-    : './config/DB/.env.dev'
+  path:
+    process.env.NODE_ENV === 'production' ? './config/DB/.env.production' : './config/DB/.env.dev',
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3003;
 
 process.on('uncaughtException', (error) => {
   logger.error('Uncaught Exception:', error);

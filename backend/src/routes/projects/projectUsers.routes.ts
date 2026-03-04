@@ -5,7 +5,7 @@ import { validateRequest } from '../../middlewares/validateRequest.middleware';
 import {
   addUserToProjectSchema,
   updateUserRoleSchema,
-  projectUserIdSchema
+  projectUserIdSchema,
 } from '../../schemas/projectUsers.schema';
 
 const router = Router();
@@ -34,6 +34,6 @@ router.delete(
   projectUsersCtrl.removeUserFromProject
 );
 
-router.get('/me/all', projectUsersCtrl.getUserProjects);
+// router.get('/me/all', projectUsersCtrl.getUserProjects);
 
 export default router;

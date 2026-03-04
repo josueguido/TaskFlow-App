@@ -1,263 +1,270 @@
-# TaskFlow App
+# 🚀 TaskFlow App
 
 ![Status](https://img.shields.io/badge/status-in%20progress-yellow)
-![Node.js](https://img.shields.io/badge/node-%3E%3D20.0.0-green)
-![React](https://img.shields.io/badge/react-%3E%3D19.0.0-blue?logo=react)
-![TypeScript](https://img.shields.io/badge/typescript-%3E%3D5.0.0-blue?logo=typescript)
-![PostgreSQL](https://img.shields.io/badge/postgresql-%3E%3D12-blue?logo=postgresql)
+![Node.js](https://img.shields.io/badge/node-%3E%3D20.0.0-green?logo=node.js)
+![React](https://img.shields.io/badge/react-19-blue?logo=react)
+![Express](https://img.shields.io/badge/express-5-black?logo=express)
+![TypeScript](https://img.shields.io/badge/typescript-5.8-blue?logo=typescript)
+![PostgreSQL](https://img.shields.io/badge/postgresql-15-blue?logo=postgresql)
 ![Docker](https://img.shields.io/badge/docker-ready-2496ED?logo=docker)
+![CI/CD](https://img.shields.io/badge/CI%2FCD-GitHub%20Actions-2088FF?logo=github-actions)
 ![License](https://img.shields.io/badge/license-ISC-brightgreen)
 
-A comprehensive full-stack project and task management system built with modern web technologies. TaskFlow provides an intuitive interface for managing projects, tasks, team members, and business workflows.
+A full-stack project and task management system built with React 19, Express 5, TypeScript, and PostgreSQL. Features a Kanban board, calendar view, team management, and a complete observability stack.
 
-## 📋 Table of Contents
+---
 
-- [Overview](#overview)
-- [Features](#features)
-- [Tech Stack](#tech-stack)
-- [Prerequisites](#prerequisites)
-- [Quick Start](#quick-start)
-- [Project Structure](#project-structure)
-- [Environment Configuration](#environment-configuration)
-- [Development](#development)
-- [Docker Deployment](#docker-deployment)
-- [Database](#database)
-- [API Documentation](#api-documentation)
-- [Roadmap](#roadmap)
-- [Contributing](#contributing)
-- [License](#license)
+## 📑 Table of Contents
 
-## 🎯 Overview
+- [Overview](#-overview)
+- [Features](#-features)
+- [Tech Stack](#-tech-stack)
+- [Prerequisites](#-prerequisites)
+- [Quick Start](#-quick-start)
+- [Project Structure](#-project-structure)
+- [Environment Configuration](#-environment-configuration)
+- [Development](#-development)
+- [Docker Deployment](#-docker-deployment)
+- [CI/CD Pipeline](#-cicd-pipeline)
+- [Monitoring & Logging](#-monitoring--logging)
+- [Database](#-database)
+- [API Documentation](#-api-documentation)
+- [Makefile Reference](#-makefile-reference)
+- [Roadmap](#-roadmap)
+- [Contributing](#-contributing)
+- [License](#-license)
+- [Contact](#-contact)
 
-TaskFlow is a full-stack application designed to streamline project and task management. It consists of:
+---
 
-- **Frontend**: A modern React application with TypeScript and Vite for fast development
-- **Backend**: A robust Node.js API with Express.js and PostgreSQL
-- **Database**: PostgreSQL for reliable data persistence
-- **Infrastructure**: Docker Compose for easy deployment and development
+## 🔍 Overview
 
-## 🚀 Features
+TaskFlow is a multi-tenant application designed to streamline project and task management:
 
-### Core Functionality
-- **Project Management**: Create, organize, and manage multiple projects
-- **Task Management**: Full CRUD operations for tasks with detailed tracking
-- **User Assignment**: Assign team members to tasks with role-based permissions
-- **Task History**: Track changes and history of tasks over time
-- **Business Management**: Organize tasks within business units
-- **Reports**: Generate reports on task progress and team performance
-- **Calendar View**: Visualize tasks and deadlines in a calendar interface
-- **Kanban Board**: Drag-and-drop interface for task management
+| Layer | Technology | Description |
+|-------|-----------|-------------|
+| **Frontend** | React 19 + Vite 7 | SPA with Kanban, calendar, dashboard |
+| **Backend** | Express 5 + Node 24 | REST API with JWT auth |
+| **Database** | PostgreSQL 15 | Relational data persistence |
+| **Infra** | Docker Compose | Dev, prod, monitoring & logging stacks |
+| **CI/CD** | GitHub Actions | Semantic versioning + Docker Hub push |
 
-### Technical Features
-- **Type Safety**: Full TypeScript implementation across frontend and backend
-- **Authentication**: JWT-based authentication with secure password hashing
-- **Security**: Helmet, CORS, rate limiting, SQL injection prevention
-- **Validation**: Zod schema validation and express-validator
-- **API Documentation**: Swagger/OpenAPI documentation
-- **Logging**: Structured logging with Winston
-- **Testing**: Jest testing framework
-- **Code Quality**: ESLint and Prettier integration
-- **Hot Reload**: Development server with instant refresh
-- **Responsive Design**: Mobile-friendly UI with Tailwind CSS
+---
+
+## ✨ Features
+
+### Core
+- 📋 **Kanban Board** — Drag-and-drop task management with `@dnd-kit`
+- 📅 **Calendar View** — Visualize tasks and deadlines
+- 📊 **Dashboard** — Project stats and overview
+- 👥 **Team Management** — Role-based assignments
+- 🏢 **Multi-tenant** — Business unit isolation
+- 📈 **Reports** — Task progress and team analytics
+- 📜 **Task History** — Full audit trail of changes
+
+### Technical
+- 🔒 **Authentication** — JWT + refresh tokens + bcrypt
+- 🛡️ **Security** — Helmet, CORS, rate limiting, SQL injection prevention, XSS sanitization
+- ✅ **Validation** — Zod schemas + express-validator
+- 📖 **API Docs** — Swagger/OpenAPI
+- 📝 **Logging** — Winston with structured JSON + ELK Stack ready
+- 📡 **Monitoring** — Prometheus metrics + Grafana dashboards
+- 🧪 **Testing** — Jest (backend) + Vitest (frontend)
+- 🔄 **CI/CD** — GitHub Actions with semantic versioning and Docker Hub publishing
+
+---
 
 ## 🛠️ Tech Stack
 
 ### Frontend
-- **React 19** - UI library
-- **TypeScript** - Type-safe development
-- **Vite** - Next generation build tool
-- **Tailwind CSS** - Utility-first CSS framework
-- **Zustand** - State management
-- **React Router** - Client-side routing
-- **React Hook Form** - Form management
-- **Axios** - HTTP client
-- **Lucide React** - Icon library
-- **Zod** - Schema validation
-- **DnD Kit** - Drag and drop functionality
-- **React Big Calendar** - Calendar component
+| Package | Version | Purpose |
+|---------|---------|---------|
+| React | 19 | UI library |
+| TypeScript | ~5.8 | Type safety |
+| Vite | 7 | Build tool + HMR |
+| Tailwind CSS | 4 | Utility-first styling |
+| Zustand | 5 | State management |
+| React Router | 7 | Client-side routing |
+| React Hook Form + Zod | 7 / 4 | Form management + validation |
+| Vitest | 4 | Unit testing |
+| Axios | 1.11 | HTTP client |
+| @dnd-kit | 6 | Drag and drop |
 
 ### Backend
-- **Node.js** - Runtime environment
-- **Express.js** - Web framework
-- **TypeScript** - Type-safe development
-- **PostgreSQL** - Relational database
-- **JWT** - Authentication tokens
-- **Bcrypt** - Password hashing
-- **Zod** - Schema validation
-- **Winston** - Logging
-- **Jest** - Testing framework
-- **Swagger** - API documentation
+| Package | Version | Purpose |
+|---------|---------|---------|
+| Node.js | 24 (Alpine) | Runtime |
+| Express | 5 | Web framework |
+| TypeScript | ~5.8 | Type safety |
+| PostgreSQL | 15 | Database |
+| JWT + bcrypt | — | Authentication |
+| Winston | 3 | Structured logging |
+| Zod | 3 | Schema validation |
+| Prom-client | 15 | Prometheus metrics |
+| Jest | 30 | Testing |
 
 ### Infrastructure
-- **Docker** - Containerization
-- **Docker Compose** - Multi-container orchestration
-- **PostgreSQL 15** - Database
-- **PgAdmin** - Database management
+| Tool | Purpose |
+|------|---------|
+| Docker + Docker Compose | Containerization & orchestration |
+| Nginx | Frontend reverse proxy (production) |
+| Prometheus + Grafana | Metrics collection & dashboards |
+| ELK Stack | Centralized logging |
+| GitHub Actions | CI/CD pipeline |
+| PgAdmin | Database management GUI |
+
+---
 
 ## 📋 Prerequisites
 
-- **Node.js** v20 or higher
-- **PostgreSQL** v15 or higher (or Docker)
-- **npm** or **yarn**
+- **Node.js** v20+ (Dockerfiles use v24)
+- **PostgreSQL** v15+ (or use Docker)
+- **npm**
 - **Git**
-- **Docker & Docker Compose** (optional, for containerized deployment)
+- **Docker & Docker Compose** (for containerized setup)
+- **Make** (optional, for Makefile shortcuts)
 
-## 🚀 Quick Start
+---
 
-### Option 1: Development with Docker Compose (Recommended)
+## ⚡ Quick Start
+
+### Option 1: Docker Compose (Recommended)
 
 ```bash
 # Clone the repository
 git clone https://github.com/josueguido/TaskFlow-App
 cd TaskFlow-App
 
-# Create environment file
+# Create environment file from example
 cp .env.example .env
+# Edit .env with your values
 
-# Start the application
+# Start everything
+make build_app
+# Or without Make:
 docker-compose up -d
-
-# Access the application
-# Frontend: http://localhost:5173
-# Backend: http://localhost:3000
-# Backend API Docs: http://localhost:3000/api-docs
 ```
+
+| Service | URL |
+|---------|-----|
+| Frontend | http://localhost:5173 |
+| Backend API | http://localhost:3003 |
+| API Docs (Swagger) | http://localhost:3003/api-docs |
+| PgAdmin | http://localhost:8080 |
 
 ### Option 2: Local Development
 
-#### Backend Setup
 ```bash
+# Backend
 cd backend
-
-# Install dependencies
 npm install
+# Configure backend/config/DB/.env.dev with your DB credentials
+npm run dev                 # → http://localhost:3003
 
-# Create environment file
-cp .env.example .env
-
-# Update .env with your database credentials
-# DB_HOST=localhost
-# DB_PORT=5432
-# DB_NAME=taskflow
-
-# Run database migrations
-psql -U postgres -d taskflow -f ../db/init.sql
-psql -U postgres -d taskflow -f ../db/seed.sql
-
-# Start development server
-npm run dev
-
-# Server runs on http://localhost:3000
-```
-
-#### Frontend Setup
-```bash
+# Frontend (in another terminal)
 cd frontend
-
-# Install dependencies
 npm install
-
-# Start development server
-npm run dev
-
-# Application runs on http://localhost:5173
+npm run dev                 # → http://localhost:5173
 ```
+
+---
 
 ## 📁 Project Structure
 
 ```
 TaskFlow-App/
-├── backend/                     # Express.js API server
+├── frontend/                    # React SPA
 │   ├── src/
-│   │   ├── controllers/        # Route controllers
-│   │   ├── models/             # Database models
-│   │   ├── routes/             # API routes
-│   │   ├── services/           # Business logic
-│   │   ├── schemas/            # Zod validation schemas
-│   │   ├── middlewares/        # Custom middlewares
-│   │   ├── interfaces/         # TypeScript interfaces
-│   │   ├── config/             # Configuration files
-│   │   ├── utils/              # Utility functions
-│   │   ├── validators/         # Validation logic
-│   │   └── app.ts              # Express app setup
-│   ├── tests/                  # Test files
-│   ├── Dockerfile              # Production Docker image
-│   ├── Dockerfile.dev          # Development Docker image
-│   ├── jest.config.js          # Jest configuration
-│   ├── tsconfig.json           # TypeScript configuration
-│   └── package.json            # Dependencies
-│
-├── frontend/                    # React application
-│   ├── src/
-│   │   ├── api/                # API client methods
+│   │   ├── api/                # Axios API clients
 │   │   ├── components/         # React components
-│   │   ├── contexts/           # React Context API
-│   │   ├── hooks/              # Custom React hooks
-│   │   ├── services/           # Business logic services
-│   │   ├── store/              # Zustand store
+│   │   │   ├── auth/           #   Auth (login, signup)
+│   │   │   ├── calendar/       #   Calendar view
+│   │   │   ├── dashboard/      #   Dashboard
+│   │   │   ├── kanban/         #   Kanban board
+│   │   │   ├── layout/         #   Layout (Header, Sidebar)
+│   │   │   ├── projects/       #   Project management
+│   │   │   ├── team/           #   Team management
+│   │   │   └── ui/             #   Reusable UI primitives
+│   │   ├── contexts/           # React Context
+│   │   ├── hooks/              # Custom hooks
+│   │   ├── services/           # Business logic
+│   │   ├── store/              # Zustand stores
+│   │   ├── test/               # Vitest setup & tests
 │   │   ├── types/              # TypeScript types
-│   │   ├── utils/              # Utility functions
-│   │   ├── assets/             # Static assets
-│   │   ├── App.tsx             # Main component
-│   │   └── main.tsx            # Entry point
-│   ├── nginx/                  # Nginx config for Docker
-│   ├── public/                 # Static files
-│   ├── Dockerfile              # Production Docker image
-│   ├── Dockerfile.dev          # Development Docker image
-│   ├── vite.config.ts          # Vite configuration
-│   ├── tsconfig.json           # TypeScript configuration
-│   └── package.json            # Dependencies
+│   │   ├── utils/              # Utilities
+│   │   └── version.ts          # App version from CI
+│   ├── nginx/                  # Nginx config (Docker prod)
+│   ├── Dockerfile              # Production multi-stage build
+│   ├── Dockerfile.dev          # Development with HMR
+│   └── vitest.config.ts        # Vitest configuration
 │
-├── db/                         # Database files
-│   ├── init.sql               # Database initialization
-│   └── seed.sql               # Sample data
+├── backend/                     # Express 5 API
+│   ├── src/
+│   │   ├── controllers/        # Route handlers
+│   │   ├── services/           # Business logic
+│   │   ├── models/             # Database models (pg)
+│   │   ├── routes/             # API routes
+│   │   ├── schemas/            # Zod validation schemas
+│   │   ├── middlewares/        # Auth, security, logging
+│   │   ├── interfaces/         # TypeScript interfaces
+│   │   ├── errors/             # Custom error classes
+│   │   ├── config/             # DB & Swagger config
+│   │   ├── utils/              # Logger, helpers
+│   │   └── types/              # Express type augmentation
+│   ├── logs/                   # Winston log files
+│   ├── Dockerfile              # Production multi-stage build
+│   ├── Dockerfile.dev          # Development with nodemon
+│   └── jest.config.js          # Jest configuration
 │
-├── infra/                      # Infrastructure configuration
-│   └── pgadmin/               # PgAdmin configuration
+├── db/                          # Database scripts
+│   ├── 01-init.sql             # Schema creation
+│   └── 02-seed.sql             # Sample data
 │
-├── docker-compose.yml          # Development docker-compose
-├── docker-compose.prod.yml     # Production docker-compose
-└── README.md                   # This file
+├── infra/                       # Infrastructure
+│   ├── monitoring/             # Prometheus + Grafana
+│   └── logging/                # ELK Stack
+│
+├── .github/workflows/          # CI/CD
+│   └── docker-build-push.yml   # Build, test, release, push
+│
+├── docker-compose.yml           # Development stack
+├── docker-compose.prod.yml      # Production stack
+├── Makefile                     # Shortcuts for all stacks
+└── README.md
 ```
+
+---
 
 ## 🔧 Environment Configuration
 
-### About .env Files
+### How It Works
 
-The backend uses environment variables in two scenarios:
+| Scenario | Config source |
+|----------|--------------|
+| **Local dev** (no Docker) | `backend/config/DB/.env.dev` |
+| **Docker dev** | Root `.env` + `docker-compose.yml` env vars |
+| **Docker prod** | Root `.env` + `docker-compose.prod.yml` |
+| **CI/CD** | GitHub Secrets → build-args → Docker image |
 
-- **Local Development** (without Docker): Environment variables are loaded from `backend/config/DB/.env.dev`
-- **Docker Environment**: Environment variables are passed through `docker-compose.yml` and the root `.env` file (no need to use config/DB/.env files)
-
-The backend automatically detects the environment and loads the appropriate configuration:
-```typescript
-// In backend/src/config/DB/index.ts
-dotenv.config({
-  path: process.env.NODE_ENV === 'production'
-    ? './config/DB/.env.production'
-    : './config/DB/.env.dev',
-});
-```
-
-### Backend Environment Variables (.env)
+### Backend Environment Variables
 
 ```env
-# Server Configuration
+# Server
 NODE_ENV=development
-PORT=3000
+PORT=3003
 
-# Database Configuration
+# Database
 DB_HOST=localhost
 DB_PORT=5432
 DB_NAME=taskflow
 DB_USERNAME=postgres
 DB_PASSWORD=your_secure_password
 
-# JWT Configuration
-JWT_SECRET=your_jwt_secret
+# JWT
+JWT_SECRET=your_jwt_secret_minimum_32_characters
 JWT_EXPIRATION=24h
 
-# CORS Configuration
+# CORS
 CORS_ORIGIN=http://localhost:5173
 
 # Rate Limiting
@@ -268,263 +275,260 @@ RATE_LIMIT_MAX_REQUESTS=100
 LOG_LEVEL=debug
 ```
 
-### Frontend Environment Variables (.env)
+### Frontend Environment Variables
 
 ```env
-VITE_API_URL=http://localhost:3000
+VITE_API_URL=http://localhost:3003
 VITE_API_BASE_PATH=/api
 ```
 
+---
+
 ## 💻 Development
 
-### Backend Development
+### Backend
 
 ```bash
 cd backend
-
-# Install dependencies
 npm install
-
-# Start development server with hot reload
-npm run dev
-
-# Run tests
-npm run test
-
-# Run linter
-npm run lint
-
-# Format code
-npm run format
-
-# Build for production
-npm run build
+npm run dev              # Dev server with hot reload (nodemon)
+npm run dev:direct       # Direct execution with tsx
+npm run build            # Compile TypeScript → dist/
+npm run start            # Start with tsx
+npm test                 # Run Jest tests
+npm run lint             # ESLint check
+npm run format           # Prettier format
 ```
 
-### Frontend Development
+### Frontend
 
 ```bash
 cd frontend
-
-# Install dependencies
 npm install
-
-# Start development server
-npm run dev
-
-# Build for production
-npm run build
-
-# Preview production build
-npm run preview
-
-# Run linter
-npm run lint
+npm run dev              # Vite dev server with HMR
+npm run build            # Type-check + Vite production build
+npm run preview          # Preview production build
+npm test                 # Run Vitest tests
+npm run lint             # ESLint check
 ```
+
+---
 
 ## 🐳 Docker Deployment
 
-### Development Environment
+### Development
 
 ```bash
-# Build and start all services
-docker-compose up -d
-
-# View logs
-docker-compose logs -f
-
-# Stop services
-docker-compose down
-
-# Stop and remove volumes
-docker-compose down -v
+docker-compose up -d                    # Start all services
+docker-compose logs -f                  # Follow logs
+docker-compose down                     # Stop & remove
+docker-compose down -v                  # Stop & remove + delete volumes
 ```
 
-### Production Environment
+### Production
 
 ```bash
-# Build and start with production configuration
 docker-compose -f docker-compose.prod.yml up -d
-
-# View logs
 docker-compose -f docker-compose.prod.yml logs -f
-
-# Stop services
 docker-compose -f docker-compose.prod.yml down
 ```
 
-### Service Management
+| Environment | Frontend | Backend |
+|------------|----------|---------|
+| Development | http://localhost:5173 | http://localhost:3003 |
+| Production | http://localhost:80 | Internal (`:3003` between containers) |
+
+---
+
+## 🔄 CI/CD Pipeline
+
+The project uses **GitHub Actions** (`.github/workflows/docker-build-push.yml`):
+
+```
+Push/PR to main
+     │
+     ▼
+┌─────────────┐    ┌──────────────────┐    ┌───────────────┐
+│  Build+Test  │───▶│ Semantic Version │───▶│  Docker Build  │
+│  (npm ci +   │    │  + Git Tag +     │    │  + Push to     │
+│   npm test)  │    │  GitHub Release  │    │  Docker Hub    │
+└─────────────┘    └──────────────────┘    └───────────────┘
+```
+
+- **Tests**: Backend (Jest) + Frontend (Vitest) run on every push/PR
+- **Versioning**: Automatic semantic versioning based on commit prefixes (`feat:`, `major:`)
+- **Release**: GitHub Release with auto-generated release notes
+- **Docker**: Multi-stage builds pushed to Docker Hub with version + `latest` tags
+- **Cache**: GitHub Actions cache (`type=gha`) for fast rebuilds
+
+---
+
+## 📡 Monitoring & Logging
+
+### Start Full Observability Stack
 
 ```bash
-# View running containers
-docker-compose ps
-
-# Access backend logs
-docker-compose logs backend
-
-# Access frontend logs
-docker-compose logs frontend
-
-# Access database logs
-docker-compose logs db
-
-# Execute command in backend container
-docker-compose exec backend npm run lint
-
-# Connect to database
-docker-compose exec db psql -U postgres -d taskflow
+make start_all           # App + Monitoring + Logging
 ```
+
+### Access Points
+
+| Service | URL | Purpose |
+|---------|-----|---------|
+| Grafana | http://localhost:3000 | Metrics dashboards |
+| Prometheus | http://localhost:9090 | Metrics database |
+| Kibana | http://localhost:5601 | Log visualization |
+| Elasticsearch | http://localhost:9200 | Log storage |
+
+### Logging Architecture
+
+- **Winston** with structured JSON format + daily file rotation
+- **contextLogger** using `AsyncLocalStorage` for automatic `requestId`/`userId` injection
+- Log files: `backend/logs/combined-*.log` and `backend/logs/error-*.log`
+- ELK Stack ready for centralized log aggregation
+
+See [backend/LOGGING_GUIDE.md](./backend/LOGGING_GUIDE.md) for detailed patterns.
+
+---
 
 ## 🗄️ Database
 
-### Database Schema
+### Schema Entities
 
-The application uses PostgreSQL with the following main entities:
+`users` · `roles` · `businesses` · `projects` · `project_users` · `tasks` · `task_history` · `assignments` · `status` · `refresh_tokens`
 
-- **users** - User accounts and authentication
-- **roles** - User roles and permissions
-- **businesses** - Business units
-- **projects** - Project management
-- **tasks** - Task tracking
-- **task_history** - Task change history
-- **assignments** - User-task assignments
-- **status** - Task status definitions
-- **refresh_tokens** - JWT token management
+### Initialization
 
-### Database Initialization
+The database auto-initializes via Docker entrypoint scripts:
 
-The database is automatically initialized using SQL scripts:
+1. **`db/01-init.sql`** — Creates tables and schema
+2. **`db/02-seed.sql`** — Populates sample data
 
-1. **01-init.sql** - Creates tables and schema
-2. **02-seed.sql** - Populates sample data
-
-### Database Management
-
-Access PgAdmin at `http://localhost:5050` (if running with Docker Compose)
+### Manual Setup (without Docker)
 
 ```bash
-# Backup database
+psql -U postgres -c "CREATE DATABASE taskflow;"
+psql -U postgres -d taskflow -f db/01-init.sql
+psql -U postgres -d taskflow -f db/02-seed.sql   # optional
+```
+
+### PgAdmin
+
+Available at http://localhost:8080 when running with Docker Compose.
+
+```bash
+# Backup
 docker-compose exec db pg_dump -U postgres taskflow > backup.sql
 
-# Restore database
+# Restore
 docker-compose exec -T db psql -U postgres taskflow < backup.sql
-
-# Connect directly
-psql -h localhost -U postgres -d taskflow
 ```
 
-## 📚 API Documentation
+---
 
-### Swagger/OpenAPI Documentation
+## 📖 API Documentation
 
-Once the backend is running, access the interactive API documentation:
+### Swagger UI
 
 ```
-http://localhost:3000/api-docs
+http://localhost:3003/api-docs
 ```
 
-### Main API Endpoints
+### Main Endpoints
 
-#### Authentication
-- `POST /api/auth/register` - Register new user
-- `POST /api/auth/login` - Login user
-- `POST /api/auth/refresh` - Refresh JWT token
-- `POST /api/auth/logout` - Logout user
+| Group | Method | Endpoint | Description |
+|-------|--------|----------|-------------|
+| **Auth** | POST | `/api/auth/register` | Register user |
+| | POST | `/api/auth/login` | Login |
+| | POST | `/api/auth/refresh` | Refresh token |
+| | POST | `/api/auth/logout` | Logout |
+| **Users** | GET | `/api/users` | List users |
+| | GET / PUT / DELETE | `/api/users/:id` | CRUD by ID |
+| **Projects** | GET / POST | `/api/projects` | List / Create |
+| | GET / PUT / DELETE | `/api/projects/:id` | CRUD by ID |
+| **Tasks** | GET / POST | `/api/tasks` | List / Create |
+| | GET / PUT / DELETE | `/api/tasks/:id` | CRUD by ID |
+| | PATCH | `/api/tasks/:id/status` | Change status |
+| **Assignments** | GET / POST / DELETE | `/api/assignments` | Manage assignments |
+| **Reports** | GET | `/api/reports` | Generate reports |
 
-#### Users
-- `GET /api/users` - Get all users
-- `GET /api/users/:id` - Get user by ID
-- `PUT /api/users/:id` - Update user
-- `DELETE /api/users/:id` - Delete user
+For full documentation see [backend/swagger-endpoints.md](./backend/swagger-endpoints.md).
 
-#### Projects
-- `GET /api/projects` - Get all projects
-- `POST /api/projects` - Create project
-- `GET /api/projects/:id` - Get project by ID
-- `PUT /api/projects/:id` - Update project
-- `DELETE /api/projects/:id` - Delete project
+---
 
-#### Tasks
-- `GET /api/tasks` - Get all tasks
-- `POST /api/tasks` - Create task
-- `GET /api/tasks/:id` - Get task by ID
-- `PUT /api/tasks/:id` - Update task
-- `DELETE /api/tasks/:id` - Delete task
+## 📎 Makefile Reference
 
-#### Assignments
-- `GET /api/assignments` - Get all assignments
-- `POST /api/assignments` - Create assignment
-- `DELETE /api/assignments/:id` - Delete assignment
+```bash
+make help                # Show all available commands
+```
 
-#### Reports
-- `GET /api/reports` - Generate reports
+| Command | Description |
+|---------|-------------|
+| `make build_app` | Build and start app stack (DB + Backend + Frontend + PgAdmin) |
+| `make start_app` | Start app (no rebuild) |
+| `make stop_app` | Stop app services |
+| `make build_monitoring` | Start Prometheus + Grafana |
+| `make build_logging` | Start ELK Stack |
+| `make start_all` | Start everything |
+| `make stop_all` | Stop everything |
+| `make delete_all` | Remove all containers |
+| `make clean` | Remove containers + volumes ⚠️ |
+| `make prune` | Clean unused Docker resources |
 
-For complete API documentation, see the [Backend README](./backend/README.md) and the Swagger documentation.
+---
+
+## 🗺️ Roadmap
+
+### Phase 1: Core Features ✅
+- ✅ Project and task management
+- ✅ JWT authentication and authorization
+- ✅ Kanban board with drag-and-drop
+- ✅ Calendar view
+- ✅ Dashboard with statistics
+- ✅ Team management
+- ✅ Reporting and analytics
+
+### Phase 2: DevOps & Infrastructure 🔧
+- ✅ CI/CD Pipeline (GitHub Actions + Docker Hub)
+- ✅ Docker multi-stage builds (frontend + backend)
+- ✅ Observability (Prometheus, Grafana, ELK Stack)
+- ✅ Makefile workflows
+- ⬜ Terraform — Infrastructure as Code
+- ⬜ AWS Deployment (EC2, RDS, S3)
+- ⬜ Kubernetes orchestration
+
+### Phase 3: Advanced Features 🔮
+- ⬜ Real-time notifications (WebSocket / SNS+SQS)
+- ⬜ Advanced filtering and search
+- ⬜ Custom workflows and automation
+- ⬜ File attachments
+- ⬜ Mobile app support
+- ⬜ Third-party integrations
+
+---
 
 ## 🤝 Contributing
 
 1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-### Development Workflow
-
-1. Create a new branch from `main` or `develop`
-2. Make your changes
-3. Run tests and linting: `npm run test && npm run lint`
-4. Commit with meaningful messages
-5. Submit a Pull Request
-
-### Code Quality
-
-- Follow the existing code style
-- Use TypeScript for type safety
-- Write tests for new features
-- Keep commits atomic and meaningful
-
-## 📝 License
-
-This project is licensed under the ISC License - see the LICENSE file for details.
-
-## 🗺️ Roadmap
-
-TaskFlow is actively under development with the following planned features and improvements:
-
-### Phase 1: Core Features (In Progress)
-- ✅ Project and task management
-- ✅ User authentication and authorization
-- ✅ Kanban board interface
-- ✅ Calendar view
-- ✅ Reporting and analytics
-- ✅ Team management
-- 🔄 Enhanced error handling and validation
-
-### Phase 2: DevOps & Infrastructure (Upcoming)
-- ⏳ **CI/CD Pipeline**: GitHub Actions/GitLab CI for automated testing and deployment
-- ⏳ **Terraform**: Infrastructure as Code for AWS resource management
-- ⏳ **AWS Deployment**: Production deployment on AWS (EC2, RDS, S3)
-- ⏳ **Kubernetes**: Container orchestration for scalable deployments
-- ⏳ **Observability**: Monitoring, logging, and tracing (Prometheus, ELK Stack, Jaeger, cAdvisor)
-- ⏳ **Makefiles**: Simplified development and deployment workflows
-
-### Phase 3: Advanced Features (Future)
-- ⏳ Real-time notifications and WebSocket support (Using SNS, SQS and EventBridge)
-- ⏳ Advanced filtering and search capabilities
-- ⏳ Custom workflows and automation
-- ⏳ Integration with third-party services
-- ⏳ Mobile app support
-- ⏳ Audit logging and compliance features
-
-## 👥 Contact
-
-**Project Owner**: Josue Guido
-**Repository**: [https://github.com/josueguido/TaskFlow-App](https://github.com/josueguido/TaskFlow-App)
-
-For questions or suggestions, please open an issue on GitHub.
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit using [Conventional Commits](https://www.conventionalcommits.org/) (`feat:`, `fix:`, `docs:`, etc.)
+4. Run tests and lint: `npm test && npm run lint`
+5. Push and open a Pull Request
 
 ---
 
-**Last Updated**: December 2024
-**Current Branch**: fix-bugs
+## 📝 License
+
+This project is licensed under the ISC License — see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 👤 Contact
+
+**Josue Guido** — [GitHub](https://github.com/josueguido) · [Repository](https://github.com/josueguido/TaskFlow-App)
+
+For questions or suggestions, please [open an issue](https://github.com/josueguido/TaskFlow-App/issues).
+
+---
+
+*Last updated: March 2026*
