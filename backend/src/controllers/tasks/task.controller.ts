@@ -14,7 +14,7 @@ export const getAllTasks: RequestHandler = async (req, res, next) => {
 
 export const getTaskById: RequestHandler = async (req, res, next) => {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
 
     if (!id) {
       throw new BadRequestError("Task ID is required");
@@ -39,7 +39,7 @@ export const createTask: RequestHandler = async (req, res, next) => {
 
 export const updateTask: RequestHandler = async (req, res, next) => {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
     const { title, description, status_id, assignedTo } = req.body;
     const task = await taskService.updateTask(id, { title, description, status_id });
     res.json(task);
@@ -50,7 +50,7 @@ export const updateTask: RequestHandler = async (req, res, next) => {
 
 export const deleteTask: RequestHandler = async (req, res, next) => {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
     await taskService.deleteTask(id);
     res.status(204).send();
   } catch (error) {
@@ -60,7 +60,7 @@ export const deleteTask: RequestHandler = async (req, res, next) => {
 
 export const changeTaskStatus: RequestHandler = async (req, res, next) => {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
     const { statusId } = req.body;
     const userId = (req as any).user?.id;
 
@@ -85,7 +85,7 @@ export const changeTaskStatus: RequestHandler = async (req, res, next) => {
 
 export const assignUsersToTask: RequestHandler = async (req, res, next) => {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
     const { user_id } = req.body;
 
     contextLogger.info(`Assigning user to task`, {
@@ -108,7 +108,7 @@ export const assignUsersToTask: RequestHandler = async (req, res, next) => {
 
 export const getTaskHistory: RequestHandler = async (req, res, next) => {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
     const history = await taskService.getTaskHistory(id);
     res.json(history);
   } catch (error) {

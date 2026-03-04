@@ -27,7 +27,7 @@ export const getAllStatuses: RequestHandler = async (req, res, next) => {
 
 export const getStatusById: RequestHandler = async (req, res, next) => {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
     const businessId = (req as any).user?.business_id;
 
     if (!businessId) {
@@ -74,7 +74,7 @@ export const createStatus: RequestHandler = async (req, res, next) => {
 
 export const updateStatus: RequestHandler = async (req, res, next) => {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
     const { name, order } = req.body;
     const businessId = (req as any).user?.business_id;
 
@@ -102,7 +102,7 @@ export const updateStatus: RequestHandler = async (req, res, next) => {
 
 export const deleteStatus: RequestHandler = async (req, res, next) => {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
     const businessId = (req as any).user?.business_id;
 
     if (!businessId) {
