@@ -2,11 +2,11 @@ import {
   createBusiness,
   updateBusinessOwner,
   getBusinessById,
-  getAllBusinesses
+  getAllBusinesses,
 } from '../../models/business.model';
 import { createUser } from '../../models/user.model';
-import { hash, genSalt } from "bcryptjs";
-import * as jwt from "../../utils/jwt";
+import { hash, genSalt } from 'bcryptjs';
+import * as jwt from '../../utils/jwt';
 import { BadRequestError } from '../../errors/BadRequestError';
 import { contextLogger } from '../../utils/contextLogger';
 
@@ -19,23 +19,25 @@ export const signupBusiness = async (businessData: {
   try {
     contextLogger.info('Starting business signup process', {
       adminEmail: businessData.admin_email,
-      action: 'SIGNUP_BUSINESS_START'
+      action: 'SIGNUP_BUSINESS_START',
     });
 
     const { pool } = await import('../../config/DB');
-    const existingUser = await pool.query('SELECT 1 FROM users WHERE email = $1', [businessData.admin_email]);
+    const existingUser = await pool.query('SELECT 1 FROM users WHERE email = $1', [
+      businessData.admin_email,
+    ]);
     if (existingUser.rows.length > 0) {
       throw new BadRequestError('Admin email already registered');
     }
 
     const business = await createBusiness({
-      name: businessData.name
+      name: businessData.name,
     });
 
     contextLogger.info(`Business created`, {
       businessId: business.id,
       businessName: businessData.name,
-      action: 'BUSINESS_CREATED'
+      action: 'BUSINESS_CREATED',
     });
 
     const salt = await genSalt(10);
@@ -54,7 +56,7 @@ export const signupBusiness = async (businessData: {
       businessId: business.id,
       adminUserId: adminUser.id,
       adminEmail: adminUser.email,
-      action: 'ADMIN_USER_CREATED'
+      action: 'ADMIN_USER_CREATED',
     });
 
     await updateBusinessOwner(business.id.toString(), adminUser.id.toString());
@@ -63,7 +65,7 @@ export const signupBusiness = async (businessData: {
       userId: adminUser.id.toString(),
       email: adminUser.email,
       business_id: business.id,
-      role_id: adminUser.role_id
+      role_id: adminUser.role_id,
     };
 
     const accessToken = jwt.generateAccessToken(payload);
@@ -72,7 +74,7 @@ export const signupBusiness = async (businessData: {
     contextLogger.info('Business signup completed successfully', {
       businessId: business.id,
       adminUserId: adminUser.id,
-      action: 'SIGNUP_BUSINESS_SUCCESS'
+      action: 'SIGNUP_BUSINESS_SUCCESS',
     });
 
     return {
@@ -82,27 +84,26 @@ export const signupBusiness = async (businessData: {
         business: {
           id: business.id,
           name: business.name,
-          email: business.email
+          email: business.email,
         },
         user: {
           id: adminUser.id,
           name: adminUser.name,
           email: adminUser.email,
           role_id: adminUser.role_id,
-          business_id: adminUser.business_id
+          business_id: adminUser.business_id,
         },
         tokens: {
           accessToken,
-          refreshToken
-        }
-      }
+          refreshToken,
+        },
+      },
     };
-
   } catch (error) {
     contextLogger.error('Error in business signup', {
       adminEmail: businessData.admin_email,
       action: 'SIGNUP_BUSINESS_FAILED',
-      error: error instanceof Error ? error.message : String(error)
+      error: error instanceof Error ? error.message : String(error),
     });
     throw error;
   }
@@ -115,7 +116,7 @@ export const getBusinessesList = async () => {
   } catch (error) {
     contextLogger.error('Error getting businesses list', {
       action: 'GET_BUSINESSES_LIST_FAILED',
-      error: error instanceof Error ? error.message : String(error)
+      error: error instanceof Error ? error.message : String(error),
     });
     throw error;
   }
@@ -129,7 +130,7 @@ export const getBusinessDetails = async (businessId: string) => {
     contextLogger.error(`Error getting business details`, {
       businessId,
       action: 'GET_BUSINESS_DETAILS_FAILED',
-      error: error instanceof Error ? error.message : String(error)
+      error: error instanceof Error ? error.message : String(error),
     });
     throw error;
   }

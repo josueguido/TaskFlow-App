@@ -6,11 +6,12 @@ const swaggerDocument = {
   info: {
     title: 'TaskFlow API',
     version: '1.0.0',
-    description: 'A robust and scalable backend API for TaskFlow application built with Node.js, TypeScript, Express, and PostgreSQL',
+    description:
+      'A robust and scalable backend API for TaskFlow application built with Node.js, TypeScript, Express, and PostgreSQL',
     contact: {
       name: 'Josue Guido',
       email: 'josuguido@gmail.com',
-      url: 'https://github.com/josueguido'
+      url: 'https://github.com/josueguido',
     },
   },
   servers: [
@@ -39,42 +40,42 @@ const swaggerDocument = {
           id: {
             type: 'integer',
             description: 'User ID',
-            example: 1
+            example: 1,
           },
           email: {
             type: 'string',
             format: 'email',
             description: 'User email address',
-            example: 'user@example.com'
+            example: 'user@example.com',
           },
           password: {
             type: 'string',
             minLength: 6,
             description: 'User password',
-            example: 'password123'
+            example: 'password123',
           },
           name: {
             type: 'string',
             description: 'User full name',
-            example: 'John Doe'
+            example: 'John Doe',
           },
           role: {
             type: 'string',
             enum: ['user', 'admin'],
             description: 'User role',
-            example: 'user'
+            example: 'user',
           },
           created_at: {
             type: 'string',
             format: 'date-time',
-            description: 'Creation timestamp'
+            description: 'Creation timestamp',
           },
           updated_at: {
             type: 'string',
             format: 'date-time',
-            description: 'Last update timestamp'
-          }
-        }
+            description: 'Last update timestamp',
+          },
+        },
       },
       Task: {
         type: 'object',
@@ -83,50 +84,50 @@ const swaggerDocument = {
           id: {
             type: 'integer',
             description: 'Task ID',
-            example: 1
+            example: 1,
           },
           title: {
             type: 'string',
             description: 'Task title',
-            example: 'Complete project documentation'
+            example: 'Complete project documentation',
           },
           description: {
             type: 'string',
             description: 'Task description',
-            example: 'Write comprehensive documentation for the TaskFlow project'
+            example: 'Write comprehensive documentation for the TaskFlow project',
           },
           status_id: {
             type: 'integer',
             description: 'Status ID',
-            example: 1
+            example: 1,
           },
           priority: {
             type: 'string',
             enum: ['low', 'medium', 'high'],
             description: 'Task priority',
-            example: 'high'
+            example: 'high',
           },
           created_by: {
             type: 'integer',
             description: 'User ID who created the task',
-            example: 1
+            example: 1,
           },
           due_date: {
             type: 'string',
             format: 'date-time',
-            description: 'Task due date'
+            description: 'Task due date',
           },
           created_at: {
             type: 'string',
             format: 'date-time',
-            description: 'Creation timestamp'
+            description: 'Creation timestamp',
           },
           updated_at: {
             type: 'string',
             format: 'date-time',
-            description: 'Last update timestamp'
-          }
-        }
+            description: 'Last update timestamp',
+          },
+        },
       },
       Status: {
         type: 'object',
@@ -135,39 +136,39 @@ const swaggerDocument = {
           id: {
             type: 'integer',
             description: 'Status ID',
-            example: 1
+            example: 1,
           },
           name: {
             type: 'string',
             description: 'Status name',
-            example: 'To Do'
+            example: 'To Do',
           },
           description: {
             type: 'string',
             description: 'Status description',
-            example: 'Task is pending to be started'
+            example: 'Task is pending to be started',
           },
           color: {
             type: 'string',
             description: 'Status color in hex format',
-            example: '#FF0000'
+            example: '#FF0000',
           },
           is_active: {
             type: 'boolean',
             description: 'Whether the status is active',
-            example: true
+            example: true,
           },
           created_at: {
             type: 'string',
             format: 'date-time',
-            description: 'Creation timestamp'
+            description: 'Creation timestamp',
           },
           updated_at: {
             type: 'string',
             format: 'date-time',
-            description: 'Last update timestamp'
-          }
-        }
+            description: 'Last update timestamp',
+          },
+        },
       },
       Assignment: {
         type: 'object',
@@ -175,24 +176,24 @@ const swaggerDocument = {
           id: {
             type: 'integer',
             description: 'Assignment ID',
-            example: 1
+            example: 1,
           },
           task_id: {
             type: 'integer',
             description: 'Task ID',
-            example: 1
+            example: 1,
           },
           user_id: {
             type: 'integer',
             description: 'User ID',
-            example: 1
+            example: 1,
           },
           assigned_at: {
             type: 'string',
             format: 'date-time',
-            description: 'Assignment timestamp'
-          }
-        }
+            description: 'Assignment timestamp',
+          },
+        },
       },
       TaskHistory: {
         type: 'object',
@@ -200,49 +201,49 @@ const swaggerDocument = {
           id: {
             type: 'integer',
             description: 'History ID',
-            example: 1
+            example: 1,
           },
           task_id: {
             type: 'integer',
             description: 'Task ID',
-            example: 1
+            example: 1,
           },
           user_id: {
             type: 'integer',
             description: 'User ID who made the change',
-            example: 1
+            example: 1,
           },
           action: {
             type: 'string',
             description: 'Action performed',
-            example: 'status_changed'
+            example: 'status_changed',
           },
           field_name: {
             type: 'string',
             description: 'Field that was changed',
-            example: 'status_id'
+            example: 'status_id',
           },
           old_value: {
             type: 'string',
             description: 'Previous value',
-            example: '1'
+            example: '1',
           },
           new_value: {
             type: 'string',
             description: 'New value',
-            example: '2'
+            example: '2',
           },
           description: {
             type: 'string',
             description: 'Human-readable description',
-            example: 'Status changed from To Do to In Progress'
+            example: 'Status changed from To Do to In Progress',
           },
           created_at: {
             type: 'string',
             format: 'date-time',
-            description: 'Creation timestamp'
-          }
-        }
+            description: 'Creation timestamp',
+          },
+        },
       },
       Role: {
         type: 'object',
@@ -251,46 +252,46 @@ const swaggerDocument = {
           id: {
             type: 'integer',
             description: 'Role ID',
-            example: 1
+            example: 1,
           },
           name: {
             type: 'string',
             description: 'Role name',
-            example: 'admin'
+            example: 'admin',
           },
           description: {
             type: 'string',
             description: 'Role description',
-            example: 'Administrator with full access'
+            example: 'Administrator with full access',
           },
           created_at: {
             type: 'string',
             format: 'date-time',
-            description: 'Creation timestamp'
+            description: 'Creation timestamp',
           },
           updated_at: {
             type: 'string',
             format: 'date-time',
-            description: 'Last update timestamp'
-          }
-        }
+            description: 'Last update timestamp',
+          },
+        },
       },
       Error: {
         type: 'object',
         properties: {
           status: {
             type: 'string',
-            example: 'error'
+            example: 'error',
           },
           message: {
             type: 'string',
-            example: 'Error message'
+            example: 'Error message',
           },
           stack: {
             type: 'string',
-            example: 'Error stack trace'
-          }
-        }
+            example: 'Error stack trace',
+          },
+        },
       },
       LoginRequest: {
         type: 'object',
@@ -299,25 +300,25 @@ const swaggerDocument = {
           email: {
             type: 'string',
             format: 'email',
-            example: 'user@example.com'
+            example: 'user@example.com',
           },
           password: {
             type: 'string',
-            example: 'password123'
-          }
-        }
+            example: 'password123',
+          },
+        },
       },
       LoginResponse: {
         type: 'object',
         properties: {
           token: {
             type: 'string',
-            example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
+            example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
           },
           user: {
-            $ref: '#/components/schemas/User'
-          }
-        }
+            $ref: '#/components/schemas/User',
+          },
+        },
       },
       AssignUsersRequest: {
         type: 'object',
@@ -326,11 +327,11 @@ const swaggerDocument = {
           userIds: {
             type: 'array',
             items: {
-              type: 'integer'
+              type: 'integer',
             },
-            example: [1, 2, 3]
-          }
-        }
+            example: [1, 2, 3],
+          },
+        },
       },
       Project: {
         type: 'object',
@@ -339,52 +340,52 @@ const swaggerDocument = {
           id: {
             type: 'integer',
             description: 'Project ID',
-            example: 1
+            example: 1,
           },
           business_id: {
             type: 'integer',
             description: 'Business ID that owns this project',
-            example: 1
+            example: 1,
           },
           name: {
             type: 'string',
             description: 'Project name',
-            example: 'Website Redesign'
+            example: 'Website Redesign',
           },
           description: {
             type: 'string',
             description: 'Project description',
-            example: 'Complete redesign of company website with modern UI/UX'
+            example: 'Complete redesign of company website with modern UI/UX',
           },
           status: {
             type: 'string',
             enum: ['planning', 'active', 'completed', 'on-hold', 'cancelled'],
             description: 'Project status',
-            example: 'active'
+            example: 'active',
           },
           start_date: {
             type: 'string',
             format: 'date',
             description: 'Project start date',
-            example: '2024-01-15'
+            example: '2024-01-15',
           },
           end_date: {
             type: 'string',
             format: 'date',
             description: 'Project end date',
-            example: '2024-06-15'
+            example: '2024-06-15',
           },
           created_at: {
             type: 'string',
             format: 'date-time',
-            description: 'Creation timestamp'
+            description: 'Creation timestamp',
           },
           updated_at: {
             type: 'string',
             format: 'date-time',
-            description: 'Last update timestamp'
-          }
-        }
+            description: 'Last update timestamp',
+          },
+        },
       },
       CreateProjectRequest: {
         type: 'object',
@@ -393,37 +394,37 @@ const swaggerDocument = {
           business_id: {
             type: 'integer',
             description: 'Business ID that owns this project',
-            example: 1
+            example: 1,
           },
           name: {
             type: 'string',
             description: 'Project name',
-            example: 'Website Redesign'
+            example: 'Website Redesign',
           },
           description: {
             type: 'string',
             description: 'Project description',
-            example: 'Complete redesign of company website with modern UI/UX'
+            example: 'Complete redesign of company website with modern UI/UX',
           },
           status: {
             type: 'string',
             enum: ['planning', 'active', 'completed', 'on-hold', 'cancelled'],
             description: 'Project status',
-            example: 'planning'
+            example: 'planning',
           },
           start_date: {
             type: 'string',
             format: 'date',
             description: 'Project start date',
-            example: '2024-01-15'
+            example: '2024-01-15',
           },
           end_date: {
             type: 'string',
             format: 'date',
             description: 'Project end date',
-            example: '2024-06-15'
-          }
-        }
+            example: '2024-06-15',
+          },
+        },
       },
       UpdateProjectRequest: {
         type: 'object',
@@ -431,32 +432,32 @@ const swaggerDocument = {
           name: {
             type: 'string',
             description: 'Project name',
-            example: 'Website Redesign v2'
+            example: 'Website Redesign v2',
           },
           description: {
             type: 'string',
             description: 'Project description',
-            example: 'Updated project scope with additional features'
+            example: 'Updated project scope with additional features',
           },
           status: {
             type: 'string',
             enum: ['planning', 'active', 'completed', 'on-hold', 'cancelled'],
             description: 'Project status',
-            example: 'active'
+            example: 'active',
           },
           start_date: {
             type: 'string',
             format: 'date',
             description: 'Project start date',
-            example: '2024-01-15'
+            example: '2024-01-15',
           },
           end_date: {
             type: 'string',
             format: 'date',
             description: 'Project end date',
-            example: '2024-06-15'
-          }
-        }
+            example: '2024-06-15',
+          },
+        },
       },
       ProjectStats: {
         type: 'object',
@@ -464,7 +465,7 @@ const swaggerDocument = {
           total: {
             type: 'integer',
             description: 'Total number of projects',
-            example: 15
+            example: 15,
           },
           byStatus: {
             type: 'array',
@@ -473,18 +474,18 @@ const swaggerDocument = {
               properties: {
                 status: {
                   type: 'string',
-                  example: 'active'
+                  example: 'active',
                 },
                 count: {
                   type: 'integer',
-                  example: 8
-                }
-              }
-            }
-          }
-        }
-      }
-    }
+                  example: 8,
+                },
+              },
+            },
+          },
+        },
+      },
+    },
   },
   paths: {
     '/': {
@@ -502,15 +503,15 @@ const swaggerDocument = {
                   properties: {
                     message: {
                       type: 'string',
-                      example: 'TaskFlow API running with PostgreSQL!'
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
+                      example: 'TaskFlow API running with PostgreSQL!',
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
     },
     '/api/auth/register': {
       post: {
@@ -528,21 +529,21 @@ const swaggerDocument = {
                   email: {
                     type: 'string',
                     format: 'email',
-                    example: 'user@example.com'
+                    example: 'user@example.com',
                   },
                   password: {
                     type: 'string',
                     minLength: 6,
-                    example: 'password123'
+                    example: 'password123',
                   },
                   name: {
                     type: 'string',
-                    example: 'John Doe'
-                  }
-                }
-              }
-            }
-          }
+                    example: 'John Doe',
+                  },
+                },
+              },
+            },
+          },
         },
         responses: {
           201: {
@@ -550,33 +551,33 @@ const swaggerDocument = {
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/LoginResponse'
-                }
-              }
-            }
+                  $ref: '#/components/schemas/LoginResponse',
+                },
+              },
+            },
           },
           400: {
             description: 'Bad request - Invalid input data',
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Error'
-                }
-              }
-            }
+                  $ref: '#/components/schemas/Error',
+                },
+              },
+            },
           },
           409: {
             description: 'Conflict - Email already exists',
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Error'
-                }
-              }
-            }
-          }
-        }
-      }
+                  $ref: '#/components/schemas/Error',
+                },
+              },
+            },
+          },
+        },
+      },
     },
     '/api/auth/login': {
       post: {
@@ -588,10 +589,10 @@ const swaggerDocument = {
           content: {
             'application/json': {
               schema: {
-                $ref: '#/components/schemas/LoginRequest'
-              }
-            }
-          }
+                $ref: '#/components/schemas/LoginRequest',
+              },
+            },
+          },
         },
         responses: {
           200: {
@@ -599,33 +600,33 @@ const swaggerDocument = {
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/LoginResponse'
-                }
-              }
-            }
+                  $ref: '#/components/schemas/LoginResponse',
+                },
+              },
+            },
           },
           400: {
             description: 'Bad request - Invalid credentials',
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Error'
-                }
-              }
-            }
+                  $ref: '#/components/schemas/Error',
+                },
+              },
+            },
           },
           401: {
             description: 'Unauthorized - Invalid email or password',
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Error'
-                }
-              }
-            }
-          }
-        }
-      }
+                  $ref: '#/components/schemas/Error',
+                },
+              },
+            },
+          },
+        },
+      },
     },
     '/api/auth/logout': {
       post: {
@@ -634,8 +635,8 @@ const swaggerDocument = {
         tags: ['Authentication'],
         security: [
           {
-            bearerAuth: []
-          }
+            bearerAuth: [],
+          },
         ],
         responses: {
           200: {
@@ -647,25 +648,25 @@ const swaggerDocument = {
                   properties: {
                     message: {
                       type: 'string',
-                      example: 'Logged out successfully'
-                    }
-                  }
-                }
-              }
-            }
+                      example: 'Logged out successfully',
+                    },
+                  },
+                },
+              },
+            },
           },
           401: {
             description: 'Unauthorized - Invalid or missing token',
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Error'
-                }
-              }
-            }
-          }
-        }
-      }
+                  $ref: '#/components/schemas/Error',
+                },
+              },
+            },
+          },
+        },
+      },
     },
     '/api/auth/refresh': {
       post: {
@@ -674,8 +675,8 @@ const swaggerDocument = {
         tags: ['Authentication'],
         security: [
           {
-            bearerAuth: []
-          }
+            bearerAuth: [],
+          },
         ],
         responses: {
           200: {
@@ -687,25 +688,25 @@ const swaggerDocument = {
                   properties: {
                     token: {
                       type: 'string',
-                      example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
-                    }
-                  }
-                }
-              }
-            }
+                      example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
+                    },
+                  },
+                },
+              },
+            },
           },
           401: {
             description: 'Unauthorized - Invalid or expired refresh token',
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Error'
-                }
-              }
-            }
-          }
-        }
-      }
+                  $ref: '#/components/schemas/Error',
+                },
+              },
+            },
+          },
+        },
+      },
     },
     '/api/users': {
       get: {
@@ -714,8 +715,8 @@ const swaggerDocument = {
         tags: ['Users'],
         security: [
           {
-            bearerAuth: []
-          }
+            bearerAuth: [],
+          },
         ],
         responses: {
           200: {
@@ -725,33 +726,33 @@ const swaggerDocument = {
                 schema: {
                   type: 'array',
                   items: {
-                    $ref: '#/components/schemas/User'
-                  }
-                }
-              }
-            }
+                    $ref: '#/components/schemas/User',
+                  },
+                },
+              },
+            },
           },
           401: {
             description: 'Unauthorized',
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Error'
-                }
-              }
-            }
+                  $ref: '#/components/schemas/Error',
+                },
+              },
+            },
           },
           403: {
             description: 'Forbidden - Admin access required',
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Error'
-                }
-              }
-            }
-          }
-        }
+                  $ref: '#/components/schemas/Error',
+                },
+              },
+            },
+          },
+        },
       },
       post: {
         summary: 'Create a new user',
@@ -759,8 +760,8 @@ const swaggerDocument = {
         tags: ['Users'],
         security: [
           {
-            bearerAuth: []
-          }
+            bearerAuth: [],
+          },
         ],
         requestBody: {
           required: true,
@@ -773,26 +774,26 @@ const swaggerDocument = {
                   email: {
                     type: 'string',
                     format: 'email',
-                    example: 'newuser@example.com'
+                    example: 'newuser@example.com',
                   },
                   password: {
                     type: 'string',
                     minLength: 6,
-                    example: 'password123'
+                    example: 'password123',
                   },
                   name: {
                     type: 'string',
-                    example: 'Jane Doe'
+                    example: 'Jane Doe',
                   },
                   role: {
                     type: 'string',
                     enum: ['user', 'admin'],
-                    example: 'user'
-                  }
-                }
-              }
-            }
-          }
+                    example: 'user',
+                  },
+                },
+              },
+            },
+          },
         },
         responses: {
           201: {
@@ -800,33 +801,33 @@ const swaggerDocument = {
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/User'
-                }
-              }
-            }
+                  $ref: '#/components/schemas/User',
+                },
+              },
+            },
           },
           400: {
             description: 'Bad request - Invalid input data',
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Error'
-                }
-              }
-            }
+                  $ref: '#/components/schemas/Error',
+                },
+              },
+            },
           },
           409: {
             description: 'Conflict - Email already exists',
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Error'
-                }
-              }
-            }
-          }
-        }
-      }
+                  $ref: '#/components/schemas/Error',
+                },
+              },
+            },
+          },
+        },
+      },
     },
     '/api/users/{id}': {
       get: {
@@ -835,8 +836,8 @@ const swaggerDocument = {
         tags: ['Users'],
         security: [
           {
-            bearerAuth: []
-          }
+            bearerAuth: [],
+          },
         ],
         parameters: [
           {
@@ -846,9 +847,9 @@ const swaggerDocument = {
             description: 'User ID',
             schema: {
               type: 'integer',
-              example: 1
-            }
-          }
+              example: 1,
+            },
+          },
         ],
         responses: {
           200: {
@@ -856,32 +857,32 @@ const swaggerDocument = {
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/User'
-                }
-              }
-            }
+                  $ref: '#/components/schemas/User',
+                },
+              },
+            },
           },
           404: {
             description: 'User not found',
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Error'
-                }
-              }
-            }
+                  $ref: '#/components/schemas/Error',
+                },
+              },
+            },
           },
           401: {
             description: 'Unauthorized',
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Error'
-                }
-              }
-            }
-          }
-        }
+                  $ref: '#/components/schemas/Error',
+                },
+              },
+            },
+          },
+        },
       },
       put: {
         summary: 'Update user',
@@ -889,8 +890,8 @@ const swaggerDocument = {
         tags: ['Users'],
         security: [
           {
-            bearerAuth: []
-          }
+            bearerAuth: [],
+          },
         ],
         parameters: [
           {
@@ -900,9 +901,9 @@ const swaggerDocument = {
             description: 'User ID',
             schema: {
               type: 'integer',
-              example: 1
-            }
-          }
+              example: 1,
+            },
+          },
         ],
         requestBody: {
           required: true,
@@ -914,21 +915,21 @@ const swaggerDocument = {
                   email: {
                     type: 'string',
                     format: 'email',
-                    example: 'updated@example.com'
+                    example: 'updated@example.com',
                   },
                   name: {
                     type: 'string',
-                    example: 'Updated Name'
+                    example: 'Updated Name',
                   },
                   role: {
                     type: 'string',
                     enum: ['user', 'admin'],
-                    example: 'user'
-                  }
-                }
-              }
-            }
-          }
+                    example: 'user',
+                  },
+                },
+              },
+            },
+          },
         },
         responses: {
           200: {
@@ -936,32 +937,32 @@ const swaggerDocument = {
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/User'
-                }
-              }
-            }
+                  $ref: '#/components/schemas/User',
+                },
+              },
+            },
           },
           400: {
             description: 'Bad request - Invalid input data',
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Error'
-                }
-              }
-            }
+                  $ref: '#/components/schemas/Error',
+                },
+              },
+            },
           },
           404: {
             description: 'User not found',
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Error'
-                }
-              }
-            }
-          }
-        }
+                  $ref: '#/components/schemas/Error',
+                },
+              },
+            },
+          },
+        },
       },
       delete: {
         summary: 'Delete user',
@@ -969,8 +970,8 @@ const swaggerDocument = {
         tags: ['Users'],
         security: [
           {
-            bearerAuth: []
-          }
+            bearerAuth: [],
+          },
         ],
         parameters: [
           {
@@ -980,9 +981,9 @@ const swaggerDocument = {
             description: 'User ID',
             schema: {
               type: 'integer',
-              example: 1
-            }
-          }
+              example: 1,
+            },
+          },
         ],
         responses: {
           200: {
@@ -994,35 +995,35 @@ const swaggerDocument = {
                   properties: {
                     message: {
                       type: 'string',
-                      example: 'User deleted successfully'
-                    }
-                  }
-                }
-              }
-            }
+                      example: 'User deleted successfully',
+                    },
+                  },
+                },
+              },
+            },
           },
           404: {
             description: 'User not found',
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Error'
-                }
-              }
-            }
+                  $ref: '#/components/schemas/Error',
+                },
+              },
+            },
           },
           403: {
             description: 'Forbidden - Admin access required',
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Error'
-                }
-              }
-            }
-          }
-        }
-      }
+                  $ref: '#/components/schemas/Error',
+                },
+              },
+            },
+          },
+        },
+      },
     },
     '/api/tasks': {
       get: {
@@ -1031,8 +1032,8 @@ const swaggerDocument = {
         tags: ['Tasks'],
         security: [
           {
-            bearerAuth: []
-          }
+            bearerAuth: [],
+          },
         ],
         parameters: [
           {
@@ -1041,8 +1042,8 @@ const swaggerDocument = {
             description: 'Filter by status ID',
             schema: {
               type: 'integer',
-              example: 1
-            }
+              example: 1,
+            },
           },
           {
             name: 'priority',
@@ -1051,8 +1052,8 @@ const swaggerDocument = {
             schema: {
               type: 'string',
               enum: ['low', 'medium', 'high'],
-              example: 'high'
-            }
+              example: 'high',
+            },
           },
           {
             name: 'assigned_to',
@@ -1060,9 +1061,9 @@ const swaggerDocument = {
             description: 'Filter by assigned user ID',
             schema: {
               type: 'integer',
-              example: 1
-            }
-          }
+              example: 1,
+            },
+          },
         ],
         responses: {
           200: {
@@ -1072,23 +1073,23 @@ const swaggerDocument = {
                 schema: {
                   type: 'array',
                   items: {
-                    $ref: '#/components/schemas/Task'
-                  }
-                }
-              }
-            }
+                    $ref: '#/components/schemas/Task',
+                  },
+                },
+              },
+            },
           },
           401: {
             description: 'Unauthorized',
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Error'
-                }
-              }
-            }
-          }
-        }
+                  $ref: '#/components/schemas/Error',
+                },
+              },
+            },
+          },
+        },
       },
       post: {
         summary: 'Create a new task',
@@ -1096,8 +1097,8 @@ const swaggerDocument = {
         tags: ['Tasks'],
         security: [
           {
-            bearerAuth: []
-          }
+            bearerAuth: [],
+          },
         ],
         requestBody: {
           required: true,
@@ -1109,30 +1110,30 @@ const swaggerDocument = {
                 properties: {
                   title: {
                     type: 'string',
-                    example: 'Complete project documentation'
+                    example: 'Complete project documentation',
                   },
                   description: {
                     type: 'string',
-                    example: 'Write comprehensive documentation for the TaskFlow project'
+                    example: 'Write comprehensive documentation for the TaskFlow project',
                   },
                   status_id: {
                     type: 'integer',
-                    example: 1
+                    example: 1,
                   },
                   priority: {
                     type: 'string',
                     enum: ['low', 'medium', 'high'],
-                    example: 'high'
+                    example: 'high',
                   },
                   due_date: {
                     type: 'string',
                     format: 'date-time',
-                    example: '2024-12-31T23:59:59Z'
-                  }
-                }
-              }
-            }
-          }
+                    example: '2024-12-31T23:59:59Z',
+                  },
+                },
+              },
+            },
+          },
         },
         responses: {
           201: {
@@ -1140,23 +1141,23 @@ const swaggerDocument = {
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Task'
-                }
-              }
-            }
+                  $ref: '#/components/schemas/Task',
+                },
+              },
+            },
           },
           400: {
             description: 'Bad request - Invalid input data',
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Error'
-                }
-              }
-            }
-          }
-        }
-      }
+                  $ref: '#/components/schemas/Error',
+                },
+              },
+            },
+          },
+        },
+      },
     },
     '/api/tasks/{id}': {
       get: {
@@ -1165,8 +1166,8 @@ const swaggerDocument = {
         tags: ['Tasks'],
         security: [
           {
-            bearerAuth: []
-          }
+            bearerAuth: [],
+          },
         ],
         parameters: [
           {
@@ -1176,9 +1177,9 @@ const swaggerDocument = {
             description: 'Task ID',
             schema: {
               type: 'integer',
-              example: 1
-            }
-          }
+              example: 1,
+            },
+          },
         ],
         responses: {
           200: {
@@ -1186,22 +1187,22 @@ const swaggerDocument = {
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Task'
-                }
-              }
-            }
+                  $ref: '#/components/schemas/Task',
+                },
+              },
+            },
           },
           404: {
             description: 'Task not found',
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Error'
-                }
-              }
-            }
-          }
-        }
+                  $ref: '#/components/schemas/Error',
+                },
+              },
+            },
+          },
+        },
       },
       put: {
         summary: 'Update task',
@@ -1209,8 +1210,8 @@ const swaggerDocument = {
         tags: ['Tasks'],
         security: [
           {
-            bearerAuth: []
-          }
+            bearerAuth: [],
+          },
         ],
         parameters: [
           {
@@ -1220,9 +1221,9 @@ const swaggerDocument = {
             description: 'Task ID',
             schema: {
               type: 'integer',
-              example: 1
-            }
-          }
+              example: 1,
+            },
+          },
         ],
         requestBody: {
           required: true,
@@ -1233,30 +1234,30 @@ const swaggerDocument = {
                 properties: {
                   title: {
                     type: 'string',
-                    example: 'Updated task title'
+                    example: 'Updated task title',
                   },
                   description: {
                     type: 'string',
-                    example: 'Updated task description'
+                    example: 'Updated task description',
                   },
                   status_id: {
                     type: 'integer',
-                    example: 2
+                    example: 2,
                   },
                   priority: {
                     type: 'string',
                     enum: ['low', 'medium', 'high'],
-                    example: 'medium'
+                    example: 'medium',
                   },
                   due_date: {
                     type: 'string',
                     format: 'date-time',
-                    example: '2024-12-31T23:59:59Z'
-                  }
-                }
-              }
-            }
-          }
+                    example: '2024-12-31T23:59:59Z',
+                  },
+                },
+              },
+            },
+          },
         },
         responses: {
           200: {
@@ -1264,32 +1265,32 @@ const swaggerDocument = {
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Task'
-                }
-              }
-            }
+                  $ref: '#/components/schemas/Task',
+                },
+              },
+            },
           },
           400: {
             description: 'Bad request - Invalid input data',
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Error'
-                }
-              }
-            }
+                  $ref: '#/components/schemas/Error',
+                },
+              },
+            },
           },
           404: {
             description: 'Task not found',
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Error'
-                }
-              }
-            }
-          }
-        }
+                  $ref: '#/components/schemas/Error',
+                },
+              },
+            },
+          },
+        },
       },
       delete: {
         summary: 'Delete task',
@@ -1297,8 +1298,8 @@ const swaggerDocument = {
         tags: ['Tasks'],
         security: [
           {
-            bearerAuth: []
-          }
+            bearerAuth: [],
+          },
         ],
         parameters: [
           {
@@ -1308,9 +1309,9 @@ const swaggerDocument = {
             description: 'Task ID',
             schema: {
               type: 'integer',
-              example: 1
-            }
-          }
+              example: 1,
+            },
+          },
         ],
         responses: {
           200: {
@@ -1322,25 +1323,25 @@ const swaggerDocument = {
                   properties: {
                     message: {
                       type: 'string',
-                      example: 'Task deleted successfully'
-                    }
-                  }
-                }
-              }
-            }
+                      example: 'Task deleted successfully',
+                    },
+                  },
+                },
+              },
+            },
           },
           404: {
             description: 'Task not found',
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Error'
-                }
-              }
-            }
-          }
-        }
-      }
+                  $ref: '#/components/schemas/Error',
+                },
+              },
+            },
+          },
+        },
+      },
     },
     '/api/status': {
       get: {
@@ -1349,8 +1350,8 @@ const swaggerDocument = {
         tags: ['Status'],
         security: [
           {
-            bearerAuth: []
-          }
+            bearerAuth: [],
+          },
         ],
         responses: {
           200: {
@@ -1360,23 +1361,23 @@ const swaggerDocument = {
                 schema: {
                   type: 'array',
                   items: {
-                    $ref: '#/components/schemas/Status'
-                  }
-                }
-              }
-            }
+                    $ref: '#/components/schemas/Status',
+                  },
+                },
+              },
+            },
           },
           401: {
             description: 'Unauthorized',
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Error'
-                }
-              }
-            }
-          }
-        }
+                  $ref: '#/components/schemas/Error',
+                },
+              },
+            },
+          },
+        },
       },
       post: {
         summary: 'Create a new status',
@@ -1384,8 +1385,8 @@ const swaggerDocument = {
         tags: ['Status'],
         security: [
           {
-            bearerAuth: []
-          }
+            bearerAuth: [],
+          },
         ],
         requestBody: {
           required: true,
@@ -1397,24 +1398,24 @@ const swaggerDocument = {
                 properties: {
                   name: {
                     type: 'string',
-                    example: 'In Review'
+                    example: 'In Review',
                   },
                   description: {
                     type: 'string',
-                    example: 'Task is being reviewed'
+                    example: 'Task is being reviewed',
                   },
                   color: {
                     type: 'string',
-                    example: '#FFA500'
+                    example: '#FFA500',
                   },
                   is_active: {
                     type: 'boolean',
-                    example: true
-                  }
-                }
-              }
-            }
-          }
+                    example: true,
+                  },
+                },
+              },
+            },
+          },
         },
         responses: {
           201: {
@@ -1422,23 +1423,23 @@ const swaggerDocument = {
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Status'
-                }
-              }
-            }
+                  $ref: '#/components/schemas/Status',
+                },
+              },
+            },
           },
           400: {
             description: 'Bad request - Invalid input data',
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Error'
-                }
-              }
-            }
-          }
-        }
-      }
+                  $ref: '#/components/schemas/Error',
+                },
+              },
+            },
+          },
+        },
+      },
     },
     '/api/status/{id}': {
       get: {
@@ -1447,8 +1448,8 @@ const swaggerDocument = {
         tags: ['Status'],
         security: [
           {
-            bearerAuth: []
-          }
+            bearerAuth: [],
+          },
         ],
         parameters: [
           {
@@ -1458,9 +1459,9 @@ const swaggerDocument = {
             description: 'Status ID',
             schema: {
               type: 'integer',
-              example: 1
-            }
-          }
+              example: 1,
+            },
+          },
         ],
         responses: {
           200: {
@@ -1468,22 +1469,22 @@ const swaggerDocument = {
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Status'
-                }
-              }
-            }
+                  $ref: '#/components/schemas/Status',
+                },
+              },
+            },
           },
           404: {
             description: 'Status not found',
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Error'
-                }
-              }
-            }
-          }
-        }
+                  $ref: '#/components/schemas/Error',
+                },
+              },
+            },
+          },
+        },
       },
       put: {
         summary: 'Update status',
@@ -1491,8 +1492,8 @@ const swaggerDocument = {
         tags: ['Status'],
         security: [
           {
-            bearerAuth: []
-          }
+            bearerAuth: [],
+          },
         ],
         parameters: [
           {
@@ -1502,9 +1503,9 @@ const swaggerDocument = {
             description: 'Status ID',
             schema: {
               type: 'integer',
-              example: 1
-            }
-          }
+              example: 1,
+            },
+          },
         ],
         requestBody: {
           required: true,
@@ -1515,24 +1516,24 @@ const swaggerDocument = {
                 properties: {
                   name: {
                     type: 'string',
-                    example: 'Updated Status Name'
+                    example: 'Updated Status Name',
                   },
                   description: {
                     type: 'string',
-                    example: 'Updated status description'
+                    example: 'Updated status description',
                   },
                   color: {
                     type: 'string',
-                    example: '#00FF00'
+                    example: '#00FF00',
                   },
                   is_active: {
                     type: 'boolean',
-                    example: false
-                  }
-                }
-              }
-            }
-          }
+                    example: false,
+                  },
+                },
+              },
+            },
+          },
         },
         responses: {
           200: {
@@ -1540,32 +1541,32 @@ const swaggerDocument = {
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Status'
-                }
-              }
-            }
+                  $ref: '#/components/schemas/Status',
+                },
+              },
+            },
           },
           400: {
             description: 'Bad request - Invalid input data',
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Error'
-                }
-              }
-            }
+                  $ref: '#/components/schemas/Error',
+                },
+              },
+            },
           },
           404: {
             description: 'Status not found',
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Error'
-                }
-              }
-            }
-          }
-        }
+                  $ref: '#/components/schemas/Error',
+                },
+              },
+            },
+          },
+        },
       },
       delete: {
         summary: 'Delete status',
@@ -1573,8 +1574,8 @@ const swaggerDocument = {
         tags: ['Status'],
         security: [
           {
-            bearerAuth: []
-          }
+            bearerAuth: [],
+          },
         ],
         parameters: [
           {
@@ -1584,9 +1585,9 @@ const swaggerDocument = {
             description: 'Status ID',
             schema: {
               type: 'integer',
-              example: 1
-            }
-          }
+              example: 1,
+            },
+          },
         ],
         responses: {
           200: {
@@ -1598,25 +1599,25 @@ const swaggerDocument = {
                   properties: {
                     message: {
                       type: 'string',
-                      example: 'Status deleted successfully'
-                    }
-                  }
-                }
-              }
-            }
+                      example: 'Status deleted successfully',
+                    },
+                  },
+                },
+              },
+            },
           },
           404: {
             description: 'Status not found',
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Error'
-                }
-              }
-            }
-          }
-        }
-      }
+                  $ref: '#/components/schemas/Error',
+                },
+              },
+            },
+          },
+        },
+      },
     },
     '/api/assignments': {
       get: {
@@ -1625,8 +1626,8 @@ const swaggerDocument = {
         tags: ['Assignments'],
         security: [
           {
-            bearerAuth: []
-          }
+            bearerAuth: [],
+          },
         ],
         responses: {
           200: {
@@ -1636,14 +1637,14 @@ const swaggerDocument = {
                 schema: {
                   type: 'array',
                   items: {
-                    $ref: '#/components/schemas/Assignment'
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
+                    $ref: '#/components/schemas/Assignment',
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
     },
     '/api/assignments/task/{taskId}': {
       get: {
@@ -1652,8 +1653,8 @@ const swaggerDocument = {
         tags: ['Assignments'],
         security: [
           {
-            bearerAuth: []
-          }
+            bearerAuth: [],
+          },
         ],
         parameters: [
           {
@@ -1663,9 +1664,9 @@ const swaggerDocument = {
             description: 'Task ID',
             schema: {
               type: 'integer',
-              example: 1
-            }
-          }
+              example: 1,
+            },
+          },
         ],
         responses: {
           200: {
@@ -1675,23 +1676,23 @@ const swaggerDocument = {
                 schema: {
                   type: 'array',
                   items: {
-                    $ref: '#/components/schemas/Assignment'
-                  }
-                }
-              }
-            }
+                    $ref: '#/components/schemas/Assignment',
+                  },
+                },
+              },
+            },
           },
           400: {
             description: 'Bad request - Invalid task ID',
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Error'
-                }
-              }
-            }
-          }
-        }
+                  $ref: '#/components/schemas/Error',
+                },
+              },
+            },
+          },
+        },
       },
       delete: {
         summary: 'Remove all assignments from task',
@@ -1699,8 +1700,8 @@ const swaggerDocument = {
         tags: ['Assignments'],
         security: [
           {
-            bearerAuth: []
-          }
+            bearerAuth: [],
+          },
         ],
         parameters: [
           {
@@ -1710,9 +1711,9 @@ const swaggerDocument = {
             description: 'Task ID',
             schema: {
               type: 'integer',
-              example: 1
-            }
-          }
+              example: 1,
+            },
+          },
         ],
         responses: {
           200: {
@@ -1724,15 +1725,15 @@ const swaggerDocument = {
                   properties: {
                     message: {
                       type: 'string',
-                      example: 'All assignments removed successfully'
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
+                      example: 'All assignments removed successfully',
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
     },
     '/api/assignments/task/{taskId}/assign': {
       post: {
@@ -1741,8 +1742,8 @@ const swaggerDocument = {
         tags: ['Assignments'],
         security: [
           {
-            bearerAuth: []
-          }
+            bearerAuth: [],
+          },
         ],
         parameters: [
           {
@@ -1752,19 +1753,19 @@ const swaggerDocument = {
             description: 'Task ID',
             schema: {
               type: 'integer',
-              example: 1
-            }
-          }
+              example: 1,
+            },
+          },
         ],
         requestBody: {
           required: true,
           content: {
             'application/json': {
               schema: {
-                $ref: '#/components/schemas/AssignUsersRequest'
-              }
-            }
-          }
+                $ref: '#/components/schemas/AssignUsersRequest',
+              },
+            },
+          },
         },
         responses: {
           201: {
@@ -1774,24 +1775,24 @@ const swaggerDocument = {
                 schema: {
                   type: 'array',
                   items: {
-                    $ref: '#/components/schemas/Assignment'
-                  }
-                }
-              }
-            }
+                    $ref: '#/components/schemas/Assignment',
+                  },
+                },
+              },
+            },
           },
           400: {
             description: 'Bad request - Invalid input data',
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Error'
-                }
-              }
-            }
-          }
-        }
-      }
+                  $ref: '#/components/schemas/Error',
+                },
+              },
+            },
+          },
+        },
+      },
     },
     '/api/assignments/task/{taskId}/user/{userId}': {
       get: {
@@ -1800,8 +1801,8 @@ const swaggerDocument = {
         tags: ['Assignments'],
         security: [
           {
-            bearerAuth: []
-          }
+            bearerAuth: [],
+          },
         ],
         parameters: [
           {
@@ -1811,8 +1812,8 @@ const swaggerDocument = {
             description: 'Task ID',
             schema: {
               type: 'integer',
-              example: 1
-            }
+              example: 1,
+            },
           },
           {
             name: 'userId',
@@ -1821,9 +1822,9 @@ const swaggerDocument = {
             description: 'User ID',
             schema: {
               type: 'integer',
-              example: 1
-            }
-          }
+              example: 1,
+            },
+          },
         ],
         responses: {
           200: {
@@ -1835,14 +1836,14 @@ const swaggerDocument = {
                   properties: {
                     isAssigned: {
                       type: 'boolean',
-                      example: true
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
+                      example: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
       },
       delete: {
         summary: 'Remove user assignment from task',
@@ -1850,8 +1851,8 @@ const swaggerDocument = {
         tags: ['Assignments'],
         security: [
           {
-            bearerAuth: []
-          }
+            bearerAuth: [],
+          },
         ],
         parameters: [
           {
@@ -1861,8 +1862,8 @@ const swaggerDocument = {
             description: 'Task ID',
             schema: {
               type: 'integer',
-              example: 1
-            }
+              example: 1,
+            },
           },
           {
             name: 'userId',
@@ -1871,9 +1872,9 @@ const swaggerDocument = {
             description: 'User ID',
             schema: {
               type: 'integer',
-              example: 1
-            }
-          }
+              example: 1,
+            },
+          },
         ],
         responses: {
           200: {
@@ -1885,25 +1886,25 @@ const swaggerDocument = {
                   properties: {
                     message: {
                       type: 'string',
-                      example: 'Assignment removed successfully'
-                    }
-                  }
-                }
-              }
-            }
+                      example: 'Assignment removed successfully',
+                    },
+                  },
+                },
+              },
+            },
           },
           404: {
             description: 'Assignment not found',
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Error'
-                }
-              }
-            }
-          }
-        }
-      }
+                  $ref: '#/components/schemas/Error',
+                },
+              },
+            },
+          },
+        },
+      },
     },
     '/api/task/{taskId}/history': {
       get: {
@@ -1912,8 +1913,8 @@ const swaggerDocument = {
         tags: ['Task History'],
         security: [
           {
-            bearerAuth: []
-          }
+            bearerAuth: [],
+          },
         ],
         parameters: [
           {
@@ -1923,9 +1924,9 @@ const swaggerDocument = {
             description: 'Task ID',
             schema: {
               type: 'integer',
-              example: 1
-            }
-          }
+              example: 1,
+            },
+          },
         ],
         responses: {
           200: {
@@ -1935,33 +1936,33 @@ const swaggerDocument = {
                 schema: {
                   type: 'array',
                   items: {
-                    $ref: '#/components/schemas/TaskHistory'
-                  }
-                }
-              }
-            }
+                    $ref: '#/components/schemas/TaskHistory',
+                  },
+                },
+              },
+            },
           },
           400: {
             description: 'Bad request - Invalid task ID',
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Error'
-                }
-              }
-            }
+                  $ref: '#/components/schemas/Error',
+                },
+              },
+            },
           },
           404: {
             description: 'Task not found',
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Error'
-                }
-              }
-            }
-          }
-        }
+                  $ref: '#/components/schemas/Error',
+                },
+              },
+            },
+          },
+        },
       },
       post: {
         summary: 'Add history entry',
@@ -1969,8 +1970,8 @@ const swaggerDocument = {
         tags: ['Task History'],
         security: [
           {
-            bearerAuth: []
-          }
+            bearerAuth: [],
+          },
         ],
         parameters: [
           {
@@ -1980,9 +1981,9 @@ const swaggerDocument = {
             description: 'Task ID',
             schema: {
               type: 'integer',
-              example: 1
-            }
-          }
+              example: 1,
+            },
+          },
         ],
         requestBody: {
           required: true,
@@ -1994,28 +1995,28 @@ const swaggerDocument = {
                 properties: {
                   action: {
                     type: 'string',
-                    example: 'status_changed'
+                    example: 'status_changed',
                   },
                   field_name: {
                     type: 'string',
-                    example: 'status_id'
+                    example: 'status_id',
                   },
                   old_value: {
                     type: 'string',
-                    example: '1'
+                    example: '1',
                   },
                   new_value: {
                     type: 'string',
-                    example: '2'
+                    example: '2',
                   },
                   description: {
                     type: 'string',
-                    example: 'Status changed from To Do to In Progress'
-                  }
-                }
-              }
-            }
-          }
+                    example: 'Status changed from To Do to In Progress',
+                  },
+                },
+              },
+            },
+          },
         },
         responses: {
           201: {
@@ -2023,33 +2024,33 @@ const swaggerDocument = {
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/TaskHistory'
-                }
-              }
-            }
+                  $ref: '#/components/schemas/TaskHistory',
+                },
+              },
+            },
           },
           400: {
             description: 'Bad request - Invalid input data',
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Error'
-                }
-              }
-            }
+                  $ref: '#/components/schemas/Error',
+                },
+              },
+            },
           },
           404: {
             description: 'Task not found',
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Error'
-                }
-              }
-            }
-          }
-        }
-      }
+                  $ref: '#/components/schemas/Error',
+                },
+              },
+            },
+          },
+        },
+      },
     },
     '/api/roles': {
       get: {
@@ -2058,8 +2059,8 @@ const swaggerDocument = {
         tags: ['Roles'],
         security: [
           {
-            bearerAuth: []
-          }
+            bearerAuth: [],
+          },
         ],
         responses: {
           200: {
@@ -2069,23 +2070,23 @@ const swaggerDocument = {
                 schema: {
                   type: 'array',
                   items: {
-                    $ref: '#/components/schemas/Role'
-                  }
-                }
-              }
-            }
+                    $ref: '#/components/schemas/Role',
+                  },
+                },
+              },
+            },
           },
           401: {
             description: 'Unauthorized',
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Error'
-                }
-              }
-            }
-          }
-        }
+                  $ref: '#/components/schemas/Error',
+                },
+              },
+            },
+          },
+        },
       },
       post: {
         summary: 'Create a new role',
@@ -2093,8 +2094,8 @@ const swaggerDocument = {
         tags: ['Roles'],
         security: [
           {
-            bearerAuth: []
-          }
+            bearerAuth: [],
+          },
         ],
         requestBody: {
           required: true,
@@ -2106,16 +2107,16 @@ const swaggerDocument = {
                 properties: {
                   name: {
                     type: 'string',
-                    example: 'manager'
+                    example: 'manager',
                   },
                   description: {
                     type: 'string',
-                    example: 'Project manager with team oversight permissions'
-                  }
-                }
-              }
-            }
-          }
+                    example: 'Project manager with team oversight permissions',
+                  },
+                },
+              },
+            },
+          },
         },
         responses: {
           201: {
@@ -2123,33 +2124,33 @@ const swaggerDocument = {
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Role'
-                }
-              }
-            }
+                  $ref: '#/components/schemas/Role',
+                },
+              },
+            },
           },
           400: {
             description: 'Bad request - Invalid input data',
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Error'
-                }
-              }
-            }
+                  $ref: '#/components/schemas/Error',
+                },
+              },
+            },
           },
           403: {
             description: 'Forbidden - Admin access required',
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Error'
-                }
-              }
-            }
-          }
-        }
-      }
+                  $ref: '#/components/schemas/Error',
+                },
+              },
+            },
+          },
+        },
+      },
     },
     '/api/roles/{id}': {
       get: {
@@ -2158,8 +2159,8 @@ const swaggerDocument = {
         tags: ['Roles'],
         security: [
           {
-            bearerAuth: []
-          }
+            bearerAuth: [],
+          },
         ],
         parameters: [
           {
@@ -2169,9 +2170,9 @@ const swaggerDocument = {
             description: 'Role ID',
             schema: {
               type: 'integer',
-              example: 1
-            }
-          }
+              example: 1,
+            },
+          },
         ],
         responses: {
           200: {
@@ -2179,22 +2180,22 @@ const swaggerDocument = {
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Role'
-                }
-              }
-            }
+                  $ref: '#/components/schemas/Role',
+                },
+              },
+            },
           },
           404: {
             description: 'Role not found',
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Error'
-                }
-              }
-            }
-          }
-        }
+                  $ref: '#/components/schemas/Error',
+                },
+              },
+            },
+          },
+        },
       },
       put: {
         summary: 'Update role',
@@ -2202,8 +2203,8 @@ const swaggerDocument = {
         tags: ['Roles'],
         security: [
           {
-            bearerAuth: []
-          }
+            bearerAuth: [],
+          },
         ],
         parameters: [
           {
@@ -2213,9 +2214,9 @@ const swaggerDocument = {
             description: 'Role ID',
             schema: {
               type: 'integer',
-              example: 1
-            }
-          }
+              example: 1,
+            },
+          },
         ],
         requestBody: {
           required: true,
@@ -2226,16 +2227,16 @@ const swaggerDocument = {
                 properties: {
                   name: {
                     type: 'string',
-                    example: 'updated_role'
+                    example: 'updated_role',
                   },
                   description: {
                     type: 'string',
-                    example: 'Updated role description'
-                  }
-                }
-              }
-            }
-          }
+                    example: 'Updated role description',
+                  },
+                },
+              },
+            },
+          },
         },
         responses: {
           200: {
@@ -2243,42 +2244,42 @@ const swaggerDocument = {
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Role'
-                }
-              }
-            }
+                  $ref: '#/components/schemas/Role',
+                },
+              },
+            },
           },
           400: {
             description: 'Bad request - Invalid input data',
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Error'
-                }
-              }
-            }
+                  $ref: '#/components/schemas/Error',
+                },
+              },
+            },
           },
           404: {
             description: 'Role not found',
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Error'
-                }
-              }
-            }
+                  $ref: '#/components/schemas/Error',
+                },
+              },
+            },
           },
           403: {
             description: 'Forbidden - Admin access required',
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Error'
-                }
-              }
-            }
-          }
-        }
+                  $ref: '#/components/schemas/Error',
+                },
+              },
+            },
+          },
+        },
       },
       delete: {
         summary: 'Delete role',
@@ -2286,8 +2287,8 @@ const swaggerDocument = {
         tags: ['Roles'],
         security: [
           {
-            bearerAuth: []
-          }
+            bearerAuth: [],
+          },
         ],
         parameters: [
           {
@@ -2297,9 +2298,9 @@ const swaggerDocument = {
             description: 'Role ID',
             schema: {
               type: 'integer',
-              example: 1
-            }
-          }
+              example: 1,
+            },
+          },
         ],
         responses: {
           200: {
@@ -2311,35 +2312,35 @@ const swaggerDocument = {
                   properties: {
                     message: {
                       type: 'string',
-                      example: 'Role deleted successfully'
-                    }
-                  }
-                }
-              }
-            }
+                      example: 'Role deleted successfully',
+                    },
+                  },
+                },
+              },
+            },
           },
           404: {
             description: 'Role not found',
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Error'
-                }
-              }
-            }
+                  $ref: '#/components/schemas/Error',
+                },
+              },
+            },
           },
           403: {
             description: 'Forbidden - Admin access required',
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Error'
-                }
-              }
-            }
-          }
-        }
-      }
+                  $ref: '#/components/schemas/Error',
+                },
+              },
+            },
+          },
+        },
+      },
     },
     '/api/projects/business/{businessId}': {
       get: {
@@ -2348,8 +2349,8 @@ const swaggerDocument = {
         tags: ['Projects'],
         security: [
           {
-            bearerAuth: []
-          }
+            bearerAuth: [],
+          },
         ],
         parameters: [
           {
@@ -2359,8 +2360,8 @@ const swaggerDocument = {
             description: 'Business ID',
             schema: {
               type: 'integer',
-              example: 1
-            }
+              example: 1,
+            },
           },
           {
             name: 'status',
@@ -2369,8 +2370,8 @@ const swaggerDocument = {
             description: 'Filter by project status',
             schema: {
               type: 'string',
-              enum: ['planning', 'active', 'completed', 'on-hold', 'cancelled']
-            }
+              enum: ['planning', 'active', 'completed', 'on-hold', 'cancelled'],
+            },
           },
           {
             name: 'limit',
@@ -2380,8 +2381,8 @@ const swaggerDocument = {
             schema: {
               type: 'integer',
               minimum: 1,
-              example: 10
-            }
+              example: 10,
+            },
           },
           {
             name: 'offset',
@@ -2391,9 +2392,9 @@ const swaggerDocument = {
             schema: {
               type: 'integer',
               minimum: 0,
-              example: 0
-            }
-          }
+              example: 0,
+            },
+          },
         ],
         responses: {
           200: {
@@ -2405,70 +2406,70 @@ const swaggerDocument = {
                   properties: {
                     success: {
                       type: 'boolean',
-                      example: true
+                      example: true,
                     },
                     message: {
                       type: 'string',
-                      example: 'Projects retrieved successfully'
+                      example: 'Projects retrieved successfully',
                     },
                     data: {
                       type: 'array',
                       items: {
-                        $ref: '#/components/schemas/Project'
-                      }
+                        $ref: '#/components/schemas/Project',
+                      },
                     },
                     meta: {
                       type: 'object',
                       properties: {
                         businessId: {
                           type: 'integer',
-                          example: 1
+                          example: 1,
                         },
                         count: {
                           type: 'integer',
-                          example: 5
+                          example: 5,
                         },
                         limit: {
                           type: 'integer',
-                          example: 10
+                          example: 10,
                         },
                         offset: {
                           type: 'integer',
-                          example: 0
+                          example: 0,
                         },
                         status: {
                           type: 'string',
-                          example: 'active'
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
+                          example: 'active',
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
           },
           400: {
             description: 'Bad request - Invalid business ID',
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Error'
-                }
-              }
-            }
+                  $ref: '#/components/schemas/Error',
+                },
+              },
+            },
           },
           401: {
             description: 'Unauthorized - Invalid or missing token',
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Error'
-                }
-              }
-            }
-          }
-        }
-      }
+                  $ref: '#/components/schemas/Error',
+                },
+              },
+            },
+          },
+        },
+      },
     },
     '/api/projects/business/{businessId}/stats': {
       get: {
@@ -2477,8 +2478,8 @@ const swaggerDocument = {
         tags: ['Projects'],
         security: [
           {
-            bearerAuth: []
-          }
+            bearerAuth: [],
+          },
         ],
         parameters: [
           {
@@ -2488,9 +2489,9 @@ const swaggerDocument = {
             description: 'Business ID',
             schema: {
               type: 'integer',
-              example: 1
-            }
-          }
+              example: 1,
+            },
+          },
         ],
         responses: {
           200: {
@@ -2502,42 +2503,42 @@ const swaggerDocument = {
                   properties: {
                     success: {
                       type: 'boolean',
-                      example: true
+                      example: true,
                     },
                     message: {
                       type: 'string',
-                      example: 'Project statistics retrieved successfully'
+                      example: 'Project statistics retrieved successfully',
                     },
                     data: {
-                      $ref: '#/components/schemas/ProjectStats'
-                    }
-                  }
-                }
-              }
-            }
+                      $ref: '#/components/schemas/ProjectStats',
+                    },
+                  },
+                },
+              },
+            },
           },
           400: {
             description: 'Bad request - Invalid business ID',
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Error'
-                }
-              }
-            }
+                  $ref: '#/components/schemas/Error',
+                },
+              },
+            },
           },
           401: {
             description: 'Unauthorized - Invalid or missing token',
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Error'
-                }
-              }
-            }
-          }
-        }
-      }
+                  $ref: '#/components/schemas/Error',
+                },
+              },
+            },
+          },
+        },
+      },
     },
     '/api/projects/{id}': {
       get: {
@@ -2546,8 +2547,8 @@ const swaggerDocument = {
         tags: ['Projects'],
         security: [
           {
-            bearerAuth: []
-          }
+            bearerAuth: [],
+          },
         ],
         parameters: [
           {
@@ -2557,9 +2558,9 @@ const swaggerDocument = {
             description: 'Project ID',
             schema: {
               type: 'integer',
-              example: 1
-            }
-          }
+              example: 1,
+            },
+          },
         ],
         responses: {
           200: {
@@ -2571,51 +2572,51 @@ const swaggerDocument = {
                   properties: {
                     success: {
                       type: 'boolean',
-                      example: true
+                      example: true,
                     },
                     message: {
                       type: 'string',
-                      example: 'Project retrieved successfully'
+                      example: 'Project retrieved successfully',
                     },
                     data: {
-                      $ref: '#/components/schemas/Project'
-                    }
-                  }
-                }
-              }
-            }
+                      $ref: '#/components/schemas/Project',
+                    },
+                  },
+                },
+              },
+            },
           },
           400: {
             description: 'Bad request - Invalid project ID',
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Error'
-                }
-              }
-            }
+                  $ref: '#/components/schemas/Error',
+                },
+              },
+            },
           },
           404: {
             description: 'Project not found',
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Error'
-                }
-              }
-            }
+                  $ref: '#/components/schemas/Error',
+                },
+              },
+            },
           },
           401: {
             description: 'Unauthorized - Invalid or missing token',
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Error'
-                }
-              }
-            }
-          }
-        }
+                  $ref: '#/components/schemas/Error',
+                },
+              },
+            },
+          },
+        },
       },
       put: {
         summary: 'Update project',
@@ -2623,8 +2624,8 @@ const swaggerDocument = {
         tags: ['Projects'],
         security: [
           {
-            bearerAuth: []
-          }
+            bearerAuth: [],
+          },
         ],
         parameters: [
           {
@@ -2634,19 +2635,19 @@ const swaggerDocument = {
             description: 'Project ID',
             schema: {
               type: 'integer',
-              example: 1
-            }
-          }
+              example: 1,
+            },
+          },
         ],
         requestBody: {
           required: true,
           content: {
             'application/json': {
               schema: {
-                $ref: '#/components/schemas/UpdateProjectRequest'
-              }
-            }
-          }
+                $ref: '#/components/schemas/UpdateProjectRequest',
+              },
+            },
+          },
         },
         responses: {
           200: {
@@ -2658,51 +2659,51 @@ const swaggerDocument = {
                   properties: {
                     success: {
                       type: 'boolean',
-                      example: true
+                      example: true,
                     },
                     message: {
                       type: 'string',
-                      example: 'Project updated successfully'
+                      example: 'Project updated successfully',
                     },
                     data: {
-                      $ref: '#/components/schemas/Project'
-                    }
-                  }
-                }
-              }
-            }
+                      $ref: '#/components/schemas/Project',
+                    },
+                  },
+                },
+              },
+            },
           },
           400: {
             description: 'Bad request - Invalid input data',
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Error'
-                }
-              }
-            }
+                  $ref: '#/components/schemas/Error',
+                },
+              },
+            },
           },
           404: {
             description: 'Project not found',
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Error'
-                }
-              }
-            }
+                  $ref: '#/components/schemas/Error',
+                },
+              },
+            },
           },
           401: {
             description: 'Unauthorized - Invalid or missing token',
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Error'
-                }
-              }
-            }
-          }
-        }
+                  $ref: '#/components/schemas/Error',
+                },
+              },
+            },
+          },
+        },
       },
       delete: {
         summary: 'Delete project',
@@ -2710,8 +2711,8 @@ const swaggerDocument = {
         tags: ['Projects'],
         security: [
           {
-            bearerAuth: []
-          }
+            bearerAuth: [],
+          },
         ],
         parameters: [
           {
@@ -2721,9 +2722,9 @@ const swaggerDocument = {
             description: 'Project ID',
             schema: {
               type: 'integer',
-              example: 1
-            }
-          }
+              example: 1,
+            },
+          },
         ],
         responses: {
           200: {
@@ -2735,49 +2736,49 @@ const swaggerDocument = {
                   properties: {
                     success: {
                       type: 'boolean',
-                      example: true
+                      example: true,
                     },
                     message: {
                       type: 'string',
-                      example: 'Project deleted successfully'
-                    }
-                  }
-                }
-              }
-            }
+                      example: 'Project deleted successfully',
+                    },
+                  },
+                },
+              },
+            },
           },
           400: {
             description: 'Bad request - Invalid project ID',
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Error'
-                }
-              }
-            }
+                  $ref: '#/components/schemas/Error',
+                },
+              },
+            },
           },
           404: {
             description: 'Project not found',
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Error'
-                }
-              }
-            }
+                  $ref: '#/components/schemas/Error',
+                },
+              },
+            },
           },
           401: {
             description: 'Unauthorized - Invalid or missing token',
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Error'
-                }
-              }
-            }
-          }
-        }
-      }
+                  $ref: '#/components/schemas/Error',
+                },
+              },
+            },
+          },
+        },
+      },
     },
     '/api/projects': {
       post: {
@@ -2786,18 +2787,18 @@ const swaggerDocument = {
         tags: ['Projects'],
         security: [
           {
-            bearerAuth: []
-          }
+            bearerAuth: [],
+          },
         ],
         requestBody: {
           required: true,
           content: {
             'application/json': {
               schema: {
-                $ref: '#/components/schemas/CreateProjectRequest'
-              }
-            }
-          }
+                $ref: '#/components/schemas/CreateProjectRequest',
+              },
+            },
+          },
         },
         responses: {
           201: {
@@ -2809,44 +2810,44 @@ const swaggerDocument = {
                   properties: {
                     success: {
                       type: 'boolean',
-                      example: true
+                      example: true,
                     },
                     message: {
                       type: 'string',
-                      example: 'Project created successfully'
+                      example: 'Project created successfully',
                     },
                     data: {
-                      $ref: '#/components/schemas/Project'
-                    }
-                  }
-                }
-              }
-            }
+                      $ref: '#/components/schemas/Project',
+                    },
+                  },
+                },
+              },
+            },
           },
           400: {
             description: 'Bad request - Invalid input data',
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Error'
-                }
-              }
-            }
+                  $ref: '#/components/schemas/Error',
+                },
+              },
+            },
           },
           401: {
             description: 'Unauthorized - Invalid or missing token',
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/schemas/Error'
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
+                  $ref: '#/components/schemas/Error',
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  },
 };
 
 export function setupSwagger(app: Express) {

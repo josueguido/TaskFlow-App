@@ -5,7 +5,7 @@ import { validateRequest } from '../../middlewares/validateRequest.middleware';
 import {
   addUserToProjectSchema,
   updateUserRoleSchema,
-  projectUserIdSchema
+  projectUserIdSchema,
 } from '../../schemas/projectUsers.schema';
 
 const router = Router();

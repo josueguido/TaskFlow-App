@@ -2,9 +2,8 @@ import { Pool } from 'pg';
 import dotenv from 'dotenv';
 
 dotenv.config({
-  path: process.env.NODE_ENV === 'production'
-    ? './config/DB/.env.production'
-    : './config/DB/.env.dev',
+  path:
+    process.env.NODE_ENV === 'production' ? './config/DB/.env.production' : './config/DB/.env.dev',
 });
 
 export const pool = new Pool({

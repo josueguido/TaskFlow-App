@@ -1,5 +1,5 @@
-import { Request, Response, NextFunction } from "express";
-import * as authService from "../../services/users/auth.service";
+import { Request, Response, NextFunction } from 'express';
+import * as authService from '../../services/users/auth.service';
 import { BadRequestError } from '../../errors/BadRequestError';
 
 export const businessSignup = async (req: Request, res: Response, next: NextFunction) => {
@@ -15,7 +15,7 @@ export const businessSignup = async (req: Request, res: Response, next: NextFunc
 
     res.status(201).json({
       success: true,
-      message: "Business and admin user created successfully",
+      message: 'Business and admin user created successfully',
       data: result,
     });
   } catch (err) {
@@ -26,7 +26,7 @@ export const businessSignup = async (req: Request, res: Response, next: NextFunc
 export const register = async (req: Request, res: Response, next: NextFunction) => {
   try {
     throw new BadRequestError(
-      "POST /register is deprecated. Use /api/auth/signup-business instead"
+      'POST /register is deprecated. Use /api/auth/signup-business instead'
     );
   } catch (err) {
     next(err);
@@ -38,13 +38,13 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
     const { email, password } = req.body;
 
     if (!email || !password) {
-      throw new BadRequestError("Email and password are required");
+      throw new BadRequestError('Email and password are required');
     }
 
     const data = await authService.loginService(email, password);
     res.status(200).json({
       success: true,
-      message: "Login successful",
+      message: 'Login successful',
       data,
     });
   } catch (err) {
@@ -57,13 +57,13 @@ export const refreshToken = async (req: Request, res: Response, next: NextFuncti
     const { refreshToken } = req.body;
 
     if (!refreshToken) {
-      throw new BadRequestError("Refresh token is required");
+      throw new BadRequestError('Refresh token is required');
     }
 
     const data = await authService.refreshTokenService(refreshToken);
     res.status(200).json({
       success: true,
-      message: "Access token refreshed",
+      message: 'Access token refreshed',
       data,
     });
   } catch (err) {
@@ -76,13 +76,13 @@ export const logout = async (req: Request, res: Response, next: NextFunction) =>
     const { refreshToken } = req.body;
 
     if (!refreshToken) {
-      throw new BadRequestError("Refresh token is required");
+      throw new BadRequestError('Refresh token is required');
     }
 
     await authService.logoutService(refreshToken);
     res.status(200).json({
       success: true,
-      message: "Logout successful",
+      message: 'Logout successful',
     });
   } catch (err) {
     next(err);
@@ -96,7 +96,7 @@ export const userSignup = async (req: Request, res: Response, next: NextFunction
     const data = await authService.completeUserRegistration(invite_token, name, password);
     res.status(200).json({
       success: true,
-      message: "User registration completed successfully",
+      message: 'User registration completed successfully',
       data,
     });
   } catch (err) {

@@ -1,6 +1,6 @@
-import { RequestHandler } from "express";
-import * as userService from "../../services/users/user.service";
-import bcrypt from "bcryptjs";
+import { RequestHandler } from 'express';
+import * as userService from '../../services/users/user.service';
+import bcrypt from 'bcryptjs';
 
 export const register: RequestHandler = async (req, res, next) => {
   try {
@@ -41,8 +41,8 @@ export const inviteUser: RequestHandler = async (req, res, next) => {
         email: invitedUser.email,
         business_id: invitedUser.business_id,
         status: invitedUser.status,
-        invite_token: invitedUser.invite_token
-      }
+        invite_token: invitedUser.invite_token,
+      },
     });
   } catch (error) {
     next(error);

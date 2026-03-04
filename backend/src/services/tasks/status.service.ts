@@ -1,6 +1,12 @@
-import { IStatus, ICreateStatus, IUpdateStatus } from "../../interfaces/status.interface"
-import { NotFoundError } from "../../errors/NotFoundError";
-import { createStatus, getAllStatuses, getStatusById, updateStatus, deleteStatus } from "../../models/status.model";
+import { IStatus, ICreateStatus, IUpdateStatus } from '../../interfaces/status.interface';
+import { NotFoundError } from '../../errors/NotFoundError';
+import {
+  createStatus,
+  getAllStatuses,
+  getStatusById,
+  updateStatus,
+  deleteStatus,
+} from '../../models/status.model';
 
 export const getStatuses = async (businessId: number) => {
   return await getAllStatuses(businessId);
@@ -12,15 +18,19 @@ export const getStatusByIdService = async (id: string, businessId: number) => {
     throw new NotFoundError('Status not found');
   }
   return status;
-}
+};
 
 export const createStatusService = async (data: ICreateStatus): Promise<IStatus> => {
   const { name, order, business_id } = data;
   const status = await createStatus(name, order, business_id);
   return status;
-}
+};
 
-export const updateStatusService = async (id: number, businessId: number, data: IUpdateStatus): Promise<IStatus> => {
+export const updateStatusService = async (
+  id: number,
+  businessId: number,
+  data: IUpdateStatus
+): Promise<IStatus> => {
   const { name, order } = data;
   const existingStatus = await getStatusById(id.toString(), businessId);
   if (!existingStatus) {
@@ -39,4 +49,4 @@ export const deleteStatusService = async (id: number, businessId: number): Promi
     throw new NotFoundError('Status not found');
   }
   return status;
-}
+};
