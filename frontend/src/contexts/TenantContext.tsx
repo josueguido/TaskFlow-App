@@ -11,6 +11,7 @@ interface TenantContextType {
 
 const TenantContext = createContext<TenantContextType | undefined>(undefined);
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useTenant = () => {
   const context = useContext(TenantContext);
   if (context === undefined) {
