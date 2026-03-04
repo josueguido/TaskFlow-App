@@ -12,7 +12,7 @@ import { contextLogger } from '../../utils/contextLogger';
 
 export const getProjectsByBusinessId = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const businessId = req.params.businessId;
+    const businessId = req.params.businessId as string;
     if (!businessId) {
       throw new BadRequestError("Business ID is required");
     }
@@ -31,7 +31,7 @@ export const getProjectsByBusinessId = async (req: Request, res: Response, next:
 
 export const getProjectById = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const projectId = req.params.id;
+    const projectId = req.params.id as string;
     if (!projectId) {
       throw new BadRequestError("Project ID is required");
     }
@@ -85,7 +85,7 @@ export const createProject = async (req: Request, res: Response, next: NextFunct
 
 export const updateProject = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const projectId = req.params.id;
+    const projectId = req.params.id as string;
     const { name, description } = req.body;
 
     if (!projectId) {
@@ -110,7 +110,7 @@ export const updateProject = async (req: Request, res: Response, next: NextFunct
 
 export const deleteProject = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const projectId = req.params.id;
+    const projectId = req.params.id as string;
 
     if (!projectId) {
       throw new BadRequestError("Project ID is required");
@@ -129,7 +129,7 @@ export const deleteProject = async (req: Request, res: Response, next: NextFunct
 
 export const getProjectStats = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const businessId = req.params.businessId;
+    const businessId = req.params.businessId as string;
 
     if (!businessId) {
       throw new BadRequestError("Business ID is required");
