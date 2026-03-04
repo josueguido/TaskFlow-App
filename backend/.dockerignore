@@ -19,5 +19,4 @@ Dockerfile*
 README.md
 .prettierrc
 .eslintrc*
-tsconfig.json
 jest.config.js
