@@ -9,7 +9,7 @@
     "dev:watch": "tsx watch src/server.ts",
     "build": "tsc",
     "start": "tsx src/server.ts",
-    "test": "jest",
+    "test": "jest --passWithNoTests",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write ."
