@@ -37,7 +37,7 @@ export const businessSignup = async (req: Request, res: Response, next: NextFunc
 export const getBusinesses = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const businesses = await getBusinessesList();
-    
+
     res.status(200).json({
       success: true,
       message: 'Businesses retrieved successfully',
@@ -51,14 +51,14 @@ export const getBusinesses = async (req: Request, res: Response, next: NextFunct
 
 export const getBusinessById = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
 
     if (!id) {
       throw new BadRequestError('Business ID is required');
     }
 
     const business = await getBusinessDetails(id);
-    
+
     res.status(200).json({
       success: true,
       message: 'Business details retrieved successfully',

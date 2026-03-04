@@ -13,7 +13,7 @@ export const getAllAssignments: RequestHandler = async (req, res, next) => {
 
 export const getAssignmentsByTaskId: RequestHandler = async (req, res, next) => {
   try {
-    const { taskId } = req.params;
+    const taskId = req.params.taskId as string;
     if (!taskId) {
       throw new BadRequestError("Task ID is required");
     }
@@ -26,7 +26,7 @@ export const getAssignmentsByTaskId: RequestHandler = async (req, res, next) => 
 
 export const assignUsersToTask: RequestHandler = async (req, res, next) => {
   try {
-    const { taskId } = req.params;
+    const taskId = req.params.taskId as string;
     const { userIds } = req.body;
     const assignments = await assignmentService.assignUsersToTaskService(taskId, userIds);
     res.status(201).json(assignments);
@@ -37,7 +37,8 @@ export const assignUsersToTask: RequestHandler = async (req, res, next) => {
 
 export const removeAssignment: RequestHandler = async (req, res, next) => {
   try {
-    const { taskId, userId } = req.params;
+    const taskId = req.params.taskId as string;
+    const userId = req.params.userId as string;
     if (!taskId || !userId) {
       throw new BadRequestError("Task ID and User ID are required");
     }
@@ -50,7 +51,7 @@ export const removeAssignment: RequestHandler = async (req, res, next) => {
 
 export const removeAllAssignments: RequestHandler = async (req, res, next) => {
   try {
-    const { taskId } = req.params;
+    const taskId = req.params.taskId as string;
     if (!taskId) {
       throw new BadRequestError("Task ID is required");
     }
@@ -63,7 +64,8 @@ export const removeAllAssignments: RequestHandler = async (req, res, next) => {
 
 export const isUserAssignedToTask: RequestHandler = async (req, res, next) => {
   try {
-    const { taskId, userId } = req.params;
+    const taskId = req.params.taskId as string;
+    const userId = req.params.userId as string;
     if (!taskId || !userId) {
       throw new BadRequestError("Task ID and User ID are required");
     }

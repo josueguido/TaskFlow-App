@@ -6,7 +6,7 @@ import { ICreateTaskHistory } from "@/interfaces/taskHistory.interface";
 
 export const getTaskHistory: RequestHandler = async (req, res, next) => {
   try {
-    const { taskId } = req.params;
+    const taskId = req.params.taskId as string;
     const userId = req.user?.id;
 
     if (!userId) {
