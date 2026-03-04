@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { getProjectsByBusiness } from "@/api/projects";
 import type { Project } from "@/api/projects";
 import { useAuth } from "@/store/auth";
+import { APP_VERSION } from "@/version";
 
 interface SidebarProps {
 	projects?: Project[];
@@ -308,6 +309,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ onProjectSelect, onManageColum
 					</svg>
 					Settings
 				</button>
+				<p className="mt-2 text-xs text-gray-400 text-center">v{APP_VERSION}</p>
 			</div>
 		</div>
 	);
