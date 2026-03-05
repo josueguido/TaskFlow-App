@@ -4,11 +4,13 @@
   "packages": {
     "frontend": {
       "path": "frontend",
-      "release-type": "node"
+      "release-type": "node",
+      "component": "frontend"
     },
     "backend": {
       "path": "backend",
-      "release-type": "node"
+      "release-type": "node",
+      "component": "backend"
     }
   }
 }
