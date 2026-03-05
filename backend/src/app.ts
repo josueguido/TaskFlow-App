@@ -58,6 +58,10 @@ app.get('/', (req, res) => {
   res.json({ message: 'TaskFlow API running with PostgreSQL!' });
 });
 
+app.get('/health', (_req, res) => {
+  res.json({ status: 'ok', uptime: process.uptime() });
+});
+
 app.use('/api/users', userRoutes);
 app.use('/api/tasks', taskRoutes);
 app.use('/api/task', taskHistoryRoutes);
