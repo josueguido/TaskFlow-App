@@ -25,6 +25,9 @@ jobs:
           file: ./frontend/Dockerfile
           push: false
           tags: taskflow-frontend:ci
+          build-args: |
+            APP_VERSION=ci
+            GIT_SHA=${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -35,5 +38,9 @@ jobs:
           file: ./backend/Dockerfile
           push: false
           tags: taskflow-backend:ci
+          build-args: |
+            APP_VERSION=ci
+            GIT_SHA=${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
