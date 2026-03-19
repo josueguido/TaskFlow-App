@@ -69,7 +69,7 @@ jobs:
 
       - name: Build and push Frontend
         if: steps.tag.outputs.component == 'frontend'
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v7
         with:
           context: ./frontend
           file: ./frontend/Dockerfile
@@ -85,7 +85,7 @@ jobs:
 
       - name: Build and push Backend
         if: steps.tag.outputs.component == 'backend'
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v7
         with:
           context: ./backend
           file: ./backend/Dockerfile
