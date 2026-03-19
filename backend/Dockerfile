@@ -1,4 +1,4 @@
-FROM node:24-alpine3.21 AS builder
+FROM node:25-alpine3.21 AS builder
 WORKDIR /app
 
 ARG APP_VERSION
@@ -15,7 +15,7 @@ COPY tsconfig.json ./
 COPY src ./src
 RUN npm run build
 
-FROM node:24-alpine3.21 AS runner
+FROM node:25-alpine3.21 AS runner
 WORKDIR /app
 
 ARG APP_VERSION
