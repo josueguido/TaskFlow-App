@@ -49,18 +49,18 @@ REST API for TaskFlow built with Express 5, TypeScript, and PostgreSQL. Multi-te
 
 ## 🛠️ Tech Stack
 
-| Package | Version | Purpose |
-|---------|---------|---------|
-| Node.js | 24 (Alpine) | Runtime |
-| Express | 5.1 | Web framework |
-| TypeScript | ~5.8 | Language |
-| PostgreSQL | 15 | Database |
-| jsonwebtoken + bcryptjs | 9 / 3 | Auth |
-| Winston | 3 | Logging |
-| Zod | 3 | Validation |
-| Prom-client | 15 | Metrics |
-| Jest + ts-jest | 30 / 29 | Testing |
-| Swagger UI Express | 5 | API docs |
+| Package                 | Version     | Purpose       |
+| ----------------------- | ----------- | ------------- |
+| Node.js                 | 24 (Alpine) | Runtime       |
+| Express                 | 5.1         | Web framework |
+| TypeScript              | ~5.8        | Language      |
+| PostgreSQL              | 15          | Database      |
+| jsonwebtoken + bcryptjs | 9 / 3       | Auth          |
+| Winston                 | 3           | Logging       |
+| Zod                     | 3           | Validation    |
+| Prom-client             | 15          | Metrics       |
+| Jest + ts-jest          | 30 / 29     | Testing       |
+| Swagger UI Express      | 5           | API docs      |
 
 ---
 
@@ -115,17 +115,17 @@ CORS_ORIGIN=http://localhost:5173
 LOG_LEVEL=debug
 ```
 
-| Variable | Required | Default | Description |
-|----------|----------|---------|-------------|
-| `PORT` | No | 3003 | Server port |
-| `DB_HOST` | Yes | — | Database host |
-| `DB_PORT` | Yes | — | Database port |
-| `DB_NAME` | Yes | — | Database name |
-| `DB_USERNAME` | Yes | — | Database user |
-| `DB_PASSWORD` | Yes | — | Database password |
-| `JWT_SECRET` | Yes | — | JWT signing secret (min 32 chars) |
-| `JWT_EXPIRATION` | No | 24h | Token expiration |
-| `LOG_LEVEL` | No | info | `debug` / `info` / `warn` / `error` |
+| Variable         | Required | Default | Description                         |
+| ---------------- | -------- | ------- | ----------------------------------- |
+| `PORT`           | No       | 3003    | Server port                         |
+| `DB_HOST`        | Yes      | —       | Database host                       |
+| `DB_PORT`        | Yes      | —       | Database port                       |
+| `DB_NAME`        | Yes      | —       | Database name                       |
+| `DB_USERNAME`    | Yes      | —       | Database user                       |
+| `DB_PASSWORD`    | Yes      | —       | Database password                   |
+| `JWT_SECRET`     | Yes      | —       | JWT signing secret (min 32 chars)   |
+| `JWT_EXPIRATION` | No       | 24h     | Token expiration                    |
+| `LOG_LEVEL`      | No       | info    | `debug` / `info` / `warn` / `error` |
 
 ---
 
@@ -156,52 +156,58 @@ API available at `http://localhost:3003`
 ## 🔗 API Endpoints
 
 ### Authentication
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/auth/register` | Register user |
-| POST | `/api/auth/login` | Login |
-| POST | `/api/auth/refresh` | Refresh token |
-| POST | `/api/auth/logout` | Logout |
+
+| Method | Endpoint             | Description   |
+| ------ | -------------------- | ------------- |
+| POST   | `/api/auth/register` | Register user |
+| POST   | `/api/auth/login`    | Login         |
+| POST   | `/api/auth/refresh`  | Refresh token |
+| POST   | `/api/auth/logout`   | Logout        |
 
 ### Users
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/users` | List users |
-| GET | `/api/users/:id` | Get user |
-| PUT | `/api/users/:id` | Update user |
+
+| Method | Endpoint         | Description |
+| ------ | ---------------- | ----------- |
+| GET    | `/api/users`     | List users  |
+| GET    | `/api/users/:id` | Get user    |
+| PUT    | `/api/users/:id` | Update user |
 | DELETE | `/api/users/:id` | Delete user |
 
 ### Projects
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/projects` | List projects |
-| POST | `/api/projects` | Create project |
-| GET | `/api/projects/:id` | Get project |
-| PUT | `/api/projects/:id` | Update project |
+
+| Method | Endpoint            | Description    |
+| ------ | ------------------- | -------------- |
+| GET    | `/api/projects`     | List projects  |
+| POST   | `/api/projects`     | Create project |
+| GET    | `/api/projects/:id` | Get project    |
+| PUT    | `/api/projects/:id` | Update project |
 | DELETE | `/api/projects/:id` | Delete project |
 
 ### Tasks
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/tasks` | List tasks |
-| POST | `/api/tasks` | Create task |
-| GET | `/api/tasks/:id` | Get task |
-| PUT | `/api/tasks/:id` | Update task |
-| DELETE | `/api/tasks/:id` | Delete task |
-| PATCH | `/api/tasks/:id/status` | Change status |
+
+| Method | Endpoint                | Description   |
+| ------ | ----------------------- | ------------- |
+| GET    | `/api/tasks`            | List tasks    |
+| POST   | `/api/tasks`            | Create task   |
+| GET    | `/api/tasks/:id`        | Get task      |
+| PUT    | `/api/tasks/:id`        | Update task   |
+| DELETE | `/api/tasks/:id`        | Delete task   |
+| PATCH  | `/api/tasks/:id/status` | Change status |
 
 ### Assignments
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/tasks/:taskId/assignments` | Get task assignments |
-| POST | `/api/tasks/:taskId/assign` | Assign users |
-| DELETE | `/api/tasks/:taskId/assignments/:userId` | Remove assignment |
-| DELETE | `/api/tasks/:taskId/assignments` | Remove all |
+
+| Method | Endpoint                                 | Description          |
+| ------ | ---------------------------------------- | -------------------- |
+| GET    | `/api/tasks/:taskId/assignments`         | Get task assignments |
+| POST   | `/api/tasks/:taskId/assign`              | Assign users         |
+| DELETE | `/api/tasks/:taskId/assignments/:userId` | Remove assignment    |
+| DELETE | `/api/tasks/:taskId/assignments`         | Remove all           |
 
 ### Reports
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/reports` | Generate reports |
+
+| Method | Endpoint       | Description      |
+| ------ | -------------- | ---------------- |
+| GET    | `/api/reports` | Generate reports |
 
 ---
 
@@ -243,7 +249,7 @@ import { contextLogger } from '../utils/contextLogger';
 contextLogger.info('Task created', {
   action: 'TASK_CREATED',
   taskId: task.id,
-  projectId: project.id
+  projectId: project.id,
 });
 ```
 
@@ -253,16 +259,16 @@ See [LOGGING_GUIDE.md](./LOGGING_GUIDE.md) for detailed patterns and best practi
 
 ## 🛡️ Security
 
-| Feature | Implementation |
-|---------|---------------|
-| Helmet | HTTP security headers |
-| CORS | Configurable origin whitelist |
-| Rate Limiting | 100 req / 15 min (configurable) |
-| JWT | Access + refresh token rotation |
+| Feature          | Implementation                  |
+| ---------------- | ------------------------------- |
+| Helmet           | HTTP security headers           |
+| CORS             | Configurable origin whitelist   |
+| Rate Limiting    | 100 req / 15 min (configurable) |
+| JWT              | Access + refresh token rotation |
 | Password Hashing | bcrypt with configurable rounds |
 | Input Validation | Zod schemas + express-validator |
-| SQL Injection | Parameterized queries |
-| XSS | Input sanitization middleware |
+| SQL Injection    | Parameterized queries           |
+| XSS              | Input sanitization middleware   |
 
 ---
 
