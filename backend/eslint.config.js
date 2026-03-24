@@ -1,12 +1,12 @@
-import js from "@eslint/js";
-import tseslint from "typescript-eslint";
-import prettierConfig from "eslint-config-prettier";
-import prettierPlugin from "eslint-plugin-prettier";
+import js from '@eslint/js';
+import tseslint from 'typescript-eslint';
+import prettierConfig from 'eslint-config-prettier';
+import prettierPlugin from 'eslint-plugin-prettier';
 
 export default [
   // Global ignores (replaces .eslintignore)
   {
-    ignores: ["node_modules/", "dist/", "build/", "coverage/", "jest.config.cjs"],
+    ignores: ['node_modules/', 'dist/', 'build/', 'coverage/', 'jest.config.cjs'],
   },
 
   // Base JS recommended rules
@@ -20,18 +20,18 @@ export default [
 
   // Project-specific config for TS files
   {
-    files: ["**/*.ts"],
+    files: ['**/*.ts'],
     plugins: {
       prettier: prettierPlugin,
     },
     rules: {
-      "prettier/prettier": "error",
-      "@typescript-eslint/no-explicit-any": "warn",
-      "@typescript-eslint/no-unused-vars": [
-        "error",
-        { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
+      'prettier/prettier': 'error',
+      '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
       ],
-      "no-console": "warn",
+      'no-console': 'warn',
     },
   },
 ];
