@@ -13,7 +13,7 @@
 # -----------------------------------
 MONITORING_DIR  = infra/monitoring
 LOGGING_DIR     = infra/logging
-COMPOSE         = docker-compose
+COMPOSE         = docker compose
 
 .PHONY: build_app start_app stop_app restart_app delete_app show_app logs_app \
         build_monitoring stop_monitoring delete_monitoring restart_monitoring show_monitoring logs_monitoring \
