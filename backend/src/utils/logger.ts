@@ -20,13 +20,7 @@ export const logger = winston.createLogger({
   ),
   transports: [
     new winston.transports.Console({
-      format: winston.format.combine(
-        winston.format.colorize(),
-        winston.format.printf(({ timestamp, level, message, ...meta }) => {
-          const metaStr = Object.keys(meta).length ? JSON.stringify(meta, null, 2) : '';
-          return `${timestamp} [${level}]: ${message} ${metaStr}`;
-        })
-      ),
+      format: winston.format.json(),
     }),
     new DailyRotateFile({
       filename: path.join(logDir, 'combined-%DATE%.log'),
