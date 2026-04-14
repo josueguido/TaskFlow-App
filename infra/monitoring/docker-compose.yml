@@ -15,6 +15,8 @@ services:
       - taskflow_network
 
   grafana:
+    env_file:
+      - ../../.env
     image: grafana/grafana:11.5.2
     container_name: grafana
     ports:
@@ -24,6 +26,25 @@ services:
     environment:
       - GF_SECURITY_ADMIN_USER=${GRAFANA_ADMIN_USER}
       - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD}
+    restart: unless-stopped
+    networks:
+      - monitoring
+      - taskflow_network
+
+  alertmanager:
+    image: prom/alertmanager:v0.27.0
+    entrypoint: >
+      sh -c "envsubst < /etc/alertmanager/alertmanager.tmpl > /etc/alertmanager/alertmanager.yml
+      && alertmanager --config.file=/etc/alertmanager/alertmanager.yml"
+    environment:
+      - DISCORD_WEBHOOK_URL_CRITICAL=${DISCORD_WEBHOOK_URL_CRITICAL}
+      - DISCORD_WEBHOOK_URL_WARNINGS=${DISCORD_WEBHOOK_URL_WARNINGS}
+      - SLACK_WEBHOOK_URL_CRITICAL=${SLACK_WEBHOOK_URL_CRITICAL}
+    container_name: alertmanager
+    ports:
+      - "9093:9093"
+    volumes:
+      - ./alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.tmpl:ro
     restart: unless-stopped
     networks:
       - monitoring
