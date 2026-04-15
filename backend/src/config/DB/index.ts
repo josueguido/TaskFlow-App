@@ -1,5 +1,6 @@
 import { Pool } from 'pg';
 import dotenv from 'dotenv';
+import { dbActiveConnections } from '../../utils/metrics';
 
 dotenv.config({
   path:
@@ -15,3 +16,6 @@ export const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
 });
+
+pool.on('connect', () => dbActiveConnections.set(pool.totalCount));
+pool.on('remove', () => dbActiveConnections.set(pool.totalCount));

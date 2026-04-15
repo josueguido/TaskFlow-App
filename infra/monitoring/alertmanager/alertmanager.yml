@@ -1,0 +1,28 @@
+global:
+  slack_api_url: '${SLACK_WEBHOOK_URL_CRITICAL}'
+  resolve_timeout: 5m
+
+route:
+  receiver: 'discord-warnings'
+  group_by: ['alertname']
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 3h
+  routes:
+    - receiver: 'discord-critical'
+      match:
+        severity: critical
+
+receivers:
+  - name: 'discord-warnings'
+    slack_configs:
+      - api_url: '${DISCORD_WEBHOOK_URL_WARNINGS}'
+        send_resolved: true
+
+  - name: 'discord-critical'
+    slack_configs:
+      - api_url: '${DISCORD_WEBHOOK_URL_CRITICAL}'
+        send_resolved: true
+      - api_url: '${SLACK_WEBHOOK_URL_CRITICAL}'
+        channel: '#alerts-critical'
+        send_resolved: true
