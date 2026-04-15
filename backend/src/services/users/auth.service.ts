@@ -4,6 +4,7 @@ import * as rtModel from '../../models/refreshToken.model';
 import { pool } from '../../config/DB';
 import { BadRequestError } from '../../errors/BadRequestError';
 import { UnauthorizedError } from '../../errors/UnauthorizedError';
+import { authenticatedUsers } from '../../utils/metrics';
 
 export async function signupBusinessService({
   businessName,
@@ -112,6 +113,7 @@ export async function loginService(email: string, password: string) {
   const refreshToken = jwt.generateRefreshToken(payload);
 
   await rtModel.saveRefreshToken(user.id, refreshToken);
+  authenticatedUsers.inc();
 
   return {
     accessToken,
@@ -153,6 +155,7 @@ export async function refreshTokenService(token: string) {
 
 export async function logoutService(token: string) {
   await rtModel.deleteRefreshToken(token);
+  authenticatedUsers.dec();
 }
 
 export async function completeUserRegistration(

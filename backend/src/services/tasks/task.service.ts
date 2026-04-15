@@ -16,6 +16,7 @@ import {
 } from '../../models/task.model';
 import { NotFoundError } from '../../errors/NotFoundError';
 import { contextLogger } from '../../utils/contextLogger';
+import { tasksCreated } from '../../utils/metrics';
 
 export const getAllTasks = async () => {
   const tasks = await getTasks();
@@ -33,6 +34,7 @@ export const getTaskById = async (id: string) => {
 export const createTask = async (data: ICreateTaskInput) => {
   const now = new Date();
   const task = await insertTask({ ...data, created_at: now });
+  tasksCreated.labels(String(data.project_id ?? 'unknown')).inc();
   return task;
 };
 
