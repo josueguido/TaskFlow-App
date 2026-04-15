@@ -3,8 +3,14 @@ name: CI
 on:
   pull_request:
     branches: ["main"]
+    paths:
+      - "frontend/**"
+      - "backend/**"
   push:
     branches: ["main"]
+    paths:
+      - "frontend/**"
+      - "backend/**"
 
 concurrency:
   group: ci-${{ github.ref }}
@@ -14,7 +20,7 @@ jobs:
   node:
     runs-on: ubuntu-latest
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
         app: [frontend, backend]
     defaults:

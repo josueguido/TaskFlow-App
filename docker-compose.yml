@@ -66,6 +66,7 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    user: "${PGADMIN_UID}:${PGADMIN_GID}"
     image: dpage/pgadmin4:9.10
     container_name: ${PGADMIN_CONTAINER_NAME}
     environment:
