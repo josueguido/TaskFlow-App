@@ -14,6 +14,7 @@
 MONITORING_DIR  = infra/monitoring
 LOGGING_DIR     = infra/logging
 COMPOSE         = docker compose
+COMPOSE_MONITORING = docker compose --env-file $(CURDIR)/.env
 
 .PHONY: build_app start_app stop_app restart_app delete_app show_app logs_app \
         build_monitoring stop_monitoring delete_monitoring restart_monitoring show_monitoring logs_monitoring \
@@ -73,18 +74,18 @@ logs_app: ## View app logs (follow mode)
 
 build_monitoring: ## Build and start monitoring stack
 	@echo 'Starting monitoring stack...'
-	cd $(MONITORING_DIR) && $(COMPOSE) up -d
+	cd $(MONITORING_DIR) && $(COMPOSE_MONITORING) up -d
 	@echo 'Monitoring is running'
 	@echo '  Prometheus: http://localhost:9090'
 	@echo '  Grafana:    http://localhost:3000'
 
 stop_monitoring: ## Stop monitoring services
 	@echo 'Stopping monitoring...'
-	cd $(MONITORING_DIR) && $(COMPOSE) stop
+	cd $(MONITORING_DIR) && $(COMPOSE_MONITORING) stop
 
 delete_monitoring: ## Remove monitoring containers
 	@echo 'Removing monitoring containers...'
-	cd $(MONITORING_DIR) && $(COMPOSE) down
+	cd $(MONITORING_DIR) && $(COMPOSE_MONITORING) down
 
 restart_monitoring: ## Restart monitoring services
 	@echo 'Restarting monitoring...'
@@ -93,10 +94,10 @@ restart_monitoring: ## Restart monitoring services
 
 show_monitoring: ## Show monitoring services status
 	@echo '--- Monitoring Services ---'
-	cd $(MONITORING_DIR) && $(COMPOSE) ps
+	cd $(MONITORING_DIR) && $(COMPOSE_MONITORING) ps
 
 logs_monitoring: ## View monitoring logs (follow mode)
-	cd $(MONITORING_DIR) && $(COMPOSE) logs -f
+	cd $(MONITORING_DIR) && $(COMPOSE_MONITORING) logs -f
 
 # ============================================
 # 3. LOGGING (ELK Stack)
