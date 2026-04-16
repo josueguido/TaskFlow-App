@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/josueguido/TaskFlow-App/compare/backend-v1.2.0...backend-v1.3.0) (2026-04-16)
+
+
+### Features
+
+* integrate metrics for database connections and trivy ([#97](https://github.com/josueguido/TaskFlow-App/issues/97)) ([9ca7782](https://github.com/josueguido/TaskFlow-App/commit/9ca7782f243f690bb2f70462f57eb858b298f011))
+
 ## [1.2.0](https://github.com/josueguido/TaskFlow-App/compare/backend-v1.1.0...backend-v1.2.0) (2026-03-05)
 
 
