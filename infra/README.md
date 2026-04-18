@@ -1,138 +1,161 @@
-# TaskFlow - Infrastructure & Monitoring
+# TaskFlow - Infrastructure
 
-Complete observability stack for TaskFlow: logs, metrics, and dashboards.
+Complete observability and deployment infrastructure for TaskFlow: metrics, dashboards, alerting, and centralized logging.
+
+> **Note:** In a production GitOps setup, `k8s/` and `terraform/` would live in a dedicated infra repository. They are co-located here for portfolio clarity.
+
+---
 
 ## Architecture
 
-### Monitoring (Prometheus + Grafana)
-- **Prometheus**: Scrapes metrics every 15s
-- **Grafana**: Interactive dashboards and alerts
-- Prometheus port: `9090`
-- Grafana port: `3000` (admin/admin123)
+```
+infra/
+├── monitoring/                  # Prometheus + Grafana + Alertmanager
+│   ├── docker-compose.yml
+│   ├── prometheus/
+│   │   └── prometheus.yml       # Scrape config + alerting rules
+│   ├── grafana/
+│   │   └── provisioning/
+│   │       ├── datasources/     # Auto-provisioned Prometheus datasource
+│   │       └── dashboards/      # Auto-provisioned TaskFlow dashboard
+│   └── alertmanager/
+│       └── alertmanager.yml     # Routing: warnings→Discord, critical→Discord+Slack
+│
+└── logging/                     # ELK Stack
+    ├── docker-compose.yml
+    ├── logstash/
+    │   └── pipeline/
+    └── filebeat/
+```
 
-### Logging (ELK Stack)
-- **Elasticsearch**: Log indexing and search
-- **Logstash**: Log processing from Filebeat
-- **Kibana**: Log visualization
-- Kibana port: `5601`
+---
+
+## Services
+
+| Service | Port | Purpose |
+|---------|------|---------|
+| Prometheus | `9090` | Metrics collection (scrapes every 15s) |
+| Grafana | `3000` | Dashboards + alert visualization |
+| Alertmanager | `9093` | Alert routing to Discord & Slack |
+| Elasticsearch | `9200` | Log indexing and search |
+| Kibana | `5601` | Log visualization |
+| Logstash | `5044` | Log processing from Filebeat |
 
 ---
 
 ## Quick Start
 
-### 1. Start Monitoring
+All commands from the **project root**:
+
 ```bash
+make build_monitoring   # Start Prometheus + Grafana + Alertmanager
+make build_logging      # Start ELK stack
+make start_all          # Start everything (App + Monitoring + Logging)
+```
+
+### Manual start
+
+```bash
+# Monitoring (requires .env at project root for webhook secrets)
 cd infra/monitoring
-docker-compose up -d
-```
-Access: http://localhost:3000 and http://localhost:9090
+docker compose --env-file ../../.env up -d
 
-### 2. Start Logging (ELK)
-```bash
+# Logging
 cd infra/logging
-docker-compose up -d
-```
-Access: http://localhost:5601
-
-### 3. Backend must run on port 3003
-```bash
-cd backend
-npm run dev
+docker compose up -d
 ```
 
 ---
 
-## Grafana Dashboards
+## Grafana — Auto-Provisioning
 
-### Available automatic metrics:
+Grafana starts with everything pre-configured — no manual setup needed:
 
-**HTTP Requests**
-```promql
-rate(http_requests_total[5m])
-```
+- **Datasource**: Prometheus auto-provisioned via `grafana/provisioning/datasources/prometheus.yml`
+- **Dashboard**: TaskFlow dashboard auto-loaded via `grafana/provisioning/dashboards/`
 
-**Latency P95**
-```promql
-histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m]))
-```
+Default credentials: `admin` / value of `GRAFANA_ADMIN_PASSWORD` in `.env`
 
-**Memory Usage**
-```promql
-process_resident_memory_bytes / 1024 / 1024
-```
+### Dashboard panels
 
-**CPU Usage**
-```promql
-rate(process_cpu_seconds_total[5m]) * 100
-```
+| Panel | Query |
+|-------|-------|
+| Requests/sec | `rate(http_requests_total[5m])` |
+| Error Rate | `rate(errors_total[5m])` |
+| Latency P95 | `histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m]))` |
+| Heap Memory | `process_heap_bytes / 1024 / 1024` |
+| CPU Usage | `rate(process_cpu_seconds_total[5m]) * 100` |
+| DB Connections | `db_active_connections` |
+| Authenticated Users | `authenticated_users_total` |
+| Tasks Created | `tasks_created_total` |
 
-**Error Rate**
-```promql
-rate(errors_total[5m])
+---
+
+## Alertmanager — Alert Routing
+
+Alerts are routed based on severity label:
+
+| Severity | Channel |
+|----------|---------|
+| `warning` | Discord (`DISCORD_WEBHOOK_URL_WARNINGS`) |
+| `critical` | Discord (`DISCORD_WEBHOOK_URL_CRITICAL`) + Slack (`SLACK_WEBHOOK_URL_CRITICAL`) |
+
+Webhook URLs are injected at runtime via `envsubst` (Alpine init container) — never hardcoded in config files. Set them in your `.env`:
+
+```env
+DISCORD_WEBHOOK_URL_WARNINGS=https://discord.com/api/webhooks/...
+DISCORD_WEBHOOK_URL_CRITICAL=https://discord.com/api/webhooks/...
+SLACK_WEBHOOK_URL_CRITICAL=https://hooks.slack.com/services/...
 ```
 
 ---
 
-## Recommended Alerts
+## Custom Metrics (Backend)
 
-Create alerts in Prometheus for:
-- Error rate > 5%
-- Latency P95 > 1s
-- Memory > 500MB
-- CPU > 80%
+The backend exposes custom Prometheus metrics at `GET /metrics`:
 
----
-
-## Directory Structure
-
-```
-infra/
-├── monitoring/          # Prometheus + Grafana
-│   ├── docker-compose.yml
-│   ├── prometheus/
-│   │   └── prometheus.yml
-│   ├── grafana/         # (optional configs)
-│   └── .env
-│
-├── logging/             # ELK Stack
-│   ├── docker-compose.yml
-│   ├── logstash/
-│   │   └── pipeline/
-│   ├── filebeat/
-│   └── .env
-│
-└── ../Makefile          # Project-wide Makefile (at repo root)
-```
+| Metric | Type | Description |
+|--------|------|-------------|
+| `http_requests_total` | Counter | Total HTTP requests by method/route/status |
+| `http_request_duration_seconds` | Histogram | Request latency |
+| `errors_total` | Counter | Application errors |
+| `authenticated_users_total` | Gauge | Currently logged-in users |
+| `tasks_created_total` | Counter | Tasks created, labeled by project |
+| `db_active_connections` | Gauge | Active PostgreSQL pool connections |
 
 ---
 
 ## Useful Commands
 
-All commands run from the **project root** using the root `Makefile`:
-
 ```bash
-make build_monitoring   # Start Prometheus + Grafana
-make stop_monitoring    # Stop monitoring
-make show_monitoring    # View monitoring status
-make logs_monitoring    # View monitoring logs
-make build_logging      # Start ELK stack
-make stop_logging       # Stop ELK stack
-make show_logging       # View logging status
-make logs_logging       # View logging logs
-make start_all          # Start everything
-make stop_all           # Stop everything
-make help               # View all targets
+make build_monitoring    # Start Prometheus + Grafana + Alertmanager
+make stop_monitoring     # Stop monitoring
+make restart_monitoring  # Restart monitoring
+make show_monitoring     # View monitoring status
+make logs_monitoring     # View monitoring logs
+
+make build_logging       # Start ELK stack
+make stop_logging        # Stop ELK stack
+make show_logging        # View logging status
+make logs_logging        # View logging logs
+
+make start_all           # Start everything
+make stop_all            # Stop everything
+make help                # View all targets
 ```
 
 ---
 
-## Links
+## Access Points
 
-- Grafana: http://localhost:3000
-- Prometheus: http://localhost:9090
-- Kibana: http://localhost:5601
-- Backend API: http://localhost:3003
+| Service | URL |
+|---------|-----|
+| Grafana | http://localhost:3000 |
+| Prometheus | http://localhost:9090 |
+| Alertmanager | http://localhost:9093 |
+| Kibana | http://localhost:5601 |
+| Backend metrics | http://localhost:3003/metrics |
 
 ---
 
-**Tip**: For production, change credentials in `.env` and use secure environment variables.
+**Security note:** Always rotate default credentials and webhook URLs before any non-local deployment. Use environment-specific `.env` files — see `.env.staging.example` and `.env.production.example` at the project root.

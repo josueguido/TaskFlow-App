@@ -108,9 +108,11 @@ TaskFlow is a multi-tenant application designed to streamline project and task m
 |------|---------|
 | Docker + Docker Compose | Containerization & orchestration |
 | Nginx | Frontend reverse proxy (production) |
-| Prometheus + Grafana | Metrics collection & dashboards |
+| Prometheus + Grafana | Metrics collection & auto-provisioned dashboards |
+| Alertmanager | Alert routing to Discord & Slack |
 | ELK Stack | Centralized logging |
 | GitHub Actions | CI/CD pipeline |
+| Trivy | Container image security scanning (CI) |
 | PgAdmin | Database management GUI |
 
 ---
@@ -242,9 +244,14 @@ TaskFlow-App/
 | Scenario | Config source |
 |----------|--------------|
 | **Local dev** (no Docker) | `backend/config/DB/.env.dev` |
-| **Docker dev** | Root `.env` + `docker-compose.yml` env vars |
-| **Docker prod** | Root `.env` + `docker-compose.prod.yml` |
+| **Docker dev** | Root `.env` + `docker-compose.yml` |
+| **Docker staging** | Root `.env` overridden by `.env.staging.example` + `docker-compose.staging.yml` |
+| **Docker prod** | Root `.env` overridden by `.env.production.example` + `docker-compose.prod.yml` |
 | **CI/CD** | GitHub Secrets → build-args → Docker image |
+
+Environment-specific example files:
+- `.env.staging.example` — staging overrides (separate DB, staging URLs, debug logging)
+- `.env.production.example` — production overrides (stronger bcrypt, warn-level logging)
 
 ### Backend Environment Variables
 
@@ -325,41 +332,60 @@ docker-compose down                     # Stop & remove
 docker-compose down -v                  # Stop & remove + delete volumes
 ```
 
+### Staging
+
+```bash
+make build_staging      # Build + start staging (with seed data)
+make stop_staging       # Stop staging
+make delete_staging     # Remove staging containers
+# Or directly:
+docker compose -f docker-compose.staging.yml up -d --build
+```
+
 ### Production
 
 ```bash
-docker-compose -f docker-compose.prod.yml up -d
-docker-compose -f docker-compose.prod.yml logs -f
-docker-compose -f docker-compose.prod.yml down
+docker compose -f docker-compose.prod.yml up -d
+docker compose -f docker-compose.prod.yml logs -f
+docker compose -f docker-compose.prod.yml down
 ```
 
-| Environment | Frontend | Backend |
-|------------|----------|---------|
-| Development | http://localhost:5173 | http://localhost:3003 |
-| Production | http://localhost:80 | Internal (`:3003` between containers) |
+| Environment | Frontend | Backend | DB |
+|------------|----------|---------|----|
+| Development | http://localhost:5173 | http://localhost:3003 | port `5433` exposed |
+| Staging | http://localhost:80 | Internal | port `5432` exposed + seed data |
+| Production | http://localhost:80 | Internal | not exposed |
 
 ---
 
 ## 🔄 CI/CD Pipeline
 
-The project uses **GitHub Actions** (`.github/workflows/docker-build-push.yml`):
+The project uses **4 GitHub Actions workflows**:
+
+| Workflow | Trigger | Purpose |
+|----------|---------|--------|
+| `ci.yml` | PR / push to `main` | Lint, test, build (backend + frontend) |
+| `docker-build.yml` | PR to `main` | Docker build validation + Trivy security scan |
+| `release-please.yml` | Push to `main` | Semantic versioning + GitHub Release |
+| `release.yml` | On git tag | Build + push to Docker Hub |
 
 ```
-Push/PR to main
+PR opened
      │
-     ▼
-┌─────────────┐    ┌──────────────────┐    ┌───────────────┐
-│  Build+Test  │───▶│ Semantic Version │───▶│  Docker Build  │
-│  (npm ci +   │    │  + Git Tag +     │    │  + Push to     │
-│   npm test)  │    │  GitHub Release  │    │  Docker Hub    │
-└─────────────┘    └──────────────────┘    └───────────────┘
+     ├──▶ ci.yml ──────────────▶ lint + test + build
+     │
+     └──▶ docker-build.yml ──▶ docker build + trivy scan → SARIF → GitHub Security tab
+
+Merge to main
+     │
+     └──▶ release-please.yml ─▶ changelog + version tag
+                                        │
+                                        └──▶ release.yml ─▶ Docker Hub push
 ```
 
-- **Tests**: Backend (Jest) + Frontend (Vitest) run on every push/PR
-- **Versioning**: Automatic semantic versioning based on commit prefixes (`feat:`, `major:`)
-- **Release**: GitHub Release with auto-generated release notes
-- **Docker**: Multi-stage builds pushed to Docker Hub with version + `latest` tags
-- **Cache**: GitHub Actions cache (`type=gha`) for fast rebuilds
+- **Security scanning**: Trivy scans backend + frontend images for HIGH/CRITICAL CVEs, results uploaded to GitHub Security → Code Scanning
+- **Path filters**: CI only triggers when `frontend/**` or `backend/**` files change
+- **Cache**: GitHub Actions cache (`type=gha`) for fast Docker rebuilds
 
 ---
 
@@ -467,7 +493,10 @@ make help                # Show all available commands
 | `make build_app` | Build and start app stack (DB + Backend + Frontend + PgAdmin) |
 | `make start_app` | Start app (no rebuild) |
 | `make stop_app` | Stop app services |
-| `make build_monitoring` | Start Prometheus + Grafana |
+| `make build_staging` | Build and start staging stack (with seed data) |
+| `make stop_staging` | Stop staging stack |
+| `make delete_staging` | Remove staging containers |
+| `make build_monitoring` | Start Prometheus + Grafana + Alertmanager |
 | `make build_logging` | Start ELK Stack |
 | `make start_all` | Start everything |
 | `make stop_all` | Stop everything |
@@ -491,11 +520,14 @@ make help                # Show all available commands
 ### Phase 2: DevOps & Infrastructure 🔧
 - ✅ CI/CD Pipeline (GitHub Actions + Docker Hub)
 - ✅ Docker multi-stage builds (frontend + backend)
-- ✅ Observability (Prometheus, Grafana, ELK Stack)
+- ✅ Observability (Prometheus, Grafana auto-provisioned, ELK Stack)
+- ✅ Alertmanager (Discord + Slack routing)
+- ✅ Trivy security scanning in CI (SARIF → GitHub Code Scanning)
+- ✅ Multi-environment config (dev / staging / prod)
 - ✅ Makefile workflows
-- ⬜ Terraform — Infrastructure as Code
-- ⬜ AWS Deployment (EC2, RDS, S3)
-- ⬜ Kubernetes orchestration
+- ⬜ Kubernetes manifests (Kustomize overlays per environment)
+- ⬜ Terraform — Infrastructure as Code (EKS)
+- ⬜ GitHub Environments + deployment protection rules
 
 ### Phase 3: Advanced Features 🔮
 - ⬜ Real-time notifications (WebSocket / SNS+SQS)
@@ -531,4 +563,4 @@ For questions or suggestions, please [open an issue](https://github.com/josuegui
 
 ---
 
-*Last updated: March 2026*
+*Last updated: April 2026*
