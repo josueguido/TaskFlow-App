@@ -196,6 +196,30 @@ prune: ## Clean unused Docker resources
 	docker system prune -f
 	@echo 'Docker cleanup complete'
 
+
+# ============================================
+# 6. STAGING
+# ============================================
+# Frontend: http://localhost:80
+# Backend:  http://localhost:3003
+# ============================================
+
+build_staging: ## Build and start staging stack
+	@echo 'Starting staging stack...'
+	$(COMPOSE) -f docker-compose.staging.yml up -d --build
+	@echo '  Frontend: http://localhost:80'
+	@echo '  Backend:  http://localhost:3003'
+
+stop_staging: ## Stop staging stack
+	$(COMPOSE) -f docker-compose.staging.yml stop
+
+delete_staging: ## Remove staging containers
+	$(COMPOSE) -f docker-compose.staging.yml down
+
+restart_staging: ## Restart staging stack
+	$(MAKE) stop_staging
+	$(MAKE) build_staging
+
 # ============================================
 # HELP
 # ============================================
