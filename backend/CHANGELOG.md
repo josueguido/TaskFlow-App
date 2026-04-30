@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/josueguido/TaskFlow-App/compare/backend-v1.3.0...backend-v1.4.0) (2026-04-18)
+
+
+### Features
+
+* **environments:** add staging and production environment configurations with Docker support ([#103](https://github.com/josueguido/TaskFlow-App/issues/103)) ([da7a1cc](https://github.com/josueguido/TaskFlow-App/commit/da7a1ccd8a41e550ba78b891d0b1600c761032de))
+
 ## [1.3.0](https://github.com/josueguido/TaskFlow-App/compare/backend-v1.2.0...backend-v1.3.0) (2026-04-16)
 
 
