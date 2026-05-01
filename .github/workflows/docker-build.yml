@@ -52,7 +52,7 @@ jobs:
           cache-to: type=gha,mode=max
 
       - name: Run Trivy Security Scan Backend
-        uses: aquasecurity/trivy-action@0.35.0
+        uses: aquasecurity/trivy-action@v0.36.0
         with:
           image-ref: taskflow-backend:ci
           format: sarif
@@ -62,7 +62,7 @@ jobs:
           output: trivy-backend.sarif
 
       - name: Run Trivy Security Scan Frontend
-        uses: aquasecurity/trivy-action@0.35.0
+        uses: aquasecurity/trivy-action@v0.36.0
         with:
           image-ref: taskflow-frontend:ci
           format: sarif
