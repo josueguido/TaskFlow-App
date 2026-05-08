@@ -17,7 +17,7 @@ export const cacheResponse = (ttlSeconds: number) => {
     const originalJson = res.json.bind(res);
     res.json = (body): Response => {
       if (res.statusCode === 200) {
-        redis.set(key, JSON.stringify(body), 'EX', ttlSeconds).catch(() => { });
+        redis.set(key, JSON.stringify(body), 'EX', ttlSeconds).catch(() => {});
       }
       return originalJson(body);
     };
@@ -26,5 +26,5 @@ export const cacheResponse = (ttlSeconds: number) => {
   };
 };
 
-  export const invalidateCache = (pattern: string): Promise<void> =>
-    invalidatePattern(`cache:*:${pattern}*`);
+export const invalidateCache = (pattern: string): Promise<void> =>
+  invalidatePattern(`cache:*:${pattern}*`);

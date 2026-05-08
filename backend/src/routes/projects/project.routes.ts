@@ -18,9 +18,21 @@ import { cacheResponse } from '../../middlewares/cache.middleware';
 
 const router = Router();
 
-router.get('/business/:businessId', authMiddleware, validateBusinessId, cacheResponse(60), getProjectsByBusinessId);
+router.get(
+  '/business/:businessId',
+  authMiddleware,
+  validateBusinessId,
+  cacheResponse(60),
+  getProjectsByBusinessId
+);
 
-router.get('/business/:businessId/stats', authMiddleware, validateBusinessId, cacheResponse(60), getProjectStats);
+router.get(
+  '/business/:businessId/stats',
+  authMiddleware,
+  validateBusinessId,
+  cacheResponse(60),
+  getProjectStats
+);
 
 router.get('/:id', authMiddleware, validateProjectId, cacheResponse(60), getProjectById);
 
