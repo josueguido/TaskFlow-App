@@ -79,6 +79,12 @@ export const logout = async (req: Request, res: Response, next: NextFunction) =>
       throw new BadRequestError('Refresh token is required');
     }
 
+    const authHeader = req.headers.authorization;
+    if (authHeader?.startsWith('Bearer ')) {
+      const accessToken = authHeader.split(' ')[1];
+      await authService.blacklistAccessToken(accessToken);
+    }
+
     await authService.logoutService(refreshToken);
     res.status(200).json({
       success: true,

@@ -1,10 +1,12 @@
 import { compare, hash, genSalt } from 'bcryptjs';
+import { blacklistToken } from '../../middlewares/authMiddleware';
 import * as jwt from '../../utils/jwt';
-import * as rtModel from '../../models/refreshToken.model';
+import * as rtModel from '../../models/refreshToken.redis';
 import { pool } from '../../config/DB';
 import { BadRequestError } from '../../errors/BadRequestError';
 import { UnauthorizedError } from '../../errors/UnauthorizedError';
 import { authenticatedUsers } from '../../utils/metrics';
+import { error } from 'node:console';
 
 export async function signupBusinessService({
   businessName,
@@ -132,10 +134,9 @@ export async function refreshTokenService(token: string) {
   try {
     const payload = jwt.verifyRefreshToken(token);
 
-    const found = await rtModel.findRefreshToken(token);
+    const found = await rtModel.findRefreshToken(token, Number(payload.userId));
 
-    if (found.rows.length === 0) {
-      console.warn('Token not found in database');
+    if (found === null) {
       throw new UnauthorizedError('Token has been revoked or logged out');
     }
 
@@ -154,7 +155,8 @@ export async function refreshTokenService(token: string) {
 }
 
 export async function logoutService(token: string) {
-  await rtModel.deleteRefreshToken(token);
+  const payload = jwt.verifyRefreshToken(token);
+  await rtModel.deleteRefreshToken(token, Number(payload.userId));
   authenticatedUsers.dec();
 }
 
@@ -216,4 +218,15 @@ export async function completeUserRegistration(
 
 export async function registerService(_email: string, _password: string, _name: string) {
   throw new BadRequestError('This endpoint is deprecated. Use /api/auth/signup-business instead');
+}
+
+export async function blacklistAccessToken(token: string): Promise<void> {
+  try {
+    const payload = jwt.verifyAccessToken(token);
+    if (payload.jti) {
+      await blacklistToken(payload.jti, 900);
+    }
+  } catch {
+    error('Failed to blacklist access token: invalid token provided');
+  }
 }

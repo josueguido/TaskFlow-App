@@ -3,8 +3,18 @@ const { verify } = pkg;
 import { RequestHandler } from 'express';
 import { AuthUserPayload } from '../types/express';
 import { requestContext } from '../utils/contextLogger';
+import { redis } from '../config/redis';
 
-export const authMiddleware: RequestHandler = (req, res, next) => {
+export const blacklistToken = async (jti: string, ttlSeconds: number): Promise<void> => {
+  await redis.set(`blacklist:${jti}`, '1', 'EX', ttlSeconds);
+};
+
+const isBlacklisted = async (jti: string): Promise<boolean> => {
+  const result = await redis.get(`blacklist:${jti}`);
+  return result !== null;
+};
+
+export const authMiddleware: RequestHandler = async (req, res, next) => {
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -27,7 +37,15 @@ export const authMiddleware: RequestHandler = (req, res, next) => {
   }
 
   try {
-    const decoded = verify(token, secret);
+    const decoded = verify(token, secret) as AuthUserPayload;
+    if (decoded.jti) {
+      const blocked = await isBlacklisted(decoded.jti);
+      if (blocked) {
+        res.status(401).json({ message: 'Token has been revoked' });
+        return;
+      }
+    }
+
     req.user = decoded as AuthUserPayload;
 
     const store = requestContext.getStore();

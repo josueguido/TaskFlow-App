@@ -46,6 +46,7 @@ TaskFlow is a multi-tenant application designed to streamline project and task m
 | **Frontend** | React 19 + Vite 7 | SPA with Kanban, calendar, dashboard |
 | **Backend** | Express 5 + Node 24 | REST API with JWT auth |
 | **Database** | PostgreSQL 15 | Relational data persistence |
+| **Cache** | Redis 7 | Refresh tokens, token blacklist, response cache |
 | **Infra** | Docker Compose | Dev, prod, monitoring & logging stacks |
 | **CI/CD** | GitHub Actions | Semantic versioning + Docker Hub push |
 
@@ -112,6 +113,7 @@ TaskFlow is a multi-tenant application designed to streamline project and task m
 | Alertmanager | Alert routing to Discord & Slack |
 | ELK Stack | Centralized logging |
 | GitHub Actions | CI/CD pipeline |
+| Redis 7 | Session cache, token blacklist, response cache |
 | Trivy | Container image security scanning (CI) |
 | PgAdmin | Database management GUI |
 
@@ -270,6 +272,11 @@ DB_PASSWORD=your_secure_password
 # JWT
 JWT_SECRET=your_jwt_secret_minimum_32_characters
 JWT_EXPIRATION=24h
+
+# Redis
+REDIS_HOST=redis
+REDIS_PORT=6379
+REDIS_PASSWORD=your_redis_password
 
 # CORS
 CORS_ORIGIN=http://localhost:5173
@@ -493,9 +500,12 @@ make help                # Show all available commands
 | `make build_app` | Build and start app stack (DB + Backend + Frontend + PgAdmin) |
 | `make start_app` | Start app (no rebuild) |
 | `make stop_app` | Stop app services |
-| `make build_staging` | Build and start staging stack (with seed data) |
+| `make build_staging` | Build and start staging stack |
 | `make stop_staging` | Stop staging stack |
 | `make delete_staging` | Remove staging containers |
+| `make build_prod` | Build and start production stack |
+| `make stop_prod` | Stop production stack |
+| `make delete_prod` | Remove production containers |
 | `make build_monitoring` | Start Prometheus + Grafana + Alertmanager |
 | `make build_logging` | Start ELK Stack |
 | `make start_all` | Start everything |
@@ -527,7 +537,7 @@ make help                # Show all available commands
 - ✅ Makefile workflows
 - ⬜ Kubernetes manifests (Kustomize overlays per environment)
 - ⬜ Terraform — Infrastructure as Code (EKS)
-- ⬜ GitHub Environments + deployment protection rules
+- ✅ GitHub Environments + deployment protection rules (`environment: production` in release workflow)
 
 ### Phase 3: Advanced Features 🔮
 - ⬜ Real-time notifications (WebSocket / SNS+SQS)
