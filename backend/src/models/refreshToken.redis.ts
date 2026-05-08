@@ -10,7 +10,6 @@ export const saveRefreshToken = async (userId: number, token: string): Promise<v
   await redis.set(key, token, 'EX', TTL);
 };
 
-
 export const findRefreshToken = async (token: string, userId: number): Promise<string | null> => {
   const key = `rt:${userId}:${hashToken(token)}`;
   const value = await redis.get(key);
@@ -23,5 +22,5 @@ export const deleteRefreshToken = async (token: string, userId: number): Promise
 };
 
 export const deleteAllUserTokens = async (userId: number): Promise<void> => {
- await invalidatePattern(`rt:${userId}:*`);
+  await invalidatePattern(`rt:${userId}:*`);
 };
