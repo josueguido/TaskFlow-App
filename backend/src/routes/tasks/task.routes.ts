@@ -28,4 +28,6 @@ router.patch('/:id/status', validateRequest(changeStatusSchema), taskController.
 
 router.post('/:id/assign', validateRequest(assignUsersSchema), taskController.assignUsersToTask);
 
+router.delete('/:id', taskController.deleteTask);
+
 export default router;
