@@ -1,6 +1,7 @@
 import pkg from 'jsonwebtoken';
 import { UnauthorizedError } from '../errors/UnauthorizedError';
 import { securityConfig } from '../config/security';
+import crypto from 'crypto';
 
 const { sign, verify, TokenExpiredError, JsonWebTokenError } = pkg;
 
@@ -9,10 +10,11 @@ export interface JWTPayload {
   email: string;
   business_id: number;
   role_id: number;
+  jti?: string;
 }
 
 export const generateAccessToken = (payload: JWTPayload): string => {
-  return sign(payload, securityConfig.jwt.secret, {
+  return sign({ ...payload, jti: crypto.randomUUID() }, securityConfig.jwt.secret, {
     expiresIn: securityConfig.jwt.expiresIn,
     issuer: securityConfig.jwt.issuer,
     audience: securityConfig.jwt.audience,

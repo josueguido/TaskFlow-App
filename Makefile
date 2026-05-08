@@ -17,10 +17,11 @@ COMPOSE         = docker compose
 COMPOSE_MONITORING = docker compose --env-file $(CURDIR)/.env
 
 .PHONY: build_app start_app stop_app restart_app delete_app show_app logs_app \
-        build_monitoring stop_monitoring delete_monitoring restart_monitoring show_monitoring logs_monitoring \
-        build_logging stop_logging delete_logging restart_logging show_logging logs_logging \
-        start_all stop_all restart_all delete_all show_all \
-        clean prune help
+				build_monitoring stop_monitoring delete_monitoring restart_monitoring show_monitoring logs_monitoring \
+				build_logging stop_logging delete_logging restart_logging show_logging logs_logging \
+				start_all stop_all restart_all delete_all show_all \
+				start_staging stop_staging start_prod stop_prod \
+				clean prune help
 
 # ============================================
 # 1. APP (DB + Backend + Frontend + pgAdmin)
@@ -298,3 +299,23 @@ help: ## Display this help message
 	@echo '  make logs-up            → build_logging'
 	@echo '  make logs-view          → logs_logging'
 	@echo ''
+
+# ============================================
+# 7. Production
+# ============================================
+
+build_prod: ## Build and start production stack
+	@echo 'Starting production stack...'
+	$(COMPOSE) -f docker-compose.prod.yml up -d --build
+	@echo '  Frontend: http://localhost:80'
+	@echo '  Backend:  http://localhost:3003'
+
+stop_prod: ## Stop production stack
+	$(COMPOSE) -f docker-compose.prod.yml stop
+
+delete_prod: ## Remove production containers
+	$(COMPOSE) -f docker-compose.prod.yml down
+
+restart_prod: ## Restart production stack
+	$(MAKE) stop_prod
+	$(MAKE) build_prod

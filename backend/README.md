@@ -37,6 +37,7 @@ REST API for TaskFlow built with Express 5, TypeScript, and PostgreSQL. Multi-te
 - **TypeScript** — Full type safety with ES2022 target
 - **PostgreSQL** — Reliable relational database with `pg` driver
 - **JWT Authentication** — Access + refresh token flow with bcrypt password hashing
+- **Redis** — Refresh token storage with TTL, access token blacklist on logout, response caching
 - **Multi-tenant** — Business unit isolation
 - **Validation** — Zod schemas + express-validator
 - **Security** — Helmet, CORS, rate limiting, SQL injection prevention, XSS sanitization
@@ -55,6 +56,7 @@ REST API for TaskFlow built with Express 5, TypeScript, and PostgreSQL. Multi-te
 | Express                 | 5.1         | Web framework |
 | TypeScript              | ~5.8        | Language      |
 | PostgreSQL              | 15          | Database      |
+| Redis (ioredis)         | 7           | Cache & token store |
 | jsonwebtoken + bcryptjs | 9 / 3       | Auth          |
 | Winston                 | 3           | Logging       |
 | Zod                     | 3           | Validation    |
