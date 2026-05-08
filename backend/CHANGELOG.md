@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.5.0](https://github.com/josueguido/TaskFlow-App/compare/backend-v1.4.0...backend-v1.5.0) (2026-05-08)
+
+
+### Features
+
+* add production environment support in release workflow, enhance ([b7b226a](https://github.com/josueguido/TaskFlow-App/commit/b7b226a69069f5770cde6fab4dcca9eb83d9c7e9))
+* add production environment support in release workflow, enhance Makefile for production commands, and update README with Redis integration details ([a0d4004](https://github.com/josueguido/TaskFlow-App/commit/a0d4004283101a04f30d7af6f7262f4a72d32872))
+* integrate Redis for caching and token management ([ac55fa4](https://github.com/josueguido/TaskFlow-App/commit/ac55fa444246ad5703ac8e85383c8520d3434bc2))
+
 ## [1.4.0](https://github.com/josueguido/TaskFlow-App/compare/backend-v1.3.0...backend-v1.4.0) (2026-04-18)
 
 
