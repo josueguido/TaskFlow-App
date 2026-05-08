@@ -2,6 +2,7 @@ import { Router } from 'express';
 import * as taskController from '../../controllers/tasks/task.controller';
 import { validateRequest } from '../../middlewares/validateRequest.middleware';
 import { authMiddleware } from '../../middlewares/authMiddleware';
+import { cacheResponse } from '../../middlewares/cache.middleware';
 import {
   createTaskSchema,
   updateTaskSchema,
@@ -13,11 +14,11 @@ const router = Router();
 
 router.use(authMiddleware);
 
-router.get('/', taskController.getAllTasks);
+router.get('/', cacheResponse(60), taskController.getAllTasks);
 
-router.get('/calendar', taskController.getCalendarEvents);
+router.get('/calendar', cacheResponse(60), taskController.getCalendarEvents);
 
-router.get('/:id', taskController.getTaskById);
+router.get('/:id', cacheResponse(60), taskController.getTaskById);
 
 router.post('/', validateRequest(createTaskSchema), taskController.createTask);
 
@@ -26,5 +27,7 @@ router.put('/:id', validateRequest(updateTaskSchema), taskController.updateTask)
 router.patch('/:id/status', validateRequest(changeStatusSchema), taskController.changeTaskStatus);
 
 router.post('/:id/assign', validateRequest(assignUsersSchema), taskController.assignUsersToTask);
+
+router.delete('/:id', taskController.deleteTask);
 
 export default router;

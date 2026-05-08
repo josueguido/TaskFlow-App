@@ -16,6 +16,7 @@ env:
 jobs:
   release:
     runs-on: ubuntu-latest
+    environment: production
     permissions:
       contents: read
       actions: write

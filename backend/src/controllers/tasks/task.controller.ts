@@ -2,6 +2,7 @@ import { RequestHandler } from 'express';
 import * as taskService from '../../services/tasks/task.service';
 import { BadRequestError } from '../../errors/BadRequestError';
 import { contextLogger } from '../../utils/contextLogger';
+import { invalidateCache } from '../../middlewares/cache.middleware';
 
 export const getAllTasks: RequestHandler = async (req, res, next) => {
   try {
@@ -36,6 +37,7 @@ export const createTask: RequestHandler = async (req, res, next) => {
       status_id,
       created_at: new Date(),
     });
+    await invalidateCache('/api/tasks');
     res.status(201).json(task);
   } catch (error) {
     next(error);
@@ -47,6 +49,7 @@ export const updateTask: RequestHandler = async (req, res, next) => {
     const id = req.params.id as string;
     const { title, description, status_id } = req.body;
     const task = await taskService.updateTask(id, { title, description, status_id });
+    await invalidateCache('/api/tasks');
     res.json(task);
   } catch (error) {
     next(error);
@@ -57,6 +60,7 @@ export const deleteTask: RequestHandler = async (req, res, next) => {
   try {
     const id = req.params.id as string;
     await taskService.deleteTask(id);
+    await invalidateCache('/api/tasks');
     res.status(204).send();
   } catch (error) {
     next(error);
@@ -77,6 +81,7 @@ export const changeTaskStatus: RequestHandler = async (req, res, next) => {
     });
 
     const task = await taskService.changeTaskStatus(id, statusId.toString(), userId);
+    await invalidateCache('/api/tasks');
 
     res.json({
       success: true,
