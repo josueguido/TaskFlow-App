@@ -25,11 +25,44 @@ services:
       - "5601:5601"
     environment:
       ELASTICSEARCH_HOSTS: http://elasticsearch:9200
-      # Sin credenciales porque Elasticsearch tiene xpack.security.enabled=false
     restart: unless-stopped
     depends_on:
       elasticsearch:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:5601/api/status | grep -q available || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 120s
+    networks:
+      - monitoring
+
+  kibana-setup:
+    image: curlimages/curl:8.11.1
+    container_name: kibana-setup
+    depends_on:
+      kibana:
+        condition: service_healthy
+    command:
+      - sh
+      - -c
+      - |
+        echo 'Checking if TaskFlow Data View exists...'
+        STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+          'http://kibana:5601/api/data_views/data_view/taskflow-*' \
+          -H 'kbn-xsrf: true')
+        if [ "$STATUS" = "200" ]; then
+          echo 'Data View already exists, skipping.'
+        else
+          echo 'Creating taskflow-* Data View...'
+          curl -sf -X POST 'http://kibana:5601/api/data_views/data_view' \
+            -H 'Content-Type: application/json' \
+            -H 'kbn-xsrf: true' \
+            -d '{"data_view":{"title":"taskflow-*","timeFieldName":"@timestamp","name":"TaskFlow Logs"}}'
+          echo 'Data View created successfully.'
+        fi
+    restart: "no"
     networks:
       - monitoring
 

@@ -1,0 +1,8 @@
+{
+  "yaml.schemas": {
+    "https://json.schemastore.org/prometheus.json": [
+      "infra/monitoring/prometheus/prometheus.yml",
+      "infra/monitoring/prometheus/alerts.yml"
+    ]
+  }
+}
