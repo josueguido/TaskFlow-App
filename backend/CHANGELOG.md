@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.6.0](https://github.com/josueguido/TaskFlow-App/compare/backend-v1.5.0...backend-v1.6.0) (2026-05-25)
+
+
+### Features
+
+* **grafana:** create comprehensive TaskFlow dashboard with various metrics ([dbf4008](https://github.com/josueguido/TaskFlow-App/commit/dbf4008b9926bb6cf693b5bb39241ee3e91e2de9))
+* **logging:** enhance Kibana service with health checks and setup script ([dbf4008](https://github.com/josueguido/TaskFlow-App/commit/dbf4008b9926bb6cf693b5bb39241ee3e91e2de9))
+* **metrics:** add cache hit and miss counters to metrics ([f57604f](https://github.com/josueguido/TaskFlow-App/commit/f57604f47b72bb434451f14af31fe1148b5f27ce))
+* **metrics:** add cache hit and miss counters to metrics ([dbf4008](https://github.com/josueguido/TaskFlow-App/commit/dbf4008b9926bb6cf693b5bb39241ee3e91e2de9))
+* **monitoring:** add Redis exporter for monitoring Redis metrics ([2350583](https://github.com/josueguido/TaskFlow-App/commit/2350583d754de75d7b3bf8356c6f309f09a8bad1))
+* **monitoring:** add Redis exporter for monitoring Redis metrics ([dbf4008](https://github.com/josueguido/TaskFlow-App/commit/dbf4008b9926bb6cf693b5bb39241ee3e91e2de9))
+* **monitoring:** introduce Alertmanager with custom entrypoint for config generation ([dbf4008](https://github.com/josueguido/TaskFlow-App/commit/dbf4008b9926bb6cf693b5bb39241ee3e91e2de9))
+* **monitoring:** update Docker Compose for Grafana with health checks and setup script ([dbf4008](https://github.com/josueguido/TaskFlow-App/commit/dbf4008b9926bb6cf693b5bb39241ee3e91e2de9))
+
+
+### Bug Fixes
+
+* **prometheus:** add Redis exporter to scrape configurations ([dbf4008](https://github.com/josueguido/TaskFlow-App/commit/dbf4008b9926bb6cf693b5bb39241ee3e91e2de9))
+
 ## [1.5.0](https://github.com/josueguido/TaskFlow-App/compare/backend-v1.4.0...backend-v1.5.0) (2026-05-08)
 
 
