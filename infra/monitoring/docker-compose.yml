@@ -24,19 +24,61 @@ services:
     volumes:
       - grafana-storage:/var/lib/grafana
       - ../../infra/monitoring/grafana/provisioning:/etc/grafana/provisioning
+      - ../../infra/monitoring/grafana/taskflow-dashboard.json:/tmp/taskflow-dashboard.json:ro
     environment:
       - GF_SECURITY_ADMIN_USER=${GRAFANA_ADMIN_USER}
       - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD}
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--output-document=-", "http://localhost:3000/api/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
     restart: unless-stopped
     networks:
       - monitoring
       - taskflow_network
 
+  grafana-setup:
+    image: curlimages/curl:8.11.1
+    container_name: grafana-setup
+    env_file:
+      - ../../.env
+    depends_on:
+      grafana:
+        condition: service_healthy
+    volumes:
+      - ../../infra/monitoring/grafana/taskflow-dashboard.json:/tmp/taskflow-dashboard.json:ro
+    command:
+      - sh
+      - -c
+      - |
+        set -e
+        echo 'Checking if TaskFlow dashboard exists...'
+        STATUS=$$(curl -s -o /dev/null -w "%{http_code}" \
+          "http://grafana:3000/api/dashboards/uid/taskflow-api" \
+          -u "$$GRAFANA_ADMIN_USER:$$GRAFANA_ADMIN_PASSWORD")
+        if [ "$$STATUS" = "200" ]; then
+          echo 'Dashboard already exists, skipping.'
+        else
+          echo 'Importing TaskFlow dashboard...'
+          printf '{"dashboard":' > /tmp/payload.json
+          cat /tmp/taskflow-dashboard.json >> /tmp/payload.json
+          printf ',"overwrite":true,"folderId":0}' >> /tmp/payload.json
+          curl -sf -X POST "http://grafana:3000/api/dashboards/db" \
+            -H "Content-Type: application/json" \
+            -u "$$GRAFANA_ADMIN_USER:$$GRAFANA_ADMIN_PASSWORD" \
+            -d @/tmp/payload.json
+          echo 'Dashboard imported successfully.'
+        fi
+    restart: "no"
+    networks:
+      - monitoring
+
   alertmanager:
-    image: prom/alertmanager:v0.27.0
-    entrypoint: >
-      sh -c "envsubst < /etc/alertmanager/alertmanager.tmpl > /etc/alertmanager/alertmanager.yml
-      && alertmanager --config.file=/etc/alertmanager/alertmanager.yml"
+    build:
+      context: ./alertmanager
+      dockerfile: Dockerfile
     environment:
       - DISCORD_WEBHOOK_URL_CRITICAL=${DISCORD_WEBHOOK_URL_CRITICAL}
       - DISCORD_WEBHOOK_URL_WARNINGS=${DISCORD_WEBHOOK_URL_WARNINGS}
@@ -46,6 +88,19 @@ services:
       - "9093:9093"
     volumes:
       - ./alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.tmpl:ro
+    restart: unless-stopped
+    networks:
+      - monitoring
+      - taskflow_network
+
+  redis-exporter:
+    image: oliver006/redis_exporter:v1.66.0
+    container_name: redis-exporter
+    environment:
+      - REDIS_ADDR=redis://redis:6379
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+    ports:
+      - "9121:9121"
     restart: unless-stopped
     networks:
       - monitoring
