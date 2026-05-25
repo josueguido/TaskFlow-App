@@ -58,3 +58,15 @@ export const activeProjects = new promClient.Gauge({
   name: 'active_projects',
   help: 'Number of active projects',
 });
+
+export const cacheHits = new promClient.Counter({
+  name: 'cache_hits_total',
+  help: 'Total number of cache hits (X-Cache: HIT)',
+  labelNames: ['route'],
+});
+
+export const cacheMisses = new promClient.Counter({
+  name: 'cache_misses_total',
+  help: 'Total number of cache misses (X-Cache: MISS)',
+  labelNames: ['route'],
+});
