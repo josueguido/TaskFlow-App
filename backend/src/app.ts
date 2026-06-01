@@ -1,7 +1,6 @@
 import express from 'express';
 import { setupSwagger } from './config/swagger';
 import cors from 'cors';
-import morgan from 'morgan';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import { logger } from './utils/logger';
@@ -41,7 +40,6 @@ app.use(
 );
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
-app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
 app.use(sanitizeInput(['description', 'comment', 'search']));
 
 if (process.env.NODE_ENV === 'production') {

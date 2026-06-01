@@ -3,7 +3,7 @@ import { logger } from '../utils/logger';
 
 export const securityLogger: RequestHandler = (req, res, next) => {
   const startTime = Date.now();
-  const ignoredPaths = ['/favicon.ico', '/docs', '/health'];
+  const ignoredPaths = ['/favicon.ico', '/docs', '/health', '/metrics'];
   if (ignoredPaths.includes(req.path)) return next();
 
   logger.info(`${req.method} ${req.path}`, {
