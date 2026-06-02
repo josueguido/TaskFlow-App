@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.7.0](https://github.com/josueguido/TaskFlow-App/compare/backend-v1.6.0...backend-v1.7.0) (2026-06-02)
+
+
+### Features
+
+* **logging:** enhance logging middleware to include route and dynamic log levels ([cfdb512](https://github.com/josueguido/TaskFlow-App/commit/cfdb512fdc0d37f93756c088cf0a060fd552f7a8))
+* **logging:** enhance logging middleware to include route and dynamic log levels; update Logstash config for container name and route handling ([30ac9a4](https://github.com/josueguido/TaskFlow-App/commit/30ac9a4738ab66edce2fdca1ead14ab3dcc6f477))
+* **logging:** enhance logging middleware to include route and dynamic routes ([e3c596f](https://github.com/josueguido/TaskFlow-App/commit/e3c596fd26af32406cb91bec8269015a1a2545ad))
+
 ## [1.6.0](https://github.com/josueguido/TaskFlow-App/compare/backend-v1.5.0...backend-v1.6.0) (2026-05-25)
 
 
