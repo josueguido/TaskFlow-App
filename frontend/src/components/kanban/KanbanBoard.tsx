@@ -83,7 +83,7 @@ export const KanbanBoard = forwardRef<KanbanBoardRef, KanbanBoardProps>(({
   };
 
   const taskStatusIds = useMemo(() => {
-    return Array.from(new Set(tasks.map((t: TaskWithRelations) => t.status_id)));
+    return Array.from(new Set(tasks.map((t: TaskWithRelations) => t.status_id).filter((id) => id != null)));
   }, [tasks]);
 
   const orphanedStatusIds = useMemo(() => {
