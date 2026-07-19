@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.4.0](https://github.com/josueguido/TaskFlow-App/compare/frontend-v1.3.0...frontend-v1.4.0) (2026-07-19)
+
+
+### Features
+
+* **k8s:** add Kubernetes configuration files for backend, frontend, and observability components; update Grafana dashboard queries for improved metrics ([b940477](https://github.com/josueguido/TaskFlow-App/commit/b940477dccd3597acdd6097dcc8111d3c01a4008))
+* **k8s:** add Kubernetes configuration files for backend, frontend, and observability components; update Grafana dashboard queries for improved metrics ([18884bf](https://github.com/josueguido/TaskFlow-App/commit/18884bfd84a81820cdf82dba86ea694a4634cc8e))
+* **k8s:** Add Redis and Grafana configurations with Prometheus integration ([32fd453](https://github.com/josueguido/TaskFlow-App/commit/32fd453df684389ac705a7df66b6f3fbc910004b))
+
 ## [1.3.0](https://github.com/josueguido/TaskFlow-App/compare/frontend-v1.2.0...frontend-v1.3.0) (2026-06-02)
 
 
