@@ -25,6 +25,8 @@ REST API for TaskFlow built with Express 5, TypeScript, and PostgreSQL. Multi-te
 - [Logging](#-logging)
 - [Security](#-security)
 - [Docker](#-docker)
+- [Kubernetes Deployment](#-kubernetes-deployment)
+- [CI/CD Image Publishing](#-cicd-image-publishing)
 - [Project Structure](#-project-structure)
 - [Contributing](#-contributing)
 - [License](#-license)
@@ -296,6 +298,36 @@ Or use Docker Compose from the root of the project:
 ```bash
 docker-compose up -d backend
 ```
+
+---
+
+## ☸️ Kubernetes Deployment
+
+Backend is deployed through Kustomize overlays in the root infrastructure folder.
+
+```bash
+# From project root
+kubectl apply -k infra/k8s/overlays/dev
+kubectl apply -k infra/k8s/overlays/staging
+kubectl apply -k infra/k8s/overlays/prod
+```
+
+Useful resources:
+
+- Deployment: `infra/k8s/base/apps/backend/deployment.yaml`
+- Service: `infra/k8s/base/apps/backend/service.yaml`
+- HPA: `infra/k8s/base/apps/backend/hpa.yaml`
+
+---
+
+## 🔄 CI/CD Image Publishing
+
+Backend image publishing now follows two flows:
+
+- **Main branch flow** (`publish-main-images.yml`): pushes `latest` and `sha-<commit>` for dev/staging usage.
+- **Release flow** (`release.yml`): pushes semantic version tags only (stable production policy).
+
+For production, prefer immutable semantic tags (for example `1.4.0`) instead of `latest`.
 
 ---
 

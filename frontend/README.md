@@ -22,6 +22,8 @@ Frontend SPA for TaskFlow — a project and task management system built with Re
 - [Environment Variables](#-environment-variables)
 - [Testing](#-testing)
 - [Docker Deployment](#-docker-deployment)
+- [Kubernetes Deployment](#-kubernetes-deployment)
+- [CI/CD Image Publishing](#-cicd-image-publishing)
 - [Contributing](#-contributing)
 
 ---
@@ -235,6 +237,38 @@ docker-compose -f docker-compose.prod.yml up -d frontend  # Prod → :80
 ```
 
 Nginx serves the SPA with `try_files $uri $uri/ /index.html` for client-side routing.
+
+---
+
+## ☸️ Kubernetes Deployment
+
+Frontend is deployed through Kustomize overlays from the project root:
+
+```bash
+kubectl apply -k infra/k8s/overlays/dev
+kubectl apply -k infra/k8s/overlays/staging
+kubectl apply -k infra/k8s/overlays/prod
+```
+
+Useful resources:
+
+- Deployment: `infra/k8s/base/apps/frontend/deployment.yaml`
+- Service: `infra/k8s/base/apps/frontend/service.yaml`
+- Ingress: `infra/k8s/base/apps/frontend/ingress.yaml`
+
+---
+
+## 🔄 CI/CD Image Publishing
+
+Frontend image publishing follows two flows:
+
+- **Main branch flow** (`publish-main-images.yml`): pushes `latest` and `sha-<commit>` images for fast non-prod deployments.
+- **Release flow** (`release.yml`): pushes semantic tags only, used for stable production deployments.
+
+Recommended policy:
+
+- `dev`: use `sha-<commit>` tags for reproducibility.
+- `prod`: use semantic tags only (for example `1.4.0`).
 
 ---
 
