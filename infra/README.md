@@ -10,6 +10,17 @@ Complete observability and deployment infrastructure for TaskFlow: metrics, dash
 
 ```
 infra/
+├── k8s/                         # Kubernetes + Kustomize (base + overlays)
+│   ├── base/
+│   │   ├── namespaces/          # taskflow-app + observability namespaces
+│   │   ├── apps/                # backend + frontend deployments/services
+│   │   ├── data/                # redis + postgres stateful workloads
+│   │   └── observability/       # prometheus + grafana manifests
+│   └── overlays/
+│       ├── dev/                 # local/minikube-focused overrides
+│       ├── staging/             # pre-prod overrides
+│       └── prod/                # production overrides
+│
 ├── monitoring/                  # Prometheus + Grafana + Alertmanager
 │   ├── docker-compose.yml
 │   ├── prometheus/
@@ -64,6 +75,41 @@ docker compose --env-file ../../.env up -d
 cd infra/logging
 docker compose up -d
 ```
+
+---
+
+## Kubernetes (Kustomize)
+
+All commands from project root.
+
+### Render manifests
+
+```bash
+kubectl kustomize infra/k8s/base
+kubectl kustomize infra/k8s/overlays/dev
+kubectl kustomize infra/k8s/overlays/staging
+kubectl kustomize infra/k8s/overlays/prod
+```
+
+### Deploy by environment
+
+```bash
+kubectl apply -k infra/k8s/overlays/dev
+# or
+kubectl apply -k infra/k8s/overlays/staging
+kubectl apply -k infra/k8s/overlays/prod
+```
+
+### Overlay intent
+
+- `dev`: reproducible images via `sha-<commit>` tags + local storage class compatibility patches
+- `staging`: semver image tags and environment-tuned resources
+- `prod`: semver image tags and production resource profile
+
+### CI/CD interaction
+
+- `publish-main-images.yml` publishes `latest` and `sha-<commit>` tags on `main` (for dev flow)
+- `release.yml` publishes semantic tags only (for stable production flow)
 
 ---
 
