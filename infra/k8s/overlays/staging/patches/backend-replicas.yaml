@@ -4,4 +4,4 @@ metadata:
   name: backend
   namespace: taskflow-app
 spec:
-  replicas: 1
+  replicas: 2

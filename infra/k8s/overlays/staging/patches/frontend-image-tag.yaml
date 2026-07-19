@@ -8,4 +8,4 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: taskflow-frontend:latest
+          image: josudev2002/taskflow-frontend:1.2.0
