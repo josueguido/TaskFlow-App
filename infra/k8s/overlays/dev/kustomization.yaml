@@ -6,5 +6,16 @@ resources:
 
 patches:
   - path: patches/backend-replicas.yaml
+  - path: patches/backend-image-tag.yaml
   - path: patches/frontend-image-tag.yaml
   - path: patches/redis-resources.yaml
+  - path: patches/redis-storageclass.yaml
+    target:
+      kind: StatefulSet
+      name: redis
+      namespace: taskflow-app
+  - path: patches/postgres-storageclass.yaml
+    target:
+      kind: StatefulSet
+      name: taskflow-postgres
+      namespace: taskflow-app
