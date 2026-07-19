@@ -1,0 +1,11 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: taskflow-app
+spec:
+  template:
+    spec:
+      containers:
+        - name: backend
+          image: josudev2002/taskflow-backend:0.0.1

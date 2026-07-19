@@ -25,13 +25,13 @@ export interface KanbanBoardRef {
   openNewTaskModal: () => void;
 }
 
-export const KanbanBoard = forwardRef<KanbanBoardRef, KanbanBoardProps>(({ 
+export const KanbanBoard = forwardRef<KanbanBoardRef, KanbanBoardProps>(({
   className = '',
   projectId
 }, ref) => {
   const { tasks, loading: tasksLoading, error: tasksError, refetch: refetchTasks } = useTasks(projectId);
   const { statuses, loading: statusLoading } = useStatuses();
-  
+
   const [createTaskModalOpen, setCreateTaskModalOpen] = useState(false);
   const [createTaskStatusId, setCreateTaskStatusId] = useState<number | null>(null);
   const [editTaskModalOpen, setEditTaskModalOpen] = useState(false);
@@ -52,10 +52,10 @@ export const KanbanBoard = forwardRef<KanbanBoardRef, KanbanBoardProps>(({
   React.useEffect(() => {
   }, [tasks, statuses, projectId]);
 
-  const { 
-    deleteTask, 
+  const {
+    deleteTask,
     changeStatus,
-    loading: mutationLoading 
+    loading: mutationLoading
   } = useTaskMutations();
 
   const sensors = useSensors(
@@ -74,11 +74,11 @@ export const KanbanBoard = forwardRef<KanbanBoardRef, KanbanBoardProps>(({
 
   const getTasksByStatusId = (statusId: number): TaskWithRelations[] => {
     let filtered = tasks.filter((task: TaskWithRelations) => task.status_id === statusId);
-    
+
     if (projectId) {
       filtered = filtered.filter((task: TaskWithRelations) => task.project_id === projectId);
     }
-    
+
     return filtered;
   };
 
@@ -165,7 +165,7 @@ export const KanbanBoard = forwardRef<KanbanBoardRef, KanbanBoardProps>(({
         <div className="text-center">
           <p className="text-red-600 mb-2">Error al cargar el board</p>
           <p className="text-gray-500 text-sm">{tasksError}</p>
-          <button 
+          <button
             onClick={() => refetchTasks()}
             className="mt-3 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
           >
@@ -200,7 +200,7 @@ export const KanbanBoard = forwardRef<KanbanBoardRef, KanbanBoardProps>(({
           onTaskCreated={handleTaskCreated}
         />
       )}
-      
+
       <EditTaskModal
         isOpen={editTaskModalOpen}
         onClose={() => {
@@ -253,7 +253,7 @@ export const KanbanBoard = forwardRef<KanbanBoardRef, KanbanBoardProps>(({
         onDragOver={handleDragOver}
         onDragEnd={handleDragEnd}
       >
-        <div 
+        <div
           className="flex gap-4 overflow-x-auto overflow-y-hidden h-[calc(100vh-240px)] px-6 py-4"
         >
           {sortedStatuses.map((status: Status) => {

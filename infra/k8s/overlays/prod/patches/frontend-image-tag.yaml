@@ -1,0 +1,11 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: taskflow-app
+spec:
+  template:
+    spec:
+      containers:
+        - name: frontend
+          image: josudev2002/taskflow-frontend:1.2.0

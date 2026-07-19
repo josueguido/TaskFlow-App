@@ -77,7 +77,6 @@ jobs:
           push: true
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_FRONTEND }}:${{ steps.tag.outputs.version }}
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_FRONTEND }}:latest
           build-args: |
             APP_VERSION=${{ steps.tag.outputs.version }}
             GIT_SHA=${{ github.sha }}
@@ -93,7 +92,6 @@ jobs:
           push: true
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_BACKEND }}:${{ steps.tag.outputs.version }}
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_BACKEND }}:latest
           build-args: |
             APP_VERSION=${{ steps.tag.outputs.version }}
             GIT_SHA=${{ github.sha }}
