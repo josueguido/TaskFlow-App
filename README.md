@@ -25,7 +25,9 @@ A full-stack project and task management system built with React 19, Express 5, 
 - [Environment Configuration](#-environment-configuration)
 - [Development](#-development)
 - [Docker Deployment](#-docker-deployment)
+- [Kubernetes Deployment](#-kubernetes-deployment)
 - [CI/CD Pipeline](#-cicd-pipeline)
+- [Release Checklist](#-release-checklist)
 - [Monitoring & Logging](#-monitoring--logging)
 - [Database](#-database)
 - [API Documentation](#-api-documentation)
@@ -47,8 +49,8 @@ TaskFlow is a multi-tenant application designed to streamline project and task m
 | **Backend** | Express 5 + Node 24 | REST API with JWT auth |
 | **Database** | PostgreSQL 15 | Relational data persistence |
 | **Cache** | Redis 7 | Refresh tokens, token blacklist, response cache |
-| **Infra** | Docker Compose | Dev, prod, monitoring & logging stacks |
-| **CI/CD** | GitHub Actions | Semantic versioning + Docker Hub push |
+| **Infra** | Docker Compose + Kubernetes | Local stacks + Kustomize overlays (dev/staging/prod) |
+| **CI/CD** | GitHub Actions | PR validation + semantic releases + main branch image publishing |
 
 ---
 
@@ -225,11 +227,16 @@ TaskFlow-App/
 │   └── 02-seed.sql             # Sample data
 │
 ├── infra/                       # Infrastructure
+│   ├── k8s/                    # Kubernetes manifests (base + overlays)
 │   ├── monitoring/             # Prometheus + Grafana
 │   └── logging/                # ELK Stack
 │
 ├── .github/workflows/          # CI/CD
-│   └── docker-build-push.yml   # Build, test, release, push
+│   ├── ci.yml                  # Lint, test, build
+│   ├── docker-build.yml        # PR image build validation + Trivy
+│   ├── publish-main-images.yml # Push latest + sha tags on main
+│   ├── release-please.yml      # Semantic release PR/tag automation
+│   └── release.yml             # Publish semver tags to Docker Hub
 │
 ├── docker-compose.yml           # Development stack
 ├── docker-compose.prod.yml      # Production stack
@@ -357,6 +364,48 @@ docker compose -f docker-compose.prod.yml logs -f
 docker compose -f docker-compose.prod.yml down
 ```
 
+---
+
+## ☸️ Kubernetes Deployment
+
+Kubernetes manifests are managed with **Kustomize** under `infra/k8s`:
+
+```text
+infra/k8s/
+├── base/
+│   ├── namespaces/
+│   ├── apps/              # backend + frontend
+│   ├── data/              # postgres + redis
+│   └── observability/     # prometheus + grafana
+└── overlays/
+     ├── dev/
+     ├── staging/
+     └── prod/
+```
+
+### Validate manifests
+
+```bash
+kubectl kustomize infra/k8s/base
+kubectl kustomize infra/k8s/overlays/dev
+kubectl kustomize infra/k8s/overlays/staging
+kubectl kustomize infra/k8s/overlays/prod
+```
+
+### Apply an environment
+
+```bash
+kubectl apply -k infra/k8s/overlays/dev
+# or
+kubectl apply -k infra/k8s/overlays/staging
+kubectl apply -k infra/k8s/overlays/prod
+```
+
+### Image strategy by environment
+
+- **dev**: immutable `sha-<commit>` tags (published by `publish-main-images.yml`)
+- **staging/prod**: semantic versions from release tags (published by `release.yml`)
+
 | Environment | Frontend | Backend | DB |
 |------------|----------|---------|----|
 | Development | http://localhost:5173 | http://localhost:3003 | port `5433` exposed |
@@ -367,14 +416,15 @@ docker compose -f docker-compose.prod.yml down
 
 ## 🔄 CI/CD Pipeline
 
-The project uses **4 GitHub Actions workflows**:
+The project uses **5 GitHub Actions workflows**:
 
 | Workflow | Trigger | Purpose |
 |----------|---------|--------|
 | `ci.yml` | PR / push to `main` | Lint, test, build (backend + frontend) |
 | `docker-build.yml` | PR to `main` | Docker build validation + Trivy security scan |
+| `publish-main-images.yml` | Push to `main` / manual | Push `latest` + `sha-<commit>` images for changed component(s) |
 | `release-please.yml` | Push to `main` | Semantic versioning + GitHub Release |
-| `release.yml` | On git tag | Build + push to Docker Hub |
+| `release.yml` | On semantic tags | Build + push semantic Docker tags |
 
 ```
 PR opened
@@ -385,14 +435,38 @@ PR opened
 
 Merge to main
      │
+     ├──▶ publish-main-images.yml ─▶ push latest + sha tags (changed apps only)
+     │
      └──▶ release-please.yml ─▶ changelog + version tag
                                         │
-                                        └──▶ release.yml ─▶ Docker Hub push
+                                        └──▶ release.yml ─▶ Docker Hub semver push (prod stable)
 ```
 
 - **Security scanning**: Trivy scans backend + frontend images for HIGH/CRITICAL CVEs, results uploaded to GitHub Security → Code Scanning
 - **Path filters**: CI only triggers when `frontend/**` or `backend/**` files change
 - **Cache**: GitHub Actions cache (`type=gha`) for fast Docker rebuilds
+- **Production policy**: `release.yml` publishes immutable semantic tags only (no `latest` in production release flow)
+
+---
+
+## ✅ Release Checklist
+
+Before cutting a release for production:
+
+1. Confirm repository secrets exist: `DOCKER_USERNAME`, `DOCKER_PASSWORD`, `RELEASE_PLEASE_TOKEN`.
+2. Verify `release-please.yml` completed successfully and created/updated the release PR.
+3. Merge the release PR on `main` and confirm semantic tags were created.
+4. Verify `release.yml` ran from the new tag and pushed Docker images with semantic version tags.
+5. Confirm images exist in Docker Hub before deploy:
+     - `docker manifest inspect <docker-user>/taskflow-frontend:<semver>`
+     - `docker manifest inspect <docker-user>/taskflow-backend:<semver>`
+6. Update Kubernetes overlay image tags (`staging`/`prod`) to the new semantic versions and apply.
+
+Before promoting dev changes:
+
+1. Confirm `publish-main-images.yml` ran on `main`.
+2. Confirm `sha-<commit>` tags exist for changed component(s).
+3. Deploy dev overlay with pinned `sha-<commit>` images for reproducibility.
 
 ---
 
@@ -535,9 +609,9 @@ make help                # Show all available commands
 - ✅ Trivy security scanning in CI (SARIF → GitHub Code Scanning)
 - ✅ Multi-environment config (dev / staging / prod)
 - ✅ Makefile workflows
-- ⬜ Kubernetes manifests (Kustomize overlays per environment)
+- ✅ Kubernetes manifests (Kustomize overlays per environment)
 - ⬜ Terraform — Infrastructure as Code (EKS)
-- ✅ GitHub Environments + deployment protection rules (`environment: production` in release workflow)
+- ✅ GitHub Environments + deployment protection rules
 
 ### Phase 3: Advanced Features 🔮
 - ⬜ Real-time notifications (WebSocket / SNS+SQS)
@@ -573,4 +647,4 @@ For questions or suggestions, please [open an issue](https://github.com/josuegui
 
 ---
 
-*Last updated: April 2026*
+*Last updated: July 2026*

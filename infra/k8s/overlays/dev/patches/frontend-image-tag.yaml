@@ -8,4 +8,4 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: josudev2002/taskflow-frontend:0.0.1
+          image: josudev2002/taskflow-frontend:sha-32fd453df684389ac705a7df66b6f3fbc910004b
