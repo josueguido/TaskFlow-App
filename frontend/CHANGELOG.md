@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.5.0](https://github.com/josueguido/TaskFlow-App/compare/frontend-v1.4.0...frontend-v1.5.0) (2026-07-19)
+
+
+### Features
+
+* **ci:** add GitHub Actions workflow for publishing main and update README for Kubernetes deployment ([51125a0](https://github.com/josueguido/TaskFlow-App/commit/51125a0a4ac29def4e5aefaffe9364a7393ba0fe))
+* **ci:** add GitHub Actions workflow for publishing main images with latest and sha tags; ([6080455](https://github.com/josueguido/TaskFlow-App/commit/60804559cb327752964d40c4e780d6114cfe1375))
+* **ci:** add GitHub Actions workflow for publishing main images with latest and sha tags; update README for Kubernetes deployment and CI/CD image publishing ([4db5a8c](https://github.com/josueguido/TaskFlow-App/commit/4db5a8ca08f295996fb98897c48efbf56bd05079))
+
 ## [1.4.0](https://github.com/josueguido/TaskFlow-App/compare/frontend-v1.3.0...frontend-v1.4.0) (2026-07-19)
 
 
