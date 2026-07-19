@@ -8,4 +8,4 @@ spec:
     spec:
       containers:
         - name: backend
-          image: josudev2002/taskflow-backend:0.0.1
+          image: josudev2002/taskflow-backend:sha-32fd453df684389ac705a7df66b6f3fbc910004b
